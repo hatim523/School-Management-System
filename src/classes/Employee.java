@@ -97,6 +97,79 @@ public class Employee extends Person{
 	{
 		return permissions;
 	}
+	private int setWorkExperience(double y)
+	{
+		if (y >= 0 && y <= 80)
+		{
+			work_experience = y;
+			return 0;
+		}
+		return 1;
+	}
+	private int setSalary(double s)
+	{
+		if (s > 100 && s < 100000000)
+		{
+			salary = s;
+			return 0;
+		}
+		return 1;
+	}
+	private int setEmployeeID(String em)
+	{
+		try
+		{
+			Integer.parseInt(em);
+			employee_id = em;
+			return 0;
+		}
+		catch (NumberFormatException ex)
+		{
+			return 1;
+		}
+	}
+	private int setCNIC (String c)
+	{
+		try
+		{
+			if (c.length() < 13 || c.length() > 13)
+				return 1;
+			Long.parseLong(c);
+			CNIC = c;
+			return 0;
+		}
+		catch (NumberFormatException ex)
+		{
+			return 1;
+		}
+	}
+	private int setQualification(String q)		//Mention qualifications if needed
+	{
+		if (q.length() >= 2)
+		{
+			qualification = q;
+			return 0;
+		}
+		return 1;
+	}
+	private int setJobTitle(String j)		//Mention all job titles if needed
+	{
+		if (j.length() >= 2)
+		{
+			jobTitle = j;
+			return 1;
+		}
+		return 1;
+	}
+	private int setPassword(String pPass)
+	{
+		if (pPass.length() >= 8)
+		{
+			password = pPass;
+			return 0;
+		}
+		return 1;
+	}
 	/*
 	 * End of setter/getter functions
 	 */
@@ -175,5 +248,9 @@ public class Employee extends Person{
 		salary = rs.getDouble(13);
 		work_experience = rs.getDouble(15);
 		logged = true;
+	}
+	public void Register()
+	{
+		
 	}
 }

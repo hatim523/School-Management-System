@@ -86,6 +86,61 @@ public class Student extends Person{
 	{
 		return student_id;
 	}
+	private int setFatherCNIC(String c)
+	{
+		try
+		{
+			if (c.length() < 13 || c.length() > 13)
+				return 1;
+			Long.parseLong(c);
+			fatherCNIC = c;
+			return 0;
+		}
+		catch (NumberFormatException ex)
+		{
+			return 1;
+		}
+	}
+	private int setStudentID(String em)
+	{
+		try
+		{
+			Integer.parseInt(em);
+			student_id = em;
+			return 0;
+		}
+		catch (NumberFormatException ex)
+		{
+			return 1;
+		}
+	}
+	private int setMotherName(String m)
+	{
+		if (m.length() >= 2)
+		{
+			motherName = m;
+			return 0;
+		}
+		return 1;
+	}
+	private int setMotherOccupation(String o)
+	{
+		if (o.length() >= 2)
+		{
+			motherOccupation = o;
+			return 0;
+		}
+		return 1;
+	}
+	private int setFatherOccupation(String o)
+	{
+		if (o.length() >= 2)
+		{
+			fatherOccupation = o;
+			return 0;
+		}
+		return 1;
+	}
 	/*
 	 * End of setter/getter functions
 	 */

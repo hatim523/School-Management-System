@@ -1,13 +1,16 @@
 package classes;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
 
 abstract public class Person {
 	protected String name, fname, address, number, emergency_number, email;
-	Date dob;
+	java.util.Date dob;
 	protected char gender;
 	
-	public Date getDOB()
+	public java.util.Date getDOB()
 	{
 		return dob;
 	}
@@ -38,5 +41,89 @@ abstract public class Person {
 	public char getGender()
 	{
 		return gender;
+	}
+	protected int setGender(char gen)
+	{
+		if (gen == 'M' || gen=='F' || gen == 'm' || gen == 'f')
+		{
+			gender = gen;
+			return 0;
+		}
+		return 1;
+	}
+	protected int setEmail(String e)
+	{
+		if (Pattern.matches("*@*.*", e))
+		{
+			email = e;
+			return 0;
+		}
+		return 1;
+	}
+	protected int setEmergencyNumber(String enumber)
+	{
+		try
+		{
+			Double.parseDouble(enumber);
+			emergency_number = enumber;
+			return 0;
+		}
+		catch (NumberFormatException ex)
+		{
+			return 1;
+		}
+	}
+	protected int setNumber (String pnumber)
+	{
+		try
+		{
+			Double.parseDouble(pnumber);
+			number = pnumber;
+			return 0;
+		}
+		catch (NumberFormatException ex)
+		{
+			return 1;
+		}
+	}
+	protected int setAddress(String pAdd)
+	{
+		if (pAdd.length() > 3)
+		{
+			address = pAdd;
+			return 0;
+		}
+		return 1;
+	}
+	protected int setFname(String pF)
+	{
+		if (pF.length() >= 3)
+		{
+			fname = pF;
+			return 0;
+		}
+		return 1;
+	}
+	protected int setName(String pN)
+	{
+		if (pN.length() >= 3)
+		{
+			name = pN;
+			return 0;
+		}
+		return 1;
+	}
+	protected int setDate(String d)
+	{
+		try
+		{
+		    SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy");  
+		    dob =formatter1.parse(d);  
+			return 0;
+		}
+		catch (ParseException ex)
+		{
+			return 1;
+		}
 	}
 }

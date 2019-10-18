@@ -39,6 +39,8 @@ public class postRequests extends HttpServlet {
 					Student s1 = new Student(request, response);
 					s1.Login();
 				}
+				else
+					response.getWriter().print("Invalid ID");
 			}
 			
 			
