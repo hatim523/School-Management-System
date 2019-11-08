@@ -11,8 +11,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class Employee extends Person{
 	private String CNIC, qualification, jobTitle, employee_id, password;
@@ -201,7 +204,7 @@ public class Employee extends Person{
     	}
     	return null;
     }
-	public boolean Login() throws IOException, SQLException
+	public boolean Login() throws IOException, SQLException, ServletException
 	{
 		String in_id = req.getParameter("uname").substring(2);
 		String in_password = req.getParameter("psw");
@@ -219,11 +222,17 @@ public class Employee extends Person{
 		ResultSet rs = psm.executeQuery();
 		if (rs.next())
 		{
-			resp.getWriter().print("Login Successful");
+			HttpSession sess = req.getSession();
+			sess.setMaxInactiveInterval(1200);
 			LoadData(rs);
+			sess.setAttribute("emp_obj", this);
+			RequestDispatcher rd = req.getRequestDispatcher("Emp_homepage.jsp");
+			rd.forward(req, resp);
 		}
 		else
-			resp.getWriter().print("Login failed");
+		{
+			resp.sendRedirect("index.jsp");
+		}
 		return true;
 	}
 	private void LoadData(ResultSet rs) throws SQLException
@@ -249,8 +258,23 @@ public class Employee extends Person{
 		work_experience = rs.getDouble(15);
 		logged = true;
 	}
-	public void Register()
-	{
-		
-	}
+//	public void Register()
+//	{
+//		int validCredentials = 0;
+//		validCredentials = setName(req.getParameter(arg0));
+//		validCredentials = setFname(req.getParameter());
+//		validCredentials = setPassword(req.getParameter());
+//		validCredentials = setGender(req.getParameter());
+//		validCredentials = setDate(req.getParameter());
+//		validCredentials = setAddress(req.getParameter());
+//		validCredentials = setEmail(req.getParameter());
+//		validCredentials = setNumber(req.getParameter());
+//		validCredentials = setEmergencyNumber(req.getParameter());
+//		validCredentials = setCNIC(req.getParameter(CNIC));
+//		validCredentials = setQualification(req.getParameter());
+//		validCredentials = setWorkExperience(req.getParameter());
+//		validCredentials = setJobTitle(req.getParameter());
+//		validCredentials = setSalary(req.getParameter());
+//		
+//	}
 }

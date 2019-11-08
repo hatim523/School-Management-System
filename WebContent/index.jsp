@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,7 +7,7 @@
 	
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
     <link rel="stylesheet" href="fonts/icomoon/style.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -22,6 +24,7 @@
     <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
   </head>
 
@@ -31,7 +34,6 @@
 <div class="container-fluid">
 <div class="d-flex align-items-center">
 <div class="site-logo mr-auto w-40"><a href="index.html">KHOKAR School</a></div>
-
 
 <div class="topnav" id="myTopnav"  >
 <div class="mx-auto text-center">
@@ -52,23 +54,23 @@
 </header>
 
                                                    <!--BACKGROUND-->
- 
+ <body onload="hideMessage()">
 	    <div class="intro-section" id="home-section">
-      <div style="background-image: url('images/ddd.jpg');background-size: 1100px 900px;">
+      <div style="background-image: url('xxx.jpg');background-size:100% 800px; background-repeat: no-repeat">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-12">
               <div class="row align-items-center">
                 <div class="col-lg-6 mb-4">
-                  <h1>We Serve By Serving Education</h1>
-                  <p class="mb-4" >Home of Education.</p>
+                  <h1 style="  text-shadow: 2px 2px 5px black;">We Serve By Serving Education</h1>
+                  <h3 class="mb-4" style="  text-shadow: 2px 2px 5px white; color:black;">Home of Education.</h3>
                 </div>
 			<div class="col-lg-5 ml-auto">
 		</div></div></div></div></div></div></div>
                                                  <!--Sign in-->
-<div id="id01" class="modal">
+<div id="id01" class="modal" style="width:101.5%;height:101.5% ">
   
-  <form class="modal-content animate" action="postRequests" method="post">
+  <form class="modal-content animate" action="postRequests" method="post" style="width:65%">
     <div class="imgcontainer">
       <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
       <img src="pro.png" alt="Sign in" class="avatar">
@@ -77,16 +79,16 @@
     <div class="container">
       <label for="uname"><b>Username</b></label>
       <input type="text" placeholder="Enter Username" name="uname" required>
-
+         
       <label for="psw"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psw" required>
-       <input type="hidden" name="work_to_do" value="login">
+      <div id="invalid01" style="height:20px;width:100%;background-color:none" align="center"></div>  
       <button type="submit">Login</button>
       <label>
         <input type="checkbox" checked="checked" name="remember"> Remember me
       </label>
+      <input type="hidden" name="work_to_do" value="login">
     </div>
-    
 
     <div class="container" style="background-color:#f1f1f1">
       <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
@@ -98,21 +100,26 @@
 		   
 		                                                 <!--GAllery-->
 
-<div  id="gallery" class="site-section" style="background-color: rgb(242, 242, 242)">
-<div class="container"  >
+<div  id="gallery" class="site-section" style="background-color: white; margin-top:-200px;">
 <h2 class="section-title" align="center">Gallery</h2>
 </div>
+<div class="w3-content w3-display-container" style="max-width:1400px " >
+  <img class="mySlides" src="vvv.jpg" style="width:80%;margin-left:10%">
+  <img class="mySlides" src="www.jpg" style="width:80%;margin-left:10%">
+  <img class="mySlides" src="zzz.jpg" style="width:80%;margin-left:10%">
+  <div class="w3-center w3-container w3-section w3-large w3-text-white w3-display-bottommiddle" style="width:100%">
+    <div class="w3-left w3-hover-text-khaki" onclick="plusDivs(-1)">&#10094;</div>
+    <div class="w3-right w3-hover-text-khaki" onclick="plusDivs(1)">&#10095;</div>
+    <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(1)"></span>
+    <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(2)"></span>
+    <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(3)"></span>
+  </div>
 </div>
-<div class="pic" style="border:none; background-color:rgb(242, 242, 242)">
-<img src="aaa.jpg" class="responsive" width="600" height="400">
-<img src="ddd.jpg" style = "width:100%">
-<img src="ccc.jpg" style = "width:100%">
 
-</div>
-	                                              <!--ABOUT Why choose us-->												   
-				   <div id="aboutUs" ></div>
-				  <div class="A2" style="background-color:rgb(242,242,242)"> <h2 align="center" style="color:black " class="A1">About us</h2></div>
-				   <div id="box1"> 
+                               <!--ABOUT Why choose us-->												   
+				   <div id="aboutUs" style="margin-top:50px" ></div>
+				  <div class="A2" style="background-color:white"> <h2 align="center" style="color:black " class="section-title">About us</h2></div>
+				   <div id="box1" style = "box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"> 
                      <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
                 <div class="mr-3" ><span class="custom-icon-inner"><span class="icon icon-graduation-cap"></span></span></div>
                 <div> <h3 class="m-0">More Than 500 Students</h3></div>
@@ -142,6 +149,7 @@
               <div><h3 class="m-0">Best Teachers</h3></div>
               </div>
 			  </div>
+</body>
 				                                  <!-- footer-->
 		<div id = "footer" ></div>
 				   <footer class="footer-distributed">
@@ -149,13 +157,13 @@
                 <h3>Khokar<span>School</span></h3>
                 <p class="footer-links">
 					<a href="#">Home</a>
-					Â·
+					·
 					<a href="#">Sign In</a>
-					Â·
+					·
 					<a href="#">Gallery</a>
-					Â·
+					·
 					<a href="#">About</a>
-					Â·
+					·
 					<a href="#">Contact</a>
 		</p>
 	       <p class="footer-company-name">G4-Tech &copy; 2019</p>
@@ -171,7 +179,7 @@
 				</div>
 				<div>
 					<i class="fa fa-envelope"></i>
-					<p><a href="mailto:support@company.com">contact@G4tech17@gmail.com</a></p>
+					<p><a href="mailto:support@company.com">g4tech17@gmail.com</a></p>
 				</div>
 		</div>
 		<div class="footer-right">
@@ -192,22 +200,59 @@
 														
 														
 														<!--ChatBox-->
-					<div id = "chatt" ></div>
-				   <div class="chatt2">
+<div id = "chatt" ></div>
+<div class="chatt2">
 <button class="open-button" onclick="openForm()">Send Message</button>
-
 <div class="chat-popup" id="myForm">
-  <form action="/action_page.php" class="form-container">
-    <h1>Send Message</h1>
-
-    <label for="msg"><b>Message</b></label>
-    <textarea placeholder="Type message.." name="msg" required></textarea>
-
-    <button type="submit" class="btn">Send</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
+<form action="/action_page.php" class="form-container">
+<h1>Send Message</h1>
+<label for="msg"><b>Message</b></label>
+<textarea placeholder="Type message.." name="msg" required></textarea>
+<button type="submit" class="btn">Send</button>
+<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+</form>
 </div>
 
+
+<script>
+function hideMessage()
+{
+	
+	document.getElementById("invalid01").innerHTML = "";
+}
+
+function showMessage()
+{
+	
+}
+
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function currentDiv(n) {
+  showDivs(slideIndex = n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" w3-white", "");
+  }
+  x[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " w3-white";
+}
+</script>
 <!--NAV-->
 <script>
 function openForm() {
@@ -263,31 +308,22 @@ window.onclick = function(event) {
   </body>
 </html>
 <style>
-.responsive{
-  width: 100%;
-  height: auto;
-}
-<!---->
 td{
 font-family:"Open Sans",sans-serif;
 }
-#programs-section
-{
-background-color: rgb(230, 230, 230);
-}
 
 #aboutUs{
-height:800px;
-background-color:rgb(242,242,242);
-margin-top:-80px;
+height:700px;
+background-color:white;
+margin-top:-70px;
 }
 
 #box1{
-height:510px;
+height:410px;
 background-color:white;
-width:450px;
-margin-left:200px;
-border-radius:20px;
+width:50%;
+margin:auto;
+border-radius:10px;
 }
 .mr-3{
 margin-left:20px;
@@ -296,7 +332,7 @@ margin-top:5px;
 }
 .m-0{
 color:black;
-
+font-weight:bold;
 }
 A1{
 font-size:50px;
@@ -310,12 +346,27 @@ margin-top:-650px;
 }
 
 h2{
-margin-top:50px;
+margin-top:60px;
 color:black;
 font-weight:bold;
 font-family:"Open Sans",sans-serif;
 
 }
+
+                                <!--Gallery-->
+.mySlides 
+{display:none
+}
+.w3-left, .w3-right, .w3-badge
+ {cursor:pointer}
+.w3-badge 
+{height:13px;width:13px;padding:0
+}
+.responsive{
+  width: 100%;
+  height: auto;
+}
+ 
 
                                        <!--Footer css-->
 body {
@@ -502,7 +553,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
   position: fixed;
   bottom: 23px;
   right: 28px;
-  width: 280px;
+  width: 20%;
+  margin:auto;
 }
 
 /* The popup chat - hidden by default */
@@ -512,6 +564,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   bottom: 0;
   right: 15px;
   z-index: 9;
+  margin:auto;
 }
 
 /* Add styles to the form container */
@@ -521,6 +574,7 @@ padding: 15px;
 background-color: white;
 border-radius:15px; 
 height: 370px;
+margin:auto;
 }
 
 /* Full-width textarea */
@@ -564,7 +618,7 @@ height: 370px;
 
 
 
-                        <!--NAV-->
+                                      <!--Navigation Bar---->
 
 body {
   margin: 0;
@@ -616,6 +670,7 @@ font-family:"Open Sans",sans-serif;
     float: none;
     display: block;
     text-align: left;
+	
   }
  
 }
@@ -658,26 +713,27 @@ button:hover {
   width: auto;
   padding: 10px 18px;
   background-color: #f44336;
+  float:right;
 }
 
 /* Center the image and position the close button */
 .imgcontainer {
   text-align: center;
-  margin: 24px 0 12px 0;
+  margin:  10px 0 0 0;
   position: relative;
 }
 
 img.avatar {
-  width: 30%;
+  width: 20%;
   border-radius: 50%;
 }
 
 .container {
-  padding: 16px;
+  padding: 5px;
 }
 
 span.psw {
-  float: right;
+  float: left;
   padding-top: 16px;
 }
 
@@ -690,7 +746,7 @@ span.psw {
   top: 0;
   width: 100%; /* Full width */ /*chnge*/
   height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
+  overflow: scroll; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   padding-top: 60px;
@@ -699,9 +755,10 @@ span.psw {
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  margin: 5% auto 20% auto; /* 5% from the top, 15% from the bottom and centered */
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */
+  
 }
 
 /* The Close Button (x) */
