@@ -1,10 +1,19 @@
 package classes;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class UserPermissions {
 	private boolean studentAttendance, addCourse, addMarks, employeeAttendance, updatePermissions, removeStudent, removeEmployee, addStudent;
 	private boolean addEmployee, sendSMS, updateTimetable, updateFee, generateFeeChallan, updateSalary, addClassSection, updateEmployeeInfo;
 	private boolean updateStudentInfo;
 	
+	
+	public UserPermissions(String employee_id, Connection con) throws SQLException {
+		LoadPermissions(employee_id, con);
+	}
 	/*
 	 * Beginning of setter/getter functions
 	 */
@@ -79,4 +88,30 @@ public class UserPermissions {
 	/*
 	 * End of setter/getter functions
 	 */
+	private void LoadPermissions(String id, Connection con) throws SQLException
+	{
+		String sql = "Select * from userpermissions where employee_id = ?";
+		PreparedStatement psm = con.prepareStatement(sql);
+		psm.setString(1, id);
+		
+		ResultSet rs = psm.executeQuery();
+		while (rs.next())
+		{
+			studentAttendance = rs.getBoolean(2);
+			addCourse = rs.getBoolean(3);
+			addMarks = rs.getBoolean(4);
+			employeeAttendance = rs.getBoolean(5);
+			updatePermissions = rs.getBoolean(6);
+			removeStudent = rs.getBoolean(7);
+			removeEmployee = rs.getBoolean(8);
+			addEmployee = rs.getBoolean(9);
+			addStudent = rs.getBoolean(10);
+			sendSMS = rs.getBoolean(11);
+			updateTimetable = rs.getBoolean(12);
+			updateFee = rs.getBoolean(13);
+			generateFeeChallan = rs.getBoolean(14);
+			updateSalary = rs.getBoolean(15);
+			addClassSection = rs.getBoolean(16);
+		}
+	}
 }

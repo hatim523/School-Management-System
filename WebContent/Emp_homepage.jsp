@@ -15,17 +15,21 @@
 html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 
 
+
+
 </style>
-<body class="w3-theme-l5" onload="LoadInfo();getNavbar();">
+<body class="w3-theme-l5" onload="LoadInfo()">
 						
 						<%  
-							response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");	
-							HttpSession sess = request.getSession(false);
-							if (session == null)
-							{
-								response.sendRedirect("index.jsp");
-							}
+							response.setHeader("Cache-Control","no-cache");
+						 	response.setHeader("Cache-Control","no-store");
+						 	response.setHeader("Pragma","no-cache");
+						  	response.setDateHeader ("Expires", 0);
+
+						  if(session.getAttribute("emp_obj")==null)
+						      response.sendRedirect("index.jsp");
 							
+						  HttpSession sess = request.getSession();
 							Employee e1;
 							e1 = (Employee)sess.getAttribute("emp_obj");
 							
@@ -37,26 +41,9 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 						
 <!-- Navbar -->
 <div class="w3-top">
- <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
-
-  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>KHOKAR</a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News">Student</a>
-  
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings">Employee</a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages">Time Table</a>
-  
-  <div class="w3-dropdown-hover w3-hide-small" style="margin-left:680px">
-    <button class="w3-button w3-padding-large" title="Notifications"><img src="profileIcon.png" class="w3-circle" style="height:27px;width:27px"></button>     
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-      <a href="#" class="w3-bar-item w3-button">Dashboard</a>
-      <a href="#" class="w3-bar-item w3-button">Profile</a>
-      <a href="#" class="w3-bar-item w3-button">Settings</a>
-	  <a href="#" class="w3-bar-item w3-button">Sign Out</a>
-    </div>
-  </div>
- 
-  
+ <div class="w3-bar w3-theme-d2 w3-left-align w3-large" id="updateNav">
+	
+    
   </div>
   </div>
  
@@ -132,27 +119,19 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
         </div>
       </div>
       
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-             <div class="w3-row-padding" style="margin:0 -16px">
-            <p>ahfdbdsakjfijhadsiufhsadjfjasdhfjkhd</p>
-        </div>
-         
-      </div>
+     
       
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <p></p>
-      </div>  
+     
 
       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src="/w3images/avatar6.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+        <img src="chalkboardicon.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
         <span class="w3-right w3-opacity">32 min</span>
         <h4>Angie Jane</h4><br>
         <hr class="w3-clear">
-        <p>Have you seen this?</p>
-        <img src="/w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
+        <p>History HomeWork</p>
+        <img src="history.png" class="w3-left w3-circle w3-margin-right" style="width:60px">
+        <p>Read page 212</p>
+        <p>Attempt question 3</p>
       </div> 
       
     <!-- End Middle Column -->
@@ -203,10 +182,13 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 						/// My Script Begins
 function LoadInfo()
 {
+
+    alert("Alive!");
 	var name = "<%=e1.getName() %>";
 	var qual = "<%=e1.getQualification() %>";
 	var email = "<%= e1.getEmail()%>";
 	var gender = "<%= e1.getGender()%>";
+	
 	document.getElementById("emp_basic_info").innerHTML = " <p><i class=\"fa fa-pencil fa-fw w3-margin-right w3-text-theme\"></i>" + name + "</p>" +
    "<p><i class=\"fa fa-graduation-cap fa-fw w3-margin-right w3-text-theme\"></i>" + qual + "</p>" + 
      "<p><i class=\"fa fa-address-book fa-fw w3-margin-right w3-text-theme\"></i>" + email  + "</p>";
@@ -214,29 +196,10 @@ function LoadInfo()
      if (gender == 'M')
     	 document.getElementById('profileImage').src = 'pro2.png';
      else
-    	 document.getElementById('profileImage').src = 'proFemale.png'
+    	 document.getElementById('profileImage').src = 'proFemale.png';
+    
+    document.getElementById('updateNav').innerHTML = "<%=e1.generateNavBar()%>";
 }
-
-function getNavbar()
-{
-	//perform get request from servlet
-	
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-	if (this.readyState == 4 && this.status == 200) {
-		var str = this.responseText;
-		document.getElementById("").innerHTML = str;
-		
-		
-		
-		}
-	};
-	xhttp.open("GET", "RealtimeData?work_to_do=navbar", true);
-	xhttp.send();
-	
-}
-						
-						
 						/// My Script ENDS
 
 
@@ -336,6 +299,7 @@ function openNav() {
 <style>
 
 #homeworkbox{
+
 width:70%;
 margin-right:40px;
 position:relative;
@@ -360,6 +324,7 @@ position:relative;
 
 
 @media screen and (max-width:1367px){
+
 #date01{
 width:21%;
 }

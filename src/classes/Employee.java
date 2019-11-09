@@ -260,7 +260,89 @@ public class Employee extends Person{
 		jobTitle = rs.getString(12);
 		salary = rs.getDouble(13);
 		work_experience = rs.getDouble(15);
+		permissions = new UserPermissions(employee_id, con);
 		logged = true;
+	}
+	public String generateNavBar()
+	{
+		String navBar = "<a class=\\\"w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2\\\" href=\\\"javascript:void(0);\\\" onclick=\\\"openNav()\\\"><i class=\\\"fa fa-bars\\\"></i></a>\" + \r\n" + 
+				"				\"  <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button w3-padding-large w3-theme-d4\\\"><i class=\\\"fa fa-home w3-margin-right\\\"></i>Home</a>";
+		
+		navBar += "<div class=\\\"w3-dropdown-hover w3-hide-small\\\" >\" +" + 
+				"				\"    <button class=\\\"w3-button w3-padding-large\\\" title=\\\"Student Related Activities\\\">Student</button>     \" + \r\n" + 
+				"				\"    <div class=\\\"w3-dropdown-content w3-card-4 w3-bar-block\\\" style=\\\"width:300px\\\">"; 
+				
+//		//Adding student functionalities
+		if (permissions.getAddMarksPermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Marks</a>";
+		if (permissions.getStudentAttendancePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add Attendance</a>";
+		if (permissions.getUpdateStudentInfo())
+			navBar += " <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Info</a>";
+		if (permissions.getRemoveStudentPermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Remove Student</a>";
+//				
+//				
+		navBar += "</div>\" + \r\n" + 
+				"				\"  </div>";
+//		
+//		
+//		//Now adding Employee functionalities
+//		
+		navBar += "<div class=\\\"w3-dropdown-hover w3-hide-small\\\" >\" +" + 
+				"				\"    <button class=\\\"w3-button w3-padding-large\\\" title=\\\"Teacher Related Functions\\\">Faculty</button>     \" + \r\n" + 
+				"				\"    <div class=\\\"w3-dropdown-content w3-card-4 w3-bar-block\\\" style=\\\"width:300px\\\">"; 
+		
+//		
+//		
+//		
+//		
+		if (permissions.getEmployeeAttendancePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add Attendance</a>";
+		if (permissions.getRemoveEmployeePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Remove Employee</a>";
+		if (permissions.getUpdateTimetablePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Timetable</a>";
+		if (permissions.getAddCoursePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Course</a>";
+		if (permissions.getAddEmployeePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add New Employee</a>";
+		if (permissions.getUpdateEmployeeInfo())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Info</a>";
+		
+		navBar += "</div>\" + \r\n" + 
+				"				\"  </div>";
+//		
+////		//Adding Admin functionalities
+		navBar += "<div class=\\\"w3-dropdown-hover w3-hide-small\\\" >\" +" + 
+				"				\"    <button class=\\\"w3-button w3-padding-large\\\" title=\\\"Management Tasks\\\">Management</button>     \" + \r\n" + 
+				"				\"    <div class=\\\"w3-dropdown-content w3-card-4 w3-bar-block\\\" style=\\\"width:300px\\\">"; 
+//		
+		if (permissions.getAddClassSectionPermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Class/Section</a>";
+		if (permissions.getAddEmployeePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Permissions</a>";
+		if (permissions.getGenerateFeeChallanPermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Print Fee Challan</a>";
+		if (permissions.getRightsToUpdatePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Permissions</a>";
+		if (permissions.getUpdateFeePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Revise Fee Structure</a>";
+		if (permissions.getUpdateSalaryPermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Salary</a>";
+		if (permissions.getUpdateTimetablePermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Change Timetable</a>";
+//		
+//		
+//
+		navBar += "</div>\" + \r\n" + 
+				"				\"  </div>";
+//		
+//		//Adding SMS menu
+		if (permissions.getSendSMSPermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white\\\" title=\\\"Send SMS or Email\\\">Send Message</a>";
+		
+		return navBar;
 	}
 //	public void Register()
 //	{
