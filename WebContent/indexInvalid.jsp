@@ -82,7 +82,7 @@
          
       <label for="psw"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psw" required>
-      <div id="invalid01" style="height:20px;width:100%;background-color:none" align="center"></div>  
+      <div id="invalid01" style="height:20px;width:100%;background-color:none" align="center"><p style="color:red">Invalid Username or Password</p></div>  
       <button type="submit">Login</button>
       <label>
         <input type="checkbox" checked="checked" name="remember"> Remember me

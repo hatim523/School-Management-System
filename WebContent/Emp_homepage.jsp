@@ -3,7 +3,7 @@
     <%@ page import="classes.Employee"%>
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>Employee Dashboard -> Khokar Public School</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -16,7 +16,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 
 
 </style>
-<body class="w3-theme-l5" onload="LoadInfo()">
+<body class="w3-theme-l5" onload="LoadInfo();getNavbar();">
 						
 						<%  
 							response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");	
@@ -38,14 +38,16 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 <!-- Navbar -->
 <div class="w3-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>KHOKAR</a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News">Marks</a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings">Attendence</a>
+  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News">Student</a>
+  
+  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings">Employee</a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages">Time Table</a>
   
   <div class="w3-dropdown-hover w3-hide-small" style="margin-left:680px">
-    <button class="w3-button w3-padding-large" title="Notifications"><img src="pro.png" class="w3-circle" style="height:27px;width:27px"></button>     
+    <button class="w3-button w3-padding-large" title="Notifications"><img src="profileIcon.png" class="w3-circle" style="height:27px;width:27px"></button>     
     <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
       <a href="#" class="w3-bar-item w3-button">Dashboard</a>
       <a href="#" class="w3-bar-item w3-button">Profile</a>
@@ -57,7 +59,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
   
   </div>
   </div>
- </div>
+ 
 
 <!-- Navbar on small screens -->
 <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
@@ -77,7 +79,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       <div class="w3-card w3-round w3-white" style="width:100%;margin-left:0px">
         <div class="w3-container">
          <h4 class="w3-center">My Profile</h4>
-         <p class="w3-center"><img src="pro.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <p class="w3-center"><img id="profileImage" src="proFemale.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
          
          
@@ -100,7 +102,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       
       <!-- Interests --> 
       <div class="w3-card w3-round w3-white " style="background-color:none">
-          <h3> <span id="dateHolder" style="margin-left:35%" /></h3>
+          <h3> <span id="dateHolder" style="margin-left:35%" /></span></h3>
 	
 	<table id="calWrapper">
 	</table>
@@ -194,7 +196,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 </footer>
 
 <footer class="w3-container w3-theme-d5">
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <p>Powered by G4Tech</p>
 </footer>
  
 <script>
@@ -203,13 +205,36 @@ function LoadInfo()
 {
 	var name = "<%=e1.getName() %>";
 	var qual = "<%=e1.getQualification() %>";
-	var email = "<%= e1.getEmail()%>"
+	var email = "<%= e1.getEmail()%>";
+	var gender = "<%= e1.getGender()%>";
 	document.getElementById("emp_basic_info").innerHTML = " <p><i class=\"fa fa-pencil fa-fw w3-margin-right w3-text-theme\"></i>" + name + "</p>" +
    "<p><i class=\"fa fa-graduation-cap fa-fw w3-margin-right w3-text-theme\"></i>" + qual + "</p>" + 
      "<p><i class=\"fa fa-address-book fa-fw w3-margin-right w3-text-theme\"></i>" + email  + "</p>";
 	
+     if (gender == 'M')
+    	 document.getElementById('profileImage').src = 'pro2.png';
+     else
+    	 document.getElementById('profileImage').src = 'proFemale.png'
 }
-						
+
+function getNavbar()
+{
+	//perform get request from servlet
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		var str = this.responseText;
+		document.getElementById("").innerHTML = str;
+		
+		
+		
+		}
+	};
+	xhttp.open("GET", "RealtimeData?work_to_do=navbar", true);
+	xhttp.send();
+	
+}
 						
 						
 						/// My Script ENDS

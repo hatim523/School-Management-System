@@ -68,6 +68,10 @@ public class Employee extends Person{
 	/*
 	 * Beginning of setter/getter functions
 	 */
+	public char getGender()
+	{
+		return gender;
+	}
 	public String getCNIC()
 	{
 		return CNIC;
@@ -231,7 +235,7 @@ public class Employee extends Person{
 		}
 		else
 		{
-			resp.sendRedirect("index.jsp");
+			resp.sendRedirect("indexInvalid.jsp");
 		}
 		return true;
 	}

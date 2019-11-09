@@ -187,7 +187,7 @@ public class Student extends Person{
 			LoadData(rs);
 		}
 		else
-			resp.getWriter().print("Login failed");
+			resp.sendRedirect("indexInvalid.jsp");
 	}
 	private void LoadData(ResultSet rs) throws SQLException
 	{
