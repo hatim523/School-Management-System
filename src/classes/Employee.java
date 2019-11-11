@@ -332,15 +332,25 @@ public class Employee extends Person{
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Salary</a>";
 		if (permissions.getUpdateTimetablePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Change Timetable</a>";
-//		
+		if (permissions.getSendSMSPermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Send Message</a>";
 //		
 //
 		navBar += "</div>\" + \r\n" + 
 				"				\"  </div>";
 //		
 //		//Adding SMS menu
-		if (permissions.getSendSMSPermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white\\\" title=\\\"Send SMS or Email\\\">Send Message</a>";
+//		if (permissions.getSendSMSPermission())
+//			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white\\\" title=\\\"Send SMS or Email\\\">Message</a>";
+		
+		navBar += "<div class=\\\"w3-dropdown-hover w3-hide-small\\\" style=\\\"margin-right:20%\\\">\\r\\n\" + \r\n" + 
+				"				\"    <button class=\\\"w3-button w3-padding-large\\\" title=\\\"Notifications\\\"><img src=\\\"profileIcon.png\\\" class=\\\"w3-circle\\\" style=\\\"height:27px;width:27px\\\"></button>     \\r\\n\" + \r\n" + 
+				"				\"    <div class=\\\"w3-dropdown-content w3-card-4 w3-bar-block\\\" style=\\\"width:300px\\\">\\r\\n\" + \r\n" + 
+				"				\"      <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Profile</a>\\r\\n\" + \r\n" + 
+				"				\"      <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Settings</a>\\r\\n\" + \r\n" + 
+				"				\"	  <a href=\\\"getRequests?work_to_do=signout\\\" class=\\\"w3-bar-item w3-button\\\">Sign Out</a>\\r\\n\" + \r\n" + 
+				"				\"    </div>\\r\\n\" + \r\n" + 
+				"				\"  </div>";
 		
 		return navBar;
 	}

@@ -21,8 +21,8 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 <body class="w3-theme-l5" onload="LoadInfo()">
 						
 						<%  
-							response.setHeader("Cache-Control","no-cache");
-						 	response.setHeader("Cache-Control","no-store");
+							response.setHeader("Cache-Control","no-cache,no-store,must-revalidate");
+						 	//response.setHeader("Cache-Control","no-store");
 						 	response.setHeader("Pragma","no-cache");
 						  	response.setDateHeader ("Expires", 0);
 
@@ -182,8 +182,6 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 						/// My Script Begins
 function LoadInfo()
 {
-
-    alert("Alive!");
 	var name = "<%=e1.getName() %>";
 	var qual = "<%=e1.getQualification() %>";
 	var email = "<%= e1.getEmail()%>";
