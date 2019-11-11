@@ -21,13 +21,16 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 <body class="w3-theme-l5" onload="LoadInfo()">
 						
 						<%  
-							response.setHeader("Cache-Control","no-cache,no-store,must-revalidate");
-						 	//response.setHeader("Cache-Control","no-store");
+						response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+						 	response.setHeader("Cache-Control","no-store");
 						 	response.setHeader("Pragma","no-cache");
 						  	response.setDateHeader ("Expires", 0);
-
+					//		session.removeAttribute("emp_obj");
 						  if(session.getAttribute("emp_obj")==null)
+						  {
 						      response.sendRedirect("index.jsp");
+							  
+						  }
 							
 						  HttpSession sess = request.getSession();
 							Employee e1;
@@ -113,7 +116,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 			  
               <input contenteditable="true" id="homeworkbox" class="w3-border w3-padding" style="color:grey;width:60%" placeholder="Homework.."><select style="width:9.5%;height:38px;border-bottom-color:grey;color:grey;margin-left:-30px" class="w3-border"><option>Math</option><option>Computer Studies</option></select>      <input id="date01" type="date" name="bday" class="form-control" style="color:grey;height:38px;margin-left:5px;width:21%" class="w3-border"><br></br>
               
-			  <button type="button" class="w3-button w3-theme" style="margin-top:-5px"><i class="fa fa-pencil"></i>  Post</button> 
+			  <button type="button" class="w3-button w3-theme" style="margin-top:-5px" onclick="AddHomeWork();"><i class="fa fa-pencil"></i>  Post</button> 
             </div>
           </div>
         </div>
@@ -182,6 +185,19 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 						/// My Script Begins
 function LoadInfo()
 {
+							
+	<%
+		response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+	 	response.setHeader("Cache-Control","no-store");
+	 	response.setHeader("Pragma","no-cache");
+	  	response.setDateHeader ("Expires", 0);
+	//		session.removeAttribute("emp_obj");
+	  if(session.getAttribute("emp_obj")==null)
+	  {
+	      response.sendRedirect("index.jsp");
+		  
+	  }
+	%>
 	var name = "<%=e1.getName() %>";
 	var qual = "<%=e1.getQualification() %>";
 	var email = "<%= e1.getEmail()%>";
@@ -197,6 +213,11 @@ function LoadInfo()
     	 document.getElementById('profileImage').src = 'proFemale.png';
     
     document.getElementById('updateNav').innerHTML = "<%=e1.generateNavBar()%>";
+}
+						
+function AddHomeWork()
+{
+	alert("Called");
 }
 						/// My Script ENDS
 

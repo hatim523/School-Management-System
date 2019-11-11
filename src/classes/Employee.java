@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -324,12 +325,12 @@ public class Employee extends Person{
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Permissions</a>";
 		if (permissions.getGenerateFeeChallanPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Print Fee Challan</a>";
-		if (permissions.getRightsToUpdatePermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Permissions</a>";
+//		if (permissions.getRightsToUpdatePermission())
+//			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Permissions</a>";
 		if (permissions.getUpdateFeePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Revise Fee Structure</a>";
 		if (permissions.getUpdateSalaryPermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Salary</a>";
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Info</a>";
 		if (permissions.getUpdateTimetablePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Change Timetable</a>";
 		if (permissions.getSendSMSPermission())
@@ -353,6 +354,18 @@ public class Employee extends Person{
 				"				\"  </div>";
 		
 		return navBar;
+	}
+	public ArrayList<String> getCourses() throws SQLException
+	{
+		String sql = "Select * from courses, teacher_courses where courses.course_id = teacher_courses.course_id and teacher_id = ?";
+		PreparedStatement psm = con.prepareStatement(sql);
+		
+		psm.setString(1, employee_id);
+		ResultSet rs = psm.executeQuery();
+		
+		ArrayList<String> teacher_courses = new ArrayList<String>();
+		
+		return teacher_courses;
 	}
 //	public void Register()
 //	{

@@ -23,7 +23,9 @@ public class getRequests extends HttpServlet {
 			System.out.println("signout called");
 			HttpSession sess = request.getSession();
 			sess.removeAttribute("emp_obj");
-			sess.invalidate();
+			sess.setAttribute("emp_obj", null);
+			sess.setAttribute("loggedOut", "false");
+			//sess.invalidate();
 			response.sendRedirect("index.jsp");
 		}
 	}
