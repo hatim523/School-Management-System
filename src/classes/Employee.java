@@ -1,6 +1,7 @@
 package classes;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -26,6 +27,7 @@ public class Employee extends Person{
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 	private Connection con;
+	private InputStream image;
 	
 	public Employee(HttpServletRequest request, HttpServletResponse response) {
 		req = request;
@@ -69,6 +71,10 @@ public class Employee extends Person{
 	/*
 	 * Beginning of setter/getter functions
 	 */
+	public InputStream getImage()
+	{
+		return image;
+	}
 	public char getGender()
 	{
 		return gender;
@@ -262,6 +268,7 @@ public class Employee extends Person{
 		salary = rs.getDouble(13);
 		work_experience = rs.getDouble(15);
 		permissions = new UserPermissions(employee_id, con);
+		image = rs.getBinaryStream(2);
 		logged = true;
 	}
 	public String generateNavBar()
@@ -355,17 +362,35 @@ public class Employee extends Person{
 		
 		return navBar;
 	}
-	public ArrayList<String> getCourses() throws SQLException
+	public ArrayList<String> getCourses() throws SQLException			//For setting option text
 	{
-		String sql = "Select * from courses, teacher_courses where courses.course_id = teacher_courses.course_id and teacher_id = ?";
+		String sql = "select course_name, class, section from class_section, courses, courses_teacher_class where  courses_teacher_class.class_id = class_section.class_id and courses.course_id = courses_teacher_class.course_id and teacher_id = ?"; 
 		PreparedStatement psm = con.prepareStatement(sql);
 		
 		psm.setString(1, employee_id);
 		ResultSet rs = psm.executeQuery();
 		
 		ArrayList<String> teacher_courses = new ArrayList<String>();
-		
+		while (rs.next())
+		{
+			teacher_courses.add(rs.getString(1) + " - " + rs.getString(2) + " " + rs.getString(3));
+		}
+		System.out.println("Total Courses" + teacher_courses.size());
 		return teacher_courses;
+	}
+	public ArrayList<String> getCourseID_classID() throws SQLException		//For setting option value
+	{
+		String sql = "select courses.course_id, class_section.class_id from class_section, courses, courses_teacher_class where  courses_teacher_class.class_id = class_section.class_id and courses.course_id = courses_teacher_class.course_id and teacher_id = ?";
+		PreparedStatement psm = con.prepareStatement(sql);
+		psm.setString(1, employee_id);
+		
+		ArrayList<String> course_data = new ArrayList<String>();
+		ResultSet rs = psm.executeQuery();
+		while (rs.next())
+		{
+			course_data.add(rs.getString(1) + "-" + rs.getString(2));
+		}
+		return course_data;
 	}
 //	public void Register()
 //	{

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ page import="classes.Employee"%>
+    <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
 <title>Employee Dashboard -> Khokar Public School</title>
@@ -35,8 +36,8 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 						  HttpSession sess = request.getSession();
 							Employee e1;
 							e1 = (Employee)sess.getAttribute("emp_obj");
-							
-							
+							ArrayList<String> courses = e1.getCourses();
+							ArrayList<String> add_courses = e1.getCourseID_classID();
 						
 								
 																				%>
@@ -114,7 +115,11 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
             <div class="w3-container w3-padding" >
               <h6 class="w3-opacity">Post Homework</h6>
 			  
-              <input contenteditable="true" id="homeworkbox" class="w3-border w3-padding" style="color:grey;width:60%" placeholder="Homework.."><select style="width:9.5%;height:38px;border-bottom-color:grey;color:grey;margin-left:-30px" class="w3-border"><option>Math</option><option>Computer Studies</option></select>      <input id="date01" type="date" name="bday" class="form-control" style="color:grey;height:38px;margin-left:5px;width:21%" class="w3-border"><br></br>
+			  
+			  <input contenteditable="true" id="homeworkbox" class="w3-border w3-padding" style="color:grey;width:60%" placeholder="Homework.." required>
+			  <select id="courses" style="width:9.5%;height:38px;border-bottom-color:grey;color:grey;margin-left:-30px" class="w3-border">
+			  </select>
+              <input id="date01" type="date" name="bday" class="form-control" style="color:grey;height:38px;margin-left:5px;width:21%" class="w3-border"><br></br>
               
 			  <button type="button" class="w3-button w3-theme" style="margin-top:-5px" onclick="AddHomeWork();"><i class="fa fa-pencil"></i>  Post</button> 
             </div>
@@ -124,19 +129,12 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       
      
       
-     
+     <div id="homework">
 
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src="chalkboardicon.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <span class="w3-right w3-opacity">32 min</span>
-        <h4>Angie Jane</h4><br>
-        <hr class="w3-clear">
-        <p>History HomeWork</p>
-        <img src="history.png" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <p>Read page 212</p>
-        <p>Attempt question 3</p>
-      </div> 
       
+      
+       
+    </div>
     <!-- End Middle Column -->
     </div>
     
@@ -202,22 +200,103 @@ function LoadInfo()
 	var qual = "<%=e1.getQualification() %>";
 	var email = "<%= e1.getEmail()%>";
 	var gender = "<%= e1.getGender()%>";
+	var image = "<%= e1.getImage()%>";
 	
 	document.getElementById("emp_basic_info").innerHTML = " <p><i class=\"fa fa-pencil fa-fw w3-margin-right w3-text-theme\"></i>" + name + "</p>" +
    "<p><i class=\"fa fa-graduation-cap fa-fw w3-margin-right w3-text-theme\"></i>" + qual + "</p>" + 
      "<p><i class=\"fa fa-address-book fa-fw w3-margin-right w3-text-theme\"></i>" + email  + "</p>";
 	
-     if (gender == 'M')
-    	 document.getElementById('profileImage').src = 'pro2.png';
-     else
-    	 document.getElementById('profileImage').src = 'proFemale.png';
+    	
+   	if (gender == 'M')
+   	 	document.getElementById('profileImage').src = 'pro2.png';
+    else
+   		document.getElementById('profileImage').src = 'proFemale.png';	
+     
     
     document.getElementById('updateNav').innerHTML = "<%=e1.generateNavBar()%>";
+    getSubjects();
+    
 }
 						
+function getSubjects()
+{
+	var select_tag = document.getElementById("courses");
+		
+	var size = "<%=courses.size()%>";
+		
+	var subjects = new Array();
+	var additional_info = new Array();
+	<% for (int i=0; i<courses.size(); i++) { %>
+	subjects[<%= i %>] = "<%= courses.get(i) %>";
+	<% } %>
+	
+	<% for (int i=0; i<add_courses.size(); i++) { %>
+	additional_info[<%= i %>] = "<%= add_courses.get(i) %>";
+	<% } %>
+	
+	var i = 0;
+	var option = null;
+	for (i = 0; i < size; i++) {
+		option = document.createElement("option");
+		option.text = subjects[i];
+		option.value = additional_info[i];
+		select_tag.add(option);
+	}
+}
 function AddHomeWork()
 {
-	alert("Called");
+	var submission_date = document.getElementById('date01').value;
+	var homework_msg = document.getElementById('homeworkbox').value;
+	if (homework_msg == "")			//add one more condition i.e if date is before today's date
+		alert("Please enter text in HomeWork Box to continue");
+	else if (submission_date == "")
+		alert("Please enter a valid submission date.");
+	else
+	{
+		var homework_subject_select = document.getElementById('courses');
+		var homework_subject = homework_subject_select.options[homework_subject_select.selectedIndex].text;
+		
+		//extracting elements from homework_subject
+		
+		var pos = homework_subject.indexOf("-");
+		var class_section = homework_subject.substr(pos+1, homework_subject.length-1);
+		var subject = homework_subject.substr(0, pos-1);
+		
+		//done extracting elements
+		
+		// 2.1::Choosing logo for homework
+		
+		var src = "chalkboardicon.png";
+		var subject_lower = subject.toLowerCase();
+		if (subject_lower.indexOf("math") != -1)
+			src = "math.png";
+		else if (subject_lower.indexOf("science") != -1)
+			src = "science.png";
+		else if (subject_lower.indexOf("pakistan") != -1)
+			src = "pakistan.png";
+		else if (subject_lower.indexOf("geography") != -1)
+			src = "geography.png";
+		else if (subject_lower.indexOf("english") != -1)
+			src = "english.png";
+		else if (subject_lower.indexOf("urdu") != -1)
+			src = "urdu.png";
+		
+		
+		// End of choosing logo for homework::2.1
+		
+		var box = document.getElementById('homework');
+		
+		
+		box.innerHTML += "<div class=\"w3-container w3-card w3-white w3-round w3-margin\"><br>\r\n" + 
+			"        <img src=\"" + src + "\" alt=\"Avatar\" class=\"w3-left w3-circle w3-margin-right\" style=\"width:60px\">\r\n" + 
+			"        <span class=\"w3-right w3-opacity\">32 min</span>\r\n" + 
+			"        <h3>" + subject + " HomeWork" +"</h3><br>\r\n" +
+			"        <hr class=\"w3-clear\">\r\n" + 
+			"        <p align=\"center\"><b>" + "Class: " + class_section + "</b></p>\r\n" + 
+			"        <p> Task(s): " + homework_msg +"</p>\r\n" + 
+			"      </div>"
+	}
+	
 }
 						/// My Script ENDS
 

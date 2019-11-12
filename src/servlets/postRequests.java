@@ -27,7 +27,7 @@ public class postRequests extends HttpServlet {
 		{
 			String work_to_do = request.getParameter("work_to_do");
 			
-			
+			System.out.println("Here!");
 			
 			if (work_to_do.equals("login"))
 			{

@@ -28,6 +28,7 @@ public class getRequests extends HttpServlet {
 			//sess.invalidate();
 			response.sendRedirect("index.jsp");
 		}
+		
 	}
 
 }
