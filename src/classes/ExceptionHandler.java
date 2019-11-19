@@ -12,7 +12,7 @@ public class ExceptionHandler {
 		try
 		{
 			except = e;
-			System.out.println("Exception handled");
+			System.out.println("\t\tException handled");
 			System.out.println(e.getStackTrace());
 			e.printStackTrace();
 			System.out.println(e.getMessage());

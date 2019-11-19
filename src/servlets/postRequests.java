@@ -34,12 +34,13 @@ public class postRequests extends HttpServlet {
 				String id_for = request.getParameter("uname");
 				if (id_for.contains("fk"))
 				{
-					Employee e1 = new Employee(request, response);
+					Employee e1 = new Employee(request, response, true);
 					e1.Login();
+					System.out.println("Logged Status: " + e1.getLoggedStatus());
 				}
 				else if (id_for.contains("sk"))
 				{
-					Student s1 = new Student(request, response);
+					Student s1 = new Student(request, response, true);
 					s1.Login();
 				}
 				else
@@ -51,8 +52,8 @@ public class postRequests extends HttpServlet {
 		}
 		catch (Exception e)
 		{
-			ExceptionHandler ex = new ExceptionHandler(e);
+			ExceptionHandler ex = new ExceptionHandler(e, request, response);
 		}
 	}
-
+	
 }

@@ -5,15 +5,14 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +29,28 @@ public class Employee extends Person{
 	private InputStream image;
 	
 	public Employee(HttpServletRequest request, HttpServletResponse response) {
+		req = request;
+		resp = response;
+		HttpSession sess = req.getSession(false);
+		logged = (boolean) sess.getAttribute("logged_status");
+		try
+		{
+			metaData m1 = new metaData();
+			System.out.println(m1.getDatabaseName());
+			System.out.println(m1.getSchoolName());
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + m1.getDatabaseName(), "root", "root");
+			if (!LoadSessionData())
+				System.out.println("Invalid session id...return to homepage");
+		}
+		catch (Exception e)
+		{
+			ExceptionHandler ex = new ExceptionHandler(e, req, resp);
+		
+		}
+	}
+	public Employee (HttpServletRequest request, HttpServletResponse response, boolean OnlyLogin)		//Only used for Login purpose
+	{
 		req = request;
 		resp = response;
 		logged = false;
@@ -50,7 +71,8 @@ public class Employee extends Person{
 	}
 	public Employee() {
 		// TODO Auto-generated constructor stub
-		logged = false;
+		HttpSession sess = req.getSession(false);
+		logged = (boolean) sess.getAttribute("logged_status");
 		try
 		{
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -184,6 +206,10 @@ public class Employee extends Person{
 		}
 		return 1;
 	}
+	public boolean getLoggedStatus()
+	{
+		return logged;
+	}
 	/*
 	 * End of setter/getter functions
 	 */
@@ -237,8 +263,9 @@ public class Employee extends Person{
 			sess.setMaxInactiveInterval(1200);
 			LoadData(rs);
 			sess.setAttribute("emp_obj", this);
-			RequestDispatcher rd = req.getRequestDispatcher("Emp_homepage.jsp");
-			rd.forward(req, resp);
+//			RequestDispatcher rd = req.getRequestDispatcher("Emp_homepage.jsp");
+//			rd.forward(req, resp);
+			resp.sendRedirect("Emp_homepage.jsp");
 		}
 		else
 		{
@@ -268,13 +295,40 @@ public class Employee extends Person{
 		salary = rs.getDouble(13);
 		work_experience = rs.getDouble(15);
 		permissions = new UserPermissions(employee_id, con);
-		image = rs.getBinaryStream(2);
+		HttpSession sess = req.getSession();
+		sess.setAttribute("logged_status", true);
+		sess.setAttribute("login_id", Integer.parseInt(employee_id) * 43);
 		logged = true;
 	}
-	public String generateNavBar()
+	private boolean LoadSessionData() throws SQLException
+	{
+		HttpSession sess = req.getSession(false);
+		try
+		{
+			int session_id = (Integer) sess.getAttribute("login_id");
+			employee_id = Integer.toString(session_id / 43);
+			System.out.println("Loaded employee id: " + employee_id);
+			String sql = "Select * from employee where employee_id = ?";
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, employee_id);
+			ResultSet rs = psm.executeQuery();
+			if (rs.next())
+			{
+				LoadData(rs);
+				return true;
+			}
+			return false;
+		}
+		catch (NumberFormatException invalid)
+		{
+			return false;
+		}
+		
+	}
+	public String generateNavBar()			//Provides Dynamic NavBar functionality
 	{
 		String navBar = "<a class=\\\"w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2\\\" href=\\\"javascript:void(0);\\\" onclick=\\\"openNav()\\\"><i class=\\\"fa fa-bars\\\"></i></a>\" + \r\n" + 
-				"				\"  <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button w3-padding-large w3-theme-d4\\\"><i class=\\\"fa fa-home w3-margin-right\\\"></i>Home</a>";
+				"				\"  <a href=\\\"Emp_homepage.jsp\\\" class=\\\"w3-bar-item w3-button w3-padding-large w3-theme-d4\\\"><i class=\\\"fa fa-home w3-margin-right\\\"></i>Home</a>";
 		
 		navBar += "<div class=\\\"w3-dropdown-hover w3-hide-small\\\" >\" +" + 
 				"				\"    <button class=\\\"w3-button w3-padding-large\\\" title=\\\"Student Related Activities\\\">Student</button>     \" + \r\n" + 
@@ -314,7 +368,7 @@ public class Employee extends Person{
 		if (permissions.getAddCoursePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Course</a>";
 		if (permissions.getAddEmployeePermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add New Employee</a>";
+			navBar += "<a href=\\\"employee_registration.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Add New Employee</a>";
 		if (permissions.getUpdateEmployeeInfo())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Info</a>";
 		
@@ -350,7 +404,6 @@ public class Employee extends Person{
 //		//Adding SMS menu
 //		if (permissions.getSendSMSPermission())
 //			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white\\\" title=\\\"Send SMS or Email\\\">Message</a>";
-		
 		navBar += "<div class=\\\"w3-dropdown-hover w3-hide-small\\\" style=\\\"margin-right:20%\\\">\\r\\n\" + \r\n" + 
 				"				\"    <button class=\\\"w3-button w3-padding-large\\\" title=\\\"Notifications\\\"><img src=\\\"profileIcon.png\\\" class=\\\"w3-circle\\\" style=\\\"height:27px;width:27px\\\"></button>     \\r\\n\" + \r\n" + 
 				"				\"    <div class=\\\"w3-dropdown-content w3-card-4 w3-bar-block\\\" style=\\\"width:300px\\\">\\r\\n\" + \r\n" + 
@@ -392,23 +445,110 @@ public class Employee extends Person{
 		}
 		return course_data;
 	}
-//	public void Register()
-//	{
-//		int validCredentials = 0;
-//		validCredentials = setName(req.getParameter(arg0));
-//		validCredentials = setFname(req.getParameter());
-//		validCredentials = setPassword(req.getParameter());
-//		validCredentials = setGender(req.getParameter());
-//		validCredentials = setDate(req.getParameter());
-//		validCredentials = setAddress(req.getParameter());
-//		validCredentials = setEmail(req.getParameter());
-//		validCredentials = setNumber(req.getParameter());
-//		validCredentials = setEmergencyNumber(req.getParameter());
-//		validCredentials = setCNIC(req.getParameter(CNIC));
-//		validCredentials = setQualification(req.getParameter());
-//		validCredentials = setWorkExperience(req.getParameter());
-//		validCredentials = setJobTitle(req.getParameter());
-//		validCredentials = setSalary(req.getParameter());
-//		
-//	}
+	public String AddHomeWork() throws SQLException			//Adds the homework from the homepage into DB
+	{
+		String generatedColumns[] = { "unique_id" };
+		String sql = "Insert into homework (course_id, class_id, teacher_id, due_date, homework) values (?,?,?,?,?)";
+		PreparedStatement psm = con.prepareStatement(sql, generatedColumns);
+		psm.setInt(1, Integer.parseInt(req.getParameter("course")));
+		psm.setInt(2, Integer.parseInt(req.getParameter("class")));
+		System.out.println(employee_id);
+		psm.setInt(3, Integer.parseInt(employee_id));
+		psm.setString(4, req.getParameter("sub_date"));
+		psm.setString(5, req.getParameter("msg"));
+		
+		try
+		{
+			psm.executeUpdate();
+			ResultSet res = psm.getGeneratedKeys();
+			if (res.next())
+				return Integer.toString(res.getInt(1));
+		}
+		catch (SQLException sq)
+		{
+			
+		}
+		return "Adding message Failed...Duplicated Message";
+	}
+	private String getHomeworkImageSource(String subject_lower)		//Gets source of image based on the subject of homework
+	{
+		String src = "math.png";
+		if (subject_lower.indexOf("math") != -1)
+			src = "math.png";
+		else if (subject_lower.indexOf("science") != -1)
+			src = "science.png";
+		else if (subject_lower.indexOf("pakistan") != -1)
+			src = "pakistan.png";
+		else if (subject_lower.indexOf("geography") != -1)
+			src = "geography.png";
+		else if (subject_lower.indexOf("english") != -1)
+			src = "english.png";
+		else if (subject_lower.indexOf("urdu") != -1)
+			src = "urdu.png";
+		return src;
+	}
+	public String getHomeWork() throws SQLException, ParseException			//Gets homework added previously, but only which is recent
+	{
+		RemovePassedHomework();
+		String sql = "select * from homework, courses, class_section where DATE_ADD(due_date, INTERVAL 1 DAY) >= date(now()) and teacher_id = ? and homework.course_id = courses.course_id and class_section.class_id = homework.class_id order by due_date";
+		PreparedStatement psm = con.prepareStatement(sql);
+		psm.setString(1, employee_id);
+		ResultSet rs = psm.executeQuery();
+		String homework = "";
+		String temp = "Hello";
+		while (rs.next())
+		{
+			homework += "<div class=\\\"w3-container w3-card w3-white w3-round w3-margin\\\" id=\\\"" + rs.getString(6) + "\\\"><br>\\r\\n" +
+					"<img src=\\\"" + getHomeworkImageSource(rs.getString(8).toLowerCase()) + "\\\" alt=\\\"Avatar\\\" class=\\\"w3-left w3-circle w3-margin-right\\\" style=\\\"width:60px\\\">\\r\\n" + 
+					"<span class=\\\"w3-right w3-opacity\\\">Due Date: " + rs.getString(4) + "</span>\\r\\n" +
+					"<h3>" + rs.getString(8) + " HomeWork\" +\"</h3><br>\\r\\n"+
+					"<hr class=\\\"w3-clear\\\">\\r\\n" +
+					"<p align=\\\"center\\\"><b>\" + \"Class: " + rs.getString(11) + " " + rs.getString(12) + "</b></p>\\r\\n" +
+					"<p> Task(s): " + rs.getString(5) + "</p>\\r\\n" +
+					"</div>";
+		}
+		return homework;
+	}
+	public void removeHWork() throws NumberFormatException, SQLException		//Removes homework if accidently added
+	{
+		String sql = "delete from homework where unique_id = ?";
+		PreparedStatement psm = con.prepareStatement(sql);
+		psm.setInt(1, Integer.parseInt(req.getParameter("id")));
+		psm.executeUpdate();
+	}
+	private void RemovePassedHomework() throws SQLException			//Removes old homework to save space
+	{
+		String sql = "delete from homework where due_date < date_sub(date(now()), interval 3 day)";
+		PreparedStatement psm = con.prepareStatement(sql);
+		psm.executeUpdate();
+	}
+	public void Register()
+	{
+		Employee new_employee = new Employee();
+		int validCredentials = 0;
+		validCredentials = new_employee.setName(req.getParameter("name"));
+		validCredentials = new_employee.setFname(req.getParameter("lname"));
+		validCredentials = new_employee.setPassword(req.getParameter("psw"));
+		validCredentials = new_employee.setGender(req.getParameter("gender").charAt(0));
+		validCredentials = new_employee.setDate(req.getParameter("dob"));
+		validCredentials = new_employee.setAddress(req.getParameter("addr"));
+		validCredentials = new_employee.setEmail(req.getParameter("usr_email"));
+		validCredentials = new_employee.setNumber(req.getParameter("mob_number"));
+		validCredentials = new_employee.setEmergencyNumber(req.getParameter("emergency_number"));
+		validCredentials = new_employee.setCNIC(req.getParameter("cnic"));
+		validCredentials = new_employee.setQualification(req.getParameter("qual"));
+		validCredentials = new_employee.setWorkExperience(Integer.parseInt(req.getParameter("experience")));
+		validCredentials = new_employee.setJobTitle(req.getParameter("job"));
+		validCredentials = new_employee.setSalary(Double.parseDouble(req.getParameter("sal")));
+		
+		
+		if (validCredentials == 0)
+		{
+			addRegisteredEmployee(new_employee);
+		}
+	}
+	private boolean addRegisteredEmployee(Employee e1)
+	{
+		return true;
+	}
 }

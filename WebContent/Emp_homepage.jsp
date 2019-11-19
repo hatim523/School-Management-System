@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
     <%@ page import="classes.Employee"%>
     <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
+<head>
 <title>Employee Dashboard -> Khokar Public School</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,8 +18,60 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 
 
 
+</style>
+<style>
+#homeworkbox{
+
+width:70%;
+margin-right:40px;
+position:relative;
+}
+<!--calendar-->
+
+		
+			body { width: 10%; height: 480; margin: 20, auto; }
+			#calWrapper { width: 100%; margin: 0 5; border: 1px solid #ccc; }
+			.dayCell { width: 40px; height: 40px; font-size: 11px; vertical-align: top; text-align: right; background-color: aliceblue;font-family: "Open Sans", sans-serif}
+			.dayHeader { 
+				width: 40px;
+				height: 20px; 
+				background-color: rgb(67,87,97);
+				color:white;
+				
+				font-family: "Open Sans", sans-serif
+			}
+			.today { border: 2px solid rgb(77,99,111);}
+		
+
+
+
+@media screen and (max-width:1367px){
+
+#date01{
+width:21%;
+}
+
+}
+@media screen and (max-width:959px){
+#date01{
+width:21%;
+}
+@media screen and (max-width:640px){
+#date01{
+width:21%;
+}
+@media screen and (max-width:300px){
+#date01{
+width:21%;
+}
+
+
+
+
+
 
 </style>
+</head>
 <body class="w3-theme-l5" onload="LoadInfo()">
 						
 						<%  
@@ -113,7 +166,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
         <div class="w3-col m12" >
           <div class="w3-card w3-round w3-white" >
             <div class="w3-container w3-padding" >
-              <h6 class="w3-opacity">Post Homework</h6>
+              <h6  align="center" style="color:#00008b">Post Homework</h6>
 			  
 			  
 			  <input contenteditable="true" id="homeworkbox" class="w3-border w3-padding" style="color:grey;width:60%" placeholder="Homework.." required>
@@ -121,7 +174,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 			  </select>
               <input id="date01" type="date" name="bday" class="form-control" style="color:grey;height:38px;margin-left:5px;width:21%" class="w3-border"><br></br>
               
-			  <button type="button" class="w3-button w3-theme" style="margin-top:-5px" onclick="AddHomeWork();"><i class="fa fa-pencil"></i>  Post</button> 
+			  <button type="button" class="w3-button w3-theme" style="margin-top:-5px" onclick="AddHomeWork();"><i class="fa fa-pencil"></i> Â Post</button> 
             </div>
           </div>
         </div>
@@ -135,6 +188,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       
        
     </div>
+    
     <!-- End Middle Column -->
     </div>
     
@@ -183,19 +237,6 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 						/// My Script Begins
 function LoadInfo()
 {
-							
-	<%
-		response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
-	 	response.setHeader("Cache-Control","no-store");
-	 	response.setHeader("Pragma","no-cache");
-	  	response.setDateHeader ("Expires", 0);
-	//		session.removeAttribute("emp_obj");
-	  if(session.getAttribute("emp_obj")==null)
-	  {
-	      response.sendRedirect("index.jsp");
-		  
-	  }
-	%>
 	var name = "<%=e1.getName() %>";
 	var qual = "<%=e1.getQualification() %>";
 	var email = "<%= e1.getEmail()%>";
@@ -215,7 +256,7 @@ function LoadInfo()
     
     document.getElementById('updateNav').innerHTML = "<%=e1.generateNavBar()%>";
     getSubjects();
-    
+    document.getElementById('homework').innerHTML = "<%=e1.getHomeWork()%>";
 }
 						
 function getSubjects()
@@ -255,7 +296,7 @@ function AddHomeWork()
 	{
 		var homework_subject_select = document.getElementById('courses');
 		var homework_subject = homework_subject_select.options[homework_subject_select.selectedIndex].text;
-		
+		var homework_subject_additional = homework_subject_select.options[homework_subject_select.selectedIndex].value;
 		//extracting elements from homework_subject
 		
 		var pos = homework_subject.indexOf("-");
@@ -287,16 +328,51 @@ function AddHomeWork()
 		var box = document.getElementById('homework');
 		
 		
-		box.innerHTML += "<div class=\"w3-container w3-card w3-white w3-round w3-margin\"><br>\r\n" + 
-			"        <img src=\"" + src + "\" alt=\"Avatar\" class=\"w3-left w3-circle w3-margin-right\" style=\"width:60px\">\r\n" + 
-			"        <span class=\"w3-right w3-opacity\">32 min</span>\r\n" + 
-			"        <h3>" + subject + " HomeWork" +"</h3><br>\r\n" +
-			"        <hr class=\"w3-clear\">\r\n" + 
-			"        <p align=\"center\"><b>" + "Class: " + class_section + "</b></p>\r\n" + 
-			"        <p> Task(s): " + homework_msg +"</p>\r\n" + 
-			"      </div>"
+		
+			
+			
+			//Sending the homework to backend
+			var course_id = homework_subject_additional.substr(0, homework_subject_additional.indexOf("-"));
+			var class_id = homework_subject_additional.substr(homework_subject_additional.indexOf("-") + 1, homework_subject_additional.length-1);
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var str = this.responseText;
+				
+				  if (str.indexOf("Failed") == -1)
+					{
+					  box.innerHTML += "<div class=\"w3-container w3-card w3-white w3-round w3-margin\" id=\"" + str + "\"><br>\r\n" + 
+						"        <img src=\"" + src + "\" alt=\"Avatar\" class=\"w3-left w3-circle w3-margin-right\" style=\"width:60px\">\r\n" + 
+						"        <span class=\"w3-right w3-opacity\">" + submission_date + "</span>\r\n" + 
+						"        <h3>" + subject + " HomeWork" +"</h3><br>\r\n" +
+						"        <hr class=\"w3-clear\">\r\n" + 
+						"        <p align=\"center\"><b>" + "Class: " + class_section + "</b></p>\r\n" + 
+						"        <p> Task(s): " + homework_msg +"</p>\r\n" + 
+						"		 <button type=\"button\" class=\"w3-button w3-theme-d1 w3-margin-bottom\" onclick=\"removeHomeWork(" + str + ")\"><i class=\"fa fa-trash\"></i> &nbsp;Remove Homework</button>" +
+						"      </div>";				
+					}
+				}
+			};
+			xhttp.open("GET", "getRequests?work_to_do=HomeworkAdd&msg=" + homework_msg + "&sub_date=" + submission_date + "&course=" + course_id + "&class=" + class_id, true);
+			xhttp.send();
+			
 	}
 	
+}
+
+function removeHomeWork(homework_id)
+{
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		var str = this.responseText;
+		
+		document.getElementById(homework_id).remove();
+	}
+	};
+	xhttp.open("GET", "getRequests?work_to_do=HomeworkRemove&id=" + homework_id, true);
+	xhttp.send();
 }
 						/// My Script ENDS
 
@@ -391,55 +467,6 @@ function openNav() {
 
 			
 </script>
-
 </body>
+
 </html> 
-<style>
-
-#homeworkbox{
-
-width:70%;
-margin-right:40px;
-position:relative;
-}
-<!--calendar-->
-
-		
-			body { width: 10%; height: 480; margin: 20, auto; }
-			#calWrapper { width: 100%; margin: 0 5; border: 1px solid #ccc; }
-			.dayCell { width: 40px; height: 40px; font-size: 11px; vertical-align: top; text-align: right; background-color: aliceblue;font-family: "Open Sans", sans-serif}
-			.dayHeader { 
-				width: 40px;
-				height: 20px; 
-				background-color: rgb(67,87,97);
-				color:white;
-				
-				font-family: "Open Sans", sans-serif
-			}
-			.today { border: 2px solid rgb(77,99,111);}
-		
-
-
-
-@media screen and (max-width:1367px){
-
-#date01{
-width:21%;
-}
-
-}
-@media screen and (max-width:959px){
-#date01{
-width:21%;
-}
-@media screen and (max-width:640px){
-#date01{
-width:21%;
-}
-@media screen and (max-width:300px){
-#date01{
-width:21%;
-}
-
-
-</style>

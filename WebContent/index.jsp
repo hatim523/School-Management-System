@@ -54,7 +54,7 @@
 </header>
 
                                                    <!--BACKGROUND-->
- <body onload="hideMessage()">
+ <body>
 	    <div class="intro-section" id="home-section">
       <div style="background-image: url('xxx.jpg');background-size:100% 800px; background-repeat: no-repeat">
         <div class="container">
@@ -201,16 +201,17 @@
 														
 														<!--ChatBox-->
 <div id = "chatt" ></div>
+
+
 <div class="chatt2">
-<button class="open-button" onclick="openForm()">Send Message</button>
+ <button class="open-button" onclick="openForm()">Need help?</button>
 <div class="chat-popup" id="myForm">
-<form action="/action_page.php" class="form-container">
-<h1>Send Message</h1>
-<label for="msg"><b>Message</b></label>
-<textarea placeholder="Type message.." name="msg" required></textarea>
-<button type="submit" class="btn">Send</button>
-<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-</form>
+<iframe
+    allow="microphone;"
+    width="350"
+    height="430"
+    src="https://console.dialogflow.com/api-client/demo/embedded/377fc150-8117-4772-a24e-a7d2e813ae18">
+</iframe>
 </div>
 
 
@@ -300,7 +301,16 @@ window.onclick = function(event) {
     }
 }
 </script>
-
+<script type="text/javascript">
+      /* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+      (function(d, m){
+        var kommunicateSettings = {"appId":"3a006ba420f41cb2cf42a814a8a1cdb23","popupWidget":true,"automaticChatOpenOnNavigation":true};
+        var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+        s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+        var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+        window.kommunicate = m; m._globals = kommunicateSettings;
+      })(document, window.kommunicate || {});
+  </script>
   </body>
 </html>
 <style>
