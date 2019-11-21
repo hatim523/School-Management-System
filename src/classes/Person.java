@@ -8,11 +8,11 @@ import java.util.regex.Pattern;
 abstract public class Person {
 	protected String name, fname, address, number, emergency_number, email;
 	java.util.Date dob;
-	protected char gender;
+	protected String gender;
 	
-	public java.util.Date getDOB()
+	public Date getDOB()
 	{
-		return dob;
+		return (Date) dob;
 	}
 	public String getName()
 	{
@@ -38,13 +38,13 @@ abstract public class Person {
 	{
 		return email;
 	}
-	public char getGender()
+	public String getGender()
 	{
 		return gender;
 	}
-	protected int setGender(char gen)
+	protected int setGender(String gen)
 	{
-		if (gen == 'M' || gen=='F' || gen == 'm' || gen == 'f')
+		if (gen.equals("M") || gen.equals("F") || gen.equals("m") || gen.equals("f"))
 		{
 			gender = gen;
 			return 0;
@@ -53,7 +53,7 @@ abstract public class Person {
 	}
 	protected int setEmail(String e)
 	{
-		if (Pattern.matches("*@*.*", e))
+		if (e.contains("@") && e.contains("."))
 		{
 			email = e;
 			return 0;

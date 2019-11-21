@@ -27,6 +27,17 @@ public class RealtimeData extends HttpServlet {
 			if (work_to_do.equals("emp_reg"))
 			{
 				System.out.println("Registering new employee oo");
+				Employee e1 = new Employee(request, response);
+				Employee registered = e1.Register();
+				if (registered != null)
+				{
+					System.out.println("New Employee ID: " + registered.getEmployeeID());
+					response.getWriter().write(registered.getEmployeeID());
+				}
+				else
+				{
+					System.out.println("Employee registration failed.");
+				}
 			}
 		}
 		catch (Exception e)

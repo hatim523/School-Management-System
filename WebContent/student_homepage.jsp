@@ -106,7 +106,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       <br>
       
       <!-- Interests --> 
-      <div class="w3-card w3-round w3-white " style="background-color:none">
+      <div class="w3-card w3-round w3-white w3-hide-small" style="background-color:none">
           <h3><span id="dateHolder" style="margin-left:35%"></span></h3>
 	
 	<table id="calWrapper">
@@ -195,7 +195,7 @@ function LoadInfo()
      "<p><i class=\"fa fa-id-card-o fa-fw w3-margin-right w3-text-theme\"></i>" + email  + "</p>";
 	
     	
-   	if (gender == 'M')
+   	if (gender == "M")
    	 	document.getElementById('profileImage').src = 'student_male.png';
     else
    		document.getElementById('profileImage').src = 'student_female.png';	
@@ -203,6 +203,7 @@ function LoadInfo()
    	var homework = "<%=s1.getHomeWork()%>";
    	document.getElementById('HW').innerHTML = homework;
 }
+
 
 
 					///My script ENDS

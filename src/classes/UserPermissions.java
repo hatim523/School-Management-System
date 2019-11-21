@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserPermissions {
-	private boolean studentAttendance, addCourse, addMarks, employeeAttendance, updatePermissions, removeStudent, removeEmployee, addStudent;
-	private boolean addEmployee, sendSMS, updateTimetable, updateFee, generateFeeChallan, updateSalary, addClassSection, updateEmployeeInfo;
-	private boolean updateStudentInfo;
+	protected boolean studentAttendance, addCourse, addMarks, employeeAttendance, updateEmployeeInfo, removeStudent, removeEmployee, addStudent;
+	protected boolean addEmployee, sendSMS, updateTimetable, updateFee, generateFeeChallan, addClassSection;
+	protected boolean updateStudentInfo;
 	
 	
 	public UserPermissions(String employee_id, Connection con) throws SQLException {
@@ -20,10 +20,6 @@ public class UserPermissions {
 	public boolean getGenerateFeeChallanPermission()
 	{
 		return generateFeeChallan;
-	}
-	public boolean getUpdateSalaryPermission()
-	{
-		return updateSalary;
 	}
 	public boolean getAddClassSectionPermission()
 	{
@@ -77,10 +73,6 @@ public class UserPermissions {
 	{
 		return employeeAttendance;
 	}
-	public boolean getRightsToUpdatePermission()
-	{
-		return updatePermissions;
-	}
 	public boolean getRemoveStudentPermission()
 	{
 		return removeStudent;
@@ -101,17 +93,17 @@ public class UserPermissions {
 			addCourse = rs.getBoolean(3);
 			addMarks = rs.getBoolean(4);
 			employeeAttendance = rs.getBoolean(5);
-			updatePermissions = rs.getBoolean(6);
-			removeStudent = rs.getBoolean(7);
-			removeEmployee = rs.getBoolean(8);
-			addEmployee = rs.getBoolean(9);
-			addStudent = rs.getBoolean(10);
-			sendSMS = rs.getBoolean(11);
-			updateTimetable = rs.getBoolean(12);
-			updateFee = rs.getBoolean(13);
-			generateFeeChallan = rs.getBoolean(14);
-			updateSalary = rs.getBoolean(15);
-			addClassSection = rs.getBoolean(16);
+			removeStudent = rs.getBoolean(6);
+			removeEmployee = rs.getBoolean(7);
+			addEmployee = rs.getBoolean(8);
+			addStudent = rs.getBoolean(9);
+			sendSMS = rs.getBoolean(10);
+			updateTimetable = rs.getBoolean(11);
+			updateFee = rs.getBoolean(12);
+			generateFeeChallan = rs.getBoolean(13);
+			addClassSection = rs.getBoolean(14);
+			updateEmployeeInfo = rs.getBoolean(15);
+			updateStudentInfo = rs.getBoolean(16);
 		}
 	}
 }

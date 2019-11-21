@@ -233,11 +233,11 @@ public class Student extends Person{
 		number = rs.getString(6);
 		emergency_number = rs.getString(7);
 		if (rs.getString(8).equals("M"))
-			gender = 'M';
+			gender = "M";
 		else if (rs.getString(8).equals("F"))
-			gender = 'F';
+			gender = "F";
 		else
-			gender = 'O';
+			gender = "O";
 		email = rs.getString(9);
 		fatherOccupation = rs.getString(10);
 		motherOccupation = rs.getString(11);

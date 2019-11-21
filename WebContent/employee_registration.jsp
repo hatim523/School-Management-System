@@ -94,7 +94,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       <br>
       
       <!-- Interests --> 
-      <div class="w3-card w3-round w3-white " style="background-color:none">
+      <div class="w3-card w3-round w3-white w3-hide-small" style="background-color:none">
           <h3> <span id="dateHolder" style="margin-left:35%"></span></h3>
 	
 	<table id="calWrapper">
@@ -195,7 +195,7 @@ myInput.onkeyup = function() {
 }
 </script>
       <label for="usr">Gender:</label><br>
-      <input type="radio" name="gender" value="M" checked > Male<br>
+      <input type="radio" id="g1" name="gender" value="M" checked > Male<br>
       <input type="radio" name="gender" value="F" > Female<br>
 
       <label for="usr">Date of Birth:</label><br>
@@ -233,72 +233,75 @@ myInput.onkeyup = function() {
       <input type="number" class="form-control" style="width:40%" id="sal">
       </div>
 	  
-      <span id="dots"></span>
-      <span id="more">
 	  
       <label for="usr">Student Attendance:</label><br>
       <input type="radio" name = "permissions" value="yes" style="width:20%">Yes<br>
-      <input type="radio" name = "permissions" value="no" style="width:20%" checked> No<br>
+      <input type="radio"  value="no" style="width:20%" id="std_atd" checked > No<br>
 
 
       <label for="usr">Add Course:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%">Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
+      <input type="radio" value="No" style="width:20%" id="course_add" checked> No<br>
 
 
       <label for="usr">Add Marks:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
+      <input type="radio" value="No" style="width:20%" id="marks_add" checked> No<br>
 
 
       <label for="usr">Employee Attendance:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
+      <input type="radio" value="No" style="width:20%" id="emp_atd" checked> No<br>
 
 
       <label for="usr">Add Students:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
+      <input type="radio" value="No" style="width:20%" id="student_add" checked> No<br>
 
       <label for="usr">Remove Student:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
+      <input type="radio" value="No" style="width:20%" id="student_rem" checked> No<br>
 
       <label for="usr">Add Employee:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
+      <input type="radio" value="No" style="width:20%" id="emp_add" checked> No<br>
 
       <label for="usr">Remove Employee:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
+      <input type="radio" value="No" style="width:20%" id="emp_rem" checked> No<br>
 
       <label for="usr">Send SMS:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
+      <input type="radio" value="No" style="width:20%" id="sms" checked> No<br>
 
       <label for="usr">Update Timetable:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%"> No<br>
+      <input type="radio" value="No" style="width:20%" id="timetable_add" checked> No<br>
 
       <label for="usr">Update Fees:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
+      <input type="radio" name = "permission" value="Yes" style="width:20%" > Yes<br>
+      <input type="radio"  value="No" style="width:20%" id="fees_add" checked> No<br>
 
       <label for="usr">Generate Fee Challan:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
-
-      <label for="usr">Update Salary:</label><br>
+      <input type="radio" value="No" style="width:20%" id="fees_gen" checked> No<br>
+		
+	
+	  <label for="usr">Update Employee Info:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br>
-
+      <input type="radio" value="No" style="width:20%" id="emp_upd" checked> No<br>
+      
+      
+      <label for="usr">Update Student Info:</label><br>
+      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" value="No" style="width:20%" id="std_upd" checked> No<br>
+      
+      
       <label for="usr">Add Class-Section:</label><br>
       <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" name = "permission"value="No" style="width:20%"> No<br><br>
+      <input type="radio" value="No" style="width:20%" id="class_add" checked> No<br><br>
+      
 
-      </span>
-
-      <button class="button button1" style="float:center" onclick="myFunction()" id="myBtn"><b>Permissions</b></button> <br><br>
       <input name="Submit Form" value="Submit" class="button button1" style="float:left" onclick="getDetails()" type="button" />
 </form>
 </div>
@@ -383,6 +386,13 @@ function LoadInfo()
 					
 function getDetails()
 {
+	dob_box = document.getElementById('dob');
+	
+	var gen = null;
+	if (document.getElementById('g1').checked)
+		gen = "M";
+	else
+		gen = "F";
 	var valid_info = true;
 	
 	name_box = document.getElementById('name');
@@ -448,7 +458,7 @@ function getDetails()
 	else
 		num_box.style.backgroundColor = "";
 	
-	emergency_box = document.getElementById('emergency_number');
+	emergency_box = document.getElementById("emergency_number");
 	if (emergency_box.value == null || emergency_box.value.length < 11)
 	{
 		emergency_box.style.backgroundColor = "#B1D7F1";
@@ -458,7 +468,7 @@ function getDetails()
 		emergency_box.style.backgroundColor = "";
 	
 	cnic_box = document.getElementById('cnic');
-	if (cnic_box.value == null || cnic_box.value.length < 13)
+	if (cnic_box.value == null || cnic_box.value.length < 13 || cnic_box.value.length > 13)
 	{
 		cnic_box.style.backgroundColor = "#B1D7F1";
 		valid_info = false;
@@ -484,6 +494,8 @@ function getDetails()
 	else
 		exp_box.style.backgroundColor = "";
 	
+	alert(exp_box.value);
+	
 	salary_box = document.getElementById('sal');
 	if (salary_box.value == null || salary_box.value < 100)
 	{
@@ -493,21 +505,25 @@ function getDetails()
 	else
 		salary_box.style.backgroundColor = "";
 	
-	dob_box = document.getElementById('dob');
+	
 	
 	
 	if (valid_info == false)
 		return;
 	
-	document.getElementById('updateNav').innerHTML = "<%=e1.generateNavBar()%>";
     var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
 		var str = this.responseText;
-		
+			alert(str);
 		}
 	};
-	xhttp.open("GET", "RealtimeData?work_to_do=emp_reg&", true);
+	
+	
+	xhttp.open("GET", "RealtimeData?work_to_do=emp_reg&name=" + name_box.value + "&job=" + job_box.value + 
+			"&lname=" + lastname_box.value + "&psw=" + password_box.value + "&addr=" + address_box.value + "&usr_email=" + email_box.value + 
+			"&mob_number=" + num_box.value + "&emergency_number=" + emergency_box.value + "&cnic=" + cnic_box.value + "&qual=" + qual_box.value +
+			"&experience=" + exp_box.value + "&sal=" + salary_box.value + "&dob=" + dob_box.value + "&gender=" + gen, true);
 	xhttp.send();
 }
 					//End of custom script

@@ -145,7 +145,7 @@ width:21%;
       <br>
       
       <!-- Interests --> 
-      <div class="w3-card w3-round w3-white " style="background-color:none">
+      <div class="w3-card w3-round w3-white w3-hide-small" style="background-color:none">
           <h3> <span id="dateHolder" style="margin-left:35%" /></span></h3>
 	
 	<table id="calWrapper">

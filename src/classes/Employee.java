@@ -71,8 +71,6 @@ public class Employee extends Person{
 	}
 	public Employee() {
 		// TODO Auto-generated constructor stub
-		HttpSession sess = req.getSession(false);
-		logged = (boolean) sess.getAttribute("logged_status");
 		try
 		{
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -97,7 +95,7 @@ public class Employee extends Person{
 	{
 		return image;
 	}
-	public char getGender()
+	public String getGender()
 	{
 		return gender;
 	}
@@ -117,10 +115,10 @@ public class Employee extends Person{
 	{
 		return employee_id;
 	}
-//	public String getPassword()
-//	{
-//		return password;
-//	}
+	public String getPassword()
+	{
+		return password;
+	}
 	public double getSalary()
 	{
 		return salary;
@@ -201,7 +199,7 @@ public class Employee extends Person{
 	{
 		if (pPass.length() >= 8)
 		{
-			password = pPass;
+			password = EncryptPassword(pPass);
 			return 0;
 		}
 		return 1;
@@ -263,8 +261,6 @@ public class Employee extends Person{
 			sess.setMaxInactiveInterval(1200);
 			LoadData(rs);
 			sess.setAttribute("emp_obj", this);
-//			RequestDispatcher rd = req.getRequestDispatcher("Emp_homepage.jsp");
-//			rd.forward(req, resp);
 			resp.sendRedirect("Emp_homepage.jsp");
 		}
 		else
@@ -283,11 +279,11 @@ public class Employee extends Person{
 		number = rs.getString(6);
 		emergency_number = rs.getString(7);
 		if (rs.getString(8).equals("M"))
-			gender = 'M';
+			gender = "M";
 		else if (rs.getString(8).equals("F"))
-			gender = 'F';
+			gender = "F";
 		else
-			gender = 'O';
+			gender = "O";
 		email = rs.getString(9);
 		CNIC = rs.getString(10);
 		qualification = rs.getString(11);
@@ -370,7 +366,7 @@ public class Employee extends Person{
 		if (permissions.getAddEmployeePermission())
 			navBar += "<a href=\\\"employee_registration.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Add New Employee</a>";
 		if (permissions.getUpdateEmployeeInfo())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Info</a>";
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Info</a>";
 		
 		navBar += "</div>\" + \r\n" + 
 				"				\"  </div>";
@@ -382,16 +378,14 @@ public class Employee extends Person{
 //		
 		if (permissions.getAddClassSectionPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Class/Section</a>";
-		if (permissions.getAddEmployeePermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Permissions</a>";
+//		if (permissions.getAddEmployeePermission())
+//			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Permissions</a>";
 		if (permissions.getGenerateFeeChallanPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Print Fee Challan</a>";
 //		if (permissions.getRightsToUpdatePermission())
 //			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Permissions</a>";
 		if (permissions.getUpdateFeePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Revise Fee Structure</a>";
-		if (permissions.getUpdateSalaryPermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Info</a>";
 		if (permissions.getUpdateTimetablePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Change Timetable</a>";
 		if (permissions.getSendSMSPermission())
@@ -522,14 +516,14 @@ public class Employee extends Person{
 		PreparedStatement psm = con.prepareStatement(sql);
 		psm.executeUpdate();
 	}
-	public void Register()
+	public Employee Register() throws SQLException
 	{
 		Employee new_employee = new Employee();
 		int validCredentials = 0;
 		validCredentials = new_employee.setName(req.getParameter("name"));
 		validCredentials = new_employee.setFname(req.getParameter("lname"));
 		validCredentials = new_employee.setPassword(req.getParameter("psw"));
-		validCredentials = new_employee.setGender(req.getParameter("gender").charAt(0));
+		validCredentials = new_employee.setGender(req.getParameter("gender"));
 		validCredentials = new_employee.setDate(req.getParameter("dob"));
 		validCredentials = new_employee.setAddress(req.getParameter("addr"));
 		validCredentials = new_employee.setEmail(req.getParameter("usr_email"));
@@ -537,18 +531,51 @@ public class Employee extends Person{
 		validCredentials = new_employee.setEmergencyNumber(req.getParameter("emergency_number"));
 		validCredentials = new_employee.setCNIC(req.getParameter("cnic"));
 		validCredentials = new_employee.setQualification(req.getParameter("qual"));
-		validCredentials = new_employee.setWorkExperience(Integer.parseInt(req.getParameter("experience")));
+		validCredentials = new_employee.setWorkExperience(Double.parseDouble(req.getParameter("experience")));
 		validCredentials = new_employee.setJobTitle(req.getParameter("job"));
 		validCredentials = new_employee.setSalary(Double.parseDouble(req.getParameter("sal")));
 		
 		
 		if (validCredentials == 0)
 		{
-			addRegisteredEmployee(new_employee);
+			return addRegisteredEmployee(new_employee);
 		}
+		return null;
 	}
-	private boolean addRegisteredEmployee(Employee e1)
+	private Employee addRegisteredEmployee(Employee e1) throws SQLException
 	{
+		String sql = "Insert into employee (name, dateofbirth, fathername, address, phonenumber, emergencynumber, gender, email, cnic, qualification,"
+				+ "jobtitle, salary, password, workexperience) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String generatedColumns[] = { "employee_id" };
+		PreparedStatement psm = con.prepareStatement(sql, generatedColumns);
+		psm.setString(1, e1.getName());
+		psm.setString(2, req.getParameter("dob"));
+		psm.setString(3, e1.getFname());
+		psm.setString(4, e1.getAddress());
+		psm.setString(5, e1.getNumber());
+		psm.setString(6, e1.getEmergencyNumber());
+		psm.setString(7, e1.getGender());
+		psm.setString(8, e1.getEmail());
+		psm.setString(9, e1.getCNIC());
+		psm.setString(10, e1.getQualification());
+		psm.setString(11, e1.getJobTitle());
+		psm.setDouble(12, e1.getSalary());
+		psm.setString(13, e1.getPassword());
+		psm.setDouble(14, e1.getWorkExperience());
+		
+		psm.executeUpdate();
+		ResultSet rs = psm.getGeneratedKeys();
+		if (rs.next())
+		{
+			e1.setEmployeeID(rs.getString(1));
+			return e1;
+		}
+		return null;
+	}
+	private boolean NewUserPermissions(Employee e1)
+	{
+		UserPermissions p = e1.permissions;
+	
 		return true;
 	}
 }
