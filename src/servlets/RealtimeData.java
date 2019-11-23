@@ -39,6 +39,11 @@ public class RealtimeData extends HttpServlet {
 					System.out.println("Employee registration failed.");
 				}
 			}
+			else if (work_to_do.equals("emp_reg_permissions"))
+			{
+				Employee e1 = new Employee(request, response);
+				e1.NewUserPermissions();
+			}
 		}
 		catch (Exception e)
 		{

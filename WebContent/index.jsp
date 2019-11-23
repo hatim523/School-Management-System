@@ -204,7 +204,6 @@
 
 
 <div class="chatt2">
- <button class="open-button" onclick="openForm()">Need help?</button>
 <div class="chat-popup" id="myForm">
 <iframe
     allow="microphone;"

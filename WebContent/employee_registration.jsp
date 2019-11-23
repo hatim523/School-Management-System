@@ -236,70 +236,70 @@ myInput.onkeyup = function() {
 	  
       <label for="usr">Student Attendance:</label><br>
       <input type="radio" name = "permissions" value="yes" style="width:20%">Yes<br>
-      <input type="radio"  value="no" style="width:20%" id="std_atd" checked > No<br>
+      <input type="radio"  name = "permissions" value="no" style="width:20%" id="std_atd" checked> No<br>
 
 
       <label for="usr">Add Course:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%">Yes<br>
-      <input type="radio" value="No" style="width:20%" id="course_add" checked> No<br>
+      <input type="radio" name = "permission1" value="Yes" style="width:20%">Yes<br>
+      <input type="radio" name = "permission1" value="No" style="width:20%" id="course_add" checked> No<br>
 
 
       <label for="usr">Add Marks:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="marks_add" checked> No<br>
+      <input type="radio" name = "permission2" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission2" value="No" style="width:20%" id="marks_add" checked> No<br>
 
 
       <label for="usr">Employee Attendance:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="emp_atd" checked> No<br>
+      <input type="radio" name = "permission3" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission3" value="No" style="width:20%" id="emp_atd" checked> No<br>
 
 
       <label for="usr">Add Students:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="student_add" checked> No<br>
+      <input type="radio" name = "permission4"value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission4" value="No" style="width:20%" id="student_add" checked> No<br>
 
       <label for="usr">Remove Student:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="student_rem" checked> No<br>
+      <input type="radio" name = "permission5" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission5" value="No" style="width:20%" id="student_rem" checked> No<br>
 
       <label for="usr">Add Employee:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="emp_add" checked> No<br>
+      <input type="radio" name = "permission6" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission6" value="No" style="width:20%" id="emp_add" checked> No<br>
 
       <label for="usr">Remove Employee:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="emp_rem" checked> No<br>
+      <input type="radio" name = "permission7" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission7" value="No" style="width:20%" id="emp_rem" checked> No<br>
 
       <label for="usr">Send SMS:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="sms" checked> No<br>
+      <input type="radio" name = "permission8" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission8" value="No" style="width:20%" id="sms" checked> No<br>
 
       <label for="usr">Update Timetable:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="timetable_add" checked> No<br>
+      <input type="radio" name = "permission9" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission9" value="No" style="width:20%" id="timetable_add" checked> No<br>
 
       <label for="usr">Update Fees:</label><br>
-      <input type="radio" name = "permission" value="Yes" style="width:20%" > Yes<br>
-      <input type="radio"  value="No" style="width:20%" id="fees_add" checked> No<br>
+      <input type="radio" name = "permission10" value="Yes" style="width:20%" > Yes<br>
+      <input type="radio" name = "permission10" value="No" style="width:20%" id="fees_add" checked> No<br>
 
       <label for="usr">Generate Fee Challan:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="fees_gen" checked> No<br>
+      <input type="radio" name = "permission11" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission11" value="No" style="width:20%" id="fees_gen" checked> No<br>
 		
 	
 	  <label for="usr">Update Employee Info:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="emp_upd" checked> No<br>
+      <input type="radio" name = "permission12" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission12" value="No" style="width:20%" id="emp_upd" checked> No<br>
       
       
       <label for="usr">Update Student Info:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="std_upd" checked> No<br>
+      <input type="radio" name = "permission13" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission13" value="No" style="width:20%" id="std_upd" checked> No<br>
       
       
       <label for="usr">Add Class-Section:</label><br>
-      <input type="radio" name = "permission"value="Yes" style="width:20%"> Yes<br>
-      <input type="radio" value="No" style="width:20%" id="class_add" checked> No<br><br>
+      <input type="radio" name = "permission14" value="Yes" style="width:20%"> Yes<br>
+      <input type="radio" name = "permission14" value="No" style="width:20%" id="class_add" checked> No<br><br>
       
 
       <input name="Submit Form" value="Submit" class="button button1" style="float:left" onclick="getDetails()" type="button" />
@@ -494,8 +494,6 @@ function getDetails()
 	else
 		exp_box.style.backgroundColor = "";
 	
-	alert(exp_box.value);
-	
 	salary_box = document.getElementById('sal');
 	if (salary_box.value == null || salary_box.value < 100)
 	{
@@ -515,9 +513,11 @@ function getDetails()
 	xhttp.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
 		var str = this.responseText;
-			alert(str);
+			if (str != "")
+				getPermissions(str);	
 		}
 	};
+	
 	
 	
 	xhttp.open("GET", "RealtimeData?work_to_do=emp_reg&name=" + name_box.value + "&job=" + job_box.value + 
@@ -526,8 +526,44 @@ function getDetails()
 			"&experience=" + exp_box.value + "&sal=" + salary_box.value + "&dob=" + dob_box.value + "&gender=" + gen, true);
 	xhttp.send();
 }
-					//End of custom script
 
+function getPermissions(emp_id)
+{
+	var student_atd = document.getElementById('std_atd').checked;
+	var course_add = document.getElementById('course_add').checked;
+	var marks_add = document.getElementById('marks_add').checked;
+	var emp_atd = document.getElementById('emp_atd').checked;
+	var student_add = document.getElementById('student_add').checked;
+	var student_rem = document.getElementById('student_rem').checked;
+	var emp_add = document.getElementById('emp_add').checked;
+	var emp_rem = document.getElementById('emp_rem').checked;
+	var sms = document.getElementById('sms').checked;
+	var timetable_add = document.getElementById('timetable_add').checked;
+	var fees_add = document.getElementById('fees_add').checked;
+	var fees_gen = document.getElementById('fees_gen').checked;
+	var class_add = document.getElementById('class_add').checked;
+	var emp_upd = document.getElementById('emp_upd').checked;
+	var std_upd = document.getElementById('std_upd').checked;
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		var str = this.responseText;
+			alert(str);
+		}
+	};
+	
+	
+	
+	xhttp.open("GET", "RealtimeData?work_to_do=emp_reg_permissions&student_atd=" + student_atd + "&course_add=" + course_add + "&marks_add=" + marks_add +
+			"&emp_atd=" + emp_atd + "&student_add=" + student_add + "&emp_add=" + emp_add + "&emp_rem=" + emp_rem + "&sms=" + sms + 
+			"&timetable_add=" + timetable_add + "&fees_add=" + fees_add + "&fees_gen=" + fees_gen + "&class_add=" + class_add + "&emp_upd=" + 
+			emp_upd + "&std_upd=" + std_upd + "&emp_id=" + 5305 + "&student_rem=" + student_rem, true);
+	xhttp.send();
+}
+											//End of custom script
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Accordion
 function myFunction(id) {

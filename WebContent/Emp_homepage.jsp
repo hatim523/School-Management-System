@@ -64,9 +64,7 @@ width:21%;
 #date01{
 width:21%;
 }
-
-
-
+}
 
 
 
@@ -112,9 +110,13 @@ width:21%;
   <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
 </div>
-
+			
+			
+			
 <!-- Page Container -->
-<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">  
+
+	  
   <!-- The Grid -->
   <div class="w3-row">
     <!-- Left Column -->
@@ -179,8 +181,6 @@ width:21%;
           </div>
         </div>
       </div>
-      
-     
       
      <div id="homework">
 
@@ -375,8 +375,6 @@ function removeHomeWork(homework_id)
 	xhttp.send();
 }
 						/// My Script ENDS
-
-
 
 
 // Accordion

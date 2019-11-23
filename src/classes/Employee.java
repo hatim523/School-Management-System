@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 public class Employee extends Person{
 	private String CNIC, qualification, jobTitle, employee_id, password;
 	private double salary, work_experience;
@@ -45,6 +46,7 @@ public class Employee extends Person{
 		}
 		catch (Exception e)
 		{
+			@SuppressWarnings("unused")
 			ExceptionHandler ex = new ExceptionHandler(e, req, resp);
 		
 		}
@@ -65,12 +67,12 @@ public class Employee extends Person{
 		}
 		catch (Exception e)
 		{
+			@SuppressWarnings("unused")
 			ExceptionHandler ex = new ExceptionHandler(e, req, resp);
 		
 		}
 	}
 	public Employee() {
-		// TODO Auto-generated constructor stub
 		try
 		{
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -83,6 +85,7 @@ public class Employee extends Person{
 		}
 		catch (Exception e)
 		{
+			@SuppressWarnings("unused")
 			ExceptionHandler ex = new ExceptionHandler(e);
 		}
 	}
@@ -208,6 +211,13 @@ public class Employee extends Person{
 	{
 		return logged;
 	}
+	private int getBoolean(String condition)
+	{
+		if (condition.contains("true"))
+			return 0;
+		else
+			return 1;
+	}
 	/*
 	 * End of setter/getter functions
 	 */
@@ -235,7 +245,8 @@ public class Employee extends Person{
     	}
     	catch (Exception e)
     	{
-    		ExceptionHandler ex = new ExceptionHandler(e, req, resp);
+    		@SuppressWarnings("unused")
+			ExceptionHandler ex = new ExceptionHandler(e, req, resp);
     	}
     	return null;
     }
@@ -335,8 +346,10 @@ public class Employee extends Person{
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Marks</a>";
 		if (permissions.getStudentAttendancePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add Attendance</a>";
+		if (permissions.getAddStudentPermission())
+			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Student</a>";
 		if (permissions.getUpdateStudentInfo())
-			navBar += " <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Info</a>";
+			navBar += " <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Student Info</a>";
 		if (permissions.getRemoveStudentPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Remove Student</a>";
 //				
@@ -359,10 +372,8 @@ public class Employee extends Person{
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add Attendance</a>";
 		if (permissions.getRemoveEmployeePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Remove Employee</a>";
-		if (permissions.getUpdateTimetablePermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Timetable</a>";
-		if (permissions.getAddCoursePermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Course</a>";
+//		if (permissions.getUpdateTimetablePermission())
+//			navBar += "<a href=\\\"?#\\\" class=\\\"w3-bar-item w3-button\\\">Update Timetable</a>";
 		if (permissions.getAddEmployeePermission())
 			navBar += "<a href=\\\"employee_registration.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Add New Employee</a>";
 		if (permissions.getUpdateEmployeeInfo())
@@ -378,8 +389,8 @@ public class Employee extends Person{
 //		
 		if (permissions.getAddClassSectionPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Class/Section</a>";
-//		if (permissions.getAddEmployeePermission())
-//			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Permissions</a>";
+		if (permissions.getAddCoursePermission())
+			navBar += "<a href=\\\"#\\\"  title=\\\"Introduce new course\\\" class=\\\"w3-bar-item w3-button\\\">Add new Course</a>";
 		if (permissions.getGenerateFeeChallanPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Print Fee Challan</a>";
 //		if (permissions.getRightsToUpdatePermission())
@@ -489,7 +500,6 @@ public class Employee extends Person{
 		psm.setString(1, employee_id);
 		ResultSet rs = psm.executeQuery();
 		String homework = "";
-		String temp = "Hello";
 		while (rs.next())
 		{
 			homework += "<div class=\\\"w3-container w3-card w3-white w3-round w3-margin\\\" id=\\\"" + rs.getString(6) + "\\\"><br>\\r\\n" +
@@ -572,10 +582,34 @@ public class Employee extends Person{
 		}
 		return null;
 	}
-	private boolean NewUserPermissions(Employee e1)
+	public boolean NewUserPermissions() throws SQLException
 	{
-		UserPermissions p = e1.permissions;
-	
+		String sql = "Insert into userpermissions (employee_id, attendanceStudent, addCourse, "
+				+ "addMarks, attendanceEmployee, removeStudent, removeEmployee, addEmployee, addStudent, sendSMS, "
+				+ "updateTimeTable, updateFee, generateFeeChallan, addClassSection, updateEmployeeInfo, "
+				+ "updateStudentInfo) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		PreparedStatement psm = con.prepareStatement(sql);
+		
+		System.out.println(req.getParameter("student_atd"));
+		System.out.println(getBoolean(req.getParameter("student_atd")));
+		psm.setInt(1, Integer.parseInt(req.getParameter("emp_id")));
+		psm.setInt(2, getBoolean(req.getParameter("student_atd")));
+		psm.setInt(3, getBoolean(req.getParameter("course_add")));
+		psm.setInt(4, getBoolean(req.getParameter("marks_add")));
+		psm.setInt(5, getBoolean(req.getParameter("emp_atd")));
+		psm.setInt(6, getBoolean(req.getParameter("student_rem")));
+		psm.setInt(7, getBoolean(req.getParameter("emp_rem")));
+		psm.setInt(8, getBoolean(req.getParameter("emp_add")));
+		psm.setInt(9, getBoolean(req.getParameter("student_add")));
+		psm.setInt(10, getBoolean(req.getParameter("sms")));
+		psm.setInt(11, getBoolean(req.getParameter("timetable_add")));
+		psm.setInt(12, getBoolean(req.getParameter("fees_add")));
+		psm.setInt(13, getBoolean(req.getParameter("fees_gen")));
+		psm.setInt(14, getBoolean(req.getParameter("class_add")));
+		psm.setInt(15, getBoolean(req.getParameter("emp_upd")));
+		psm.setInt(16, getBoolean(req.getParameter("std_upd")));
+		
+		psm.executeUpdate();
 		return true;
 	}
 }

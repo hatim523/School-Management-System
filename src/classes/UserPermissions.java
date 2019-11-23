@@ -14,6 +14,10 @@ public class UserPermissions {
 	public UserPermissions(String employee_id, Connection con) throws SQLException {
 		LoadPermissions(employee_id, con);
 	}
+	public UserPermissions()
+	{
+		
+	}
 	/*
 	 * Beginning of setter/getter functions
 	 */
