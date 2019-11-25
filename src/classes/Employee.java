@@ -349,7 +349,7 @@ public class Employee extends Person{
 		if (permissions.getAddStudentPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Student</a>";
 		if (permissions.getUpdateStudentInfo())
-			navBar += " <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Student Info</a>";
+			navBar += " <a href=\\\"std_update.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Update Student Info</a>";
 		if (permissions.getRemoveStudentPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Remove Student</a>";
 //				
@@ -371,13 +371,14 @@ public class Employee extends Person{
 		if (permissions.getEmployeeAttendancePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add Attendance</a>";
 		if (permissions.getRemoveEmployeePermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Remove Employee</a>";
+			navBar += "<a href=\\\"removeEmployee.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Remove Employee</a>";
 //		if (permissions.getUpdateTimetablePermission())
 //			navBar += "<a href=\\\"?#\\\" class=\\\"w3-bar-item w3-button\\\">Update Timetable</a>";
 		if (permissions.getAddEmployeePermission())
 			navBar += "<a href=\\\"employee_registration.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Add New Employee</a>";
 		if (permissions.getUpdateEmployeeInfo())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Info</a>";
+			navBar += "<a href=\\\"emp_update.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Update Employee Info</a>";
+		navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">View Attendance</a>";
 		
 		navBar += "</div>\" + \r\n" + 
 				"				\"  </div>";
@@ -401,7 +402,7 @@ public class Employee extends Person{
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Change Timetable</a>";
 		if (permissions.getSendSMSPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Send Message</a>";
-//		
+		
 //
 		navBar += "</div>\" + \r\n" + 
 				"				\"  </div>";
@@ -578,6 +579,7 @@ public class Employee extends Person{
 		if (rs.next())
 		{
 			e1.setEmployeeID(rs.getString(1));
+			System.out.println("Returned Employee ID: " + rs.getString(1));
 			return e1;
 		}
 		return null;
@@ -590,8 +592,7 @@ public class Employee extends Person{
 				+ "updateStudentInfo) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement psm = con.prepareStatement(sql);
 		
-		System.out.println(req.getParameter("student_atd"));
-		System.out.println(getBoolean(req.getParameter("student_atd")));
+		System.out.println("Employee ID recieved: " + req.getParameter("emp_id"));
 		psm.setInt(1, Integer.parseInt(req.getParameter("emp_id")));
 		psm.setInt(2, getBoolean(req.getParameter("student_atd")));
 		psm.setInt(3, getBoolean(req.getParameter("course_add")));
@@ -611,5 +612,927 @@ public class Employee extends Person{
 		
 		psm.executeUpdate();
 		return true;
+	}
+	public String getEmployeeInfo(String emp_id) throws SQLException				//Used in Update Employee Page
+	{
+		String sql = "Select * from employee where employee_id = ?";
+		PreparedStatement psm = con.prepareStatement(sql);
+		psm.setString(1, emp_id.substring(2));
+		
+		ResultSet rs = psm.executeQuery();
+		String emp_info = "";
+		if (rs.next())
+		{
+			emp_info += rs.getString(2) + "~" + rs.getDate(3) + "~" + rs.getString(4) + "~" + rs.getString(5) + "~" + rs.getString(6) + "~" +
+					rs.getString(7) + "~" + rs.getString(8) + "~" + rs.getString(9) + "~" + rs.getString(10) + "~" + rs.getString(11) + "~" +
+					rs.getString(12) + "~" + rs.getString(13)  + "~" + rs.getString(15) + "~" ;
+		}
+		
+		return emp_info;
+	}
+	public String savePersonalInfo()	//Update Employee Personal Info
+	{
+		String sql = "Update employee set name = ?, fathername = ?, dateofBirth=?, gender=? where employee_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			
+			Employee temp = new Employee();
+			temp.setName(req.getParameter("name"));
+			temp.setFname(req.getParameter("lname"));
+			temp.setGender(req.getParameter("gender"));
+			
+			psm.setString(1, temp.getName());
+			psm.setString(2, temp.getFname());
+			psm.setString(3, req.getParameter("dob"));
+			psm.setString(4, temp.getGender());
+			psm.setString(5, req.getParameter("emp_id").substring(2));
+			
+			psm.executeUpdate();
+			return "Employee Personal Information successfully updated";
+		}
+		catch (SQLException e)
+		{
+			return "Error updating Personal Information";
+		}
+	}
+	public String saveContactInfo()		//Update Employee Contact Info
+	{
+		String sql = "Update employee set address = ?, phoneNumber = ?, emergencyNumber = ?, email=?, cnic = ? where employee_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, req.getParameter("address"));
+			psm.setString(2, req.getParameter("number"));
+			psm.setString(3, req.getParameter("emergency_number"));
+			psm.setString(4, req.getParameter("email"));
+			psm.setString(5, req.getParameter("cnic"));
+			psm.setString(6, req.getParameter("emp_id").substring(2));
+			
+			psm.executeUpdate();
+			return "Employee Contact Information successfully updated";
+		}
+		catch (SQLException e)
+		{
+			return "Error updating Contact Information.";
+		}
+	}
+	public String saveWorkInfo()			//Update Employee Work Information 
+	{
+		String sql = "Update employee set qualification = ?, jobtitle = ?, salary = ?, workExperience = ? where employee_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, req.getParameter("qual"));
+			psm.setDouble(3, Double.parseDouble(req.getParameter("sal")));
+			psm.setDouble(4, Double.parseDouble(req.getParameter("exp")));
+			psm.setString(2, req.getParameter("job"));
+			psm.setString(5, req.getParameter("emp_id").substring(2));
+			
+			psm.executeUpdate();
+			return "Employee Work Information successfully updated";
+		}
+		catch (SQLException e)
+		{
+			return "Error updating Work Information";
+		}
+	}
+	public String printPermissions() throws SQLException
+	{
+		String sql = "select * from userpermissions where employee_id = ?";
+		
+		PreparedStatement psm = con.prepareStatement(sql);
+		psm.setString(1, req.getParameter("emp_id").substring(2));
+		String permissions = "<h3 class=\"page-title\">\r\n" + 
+				"        Permissions\r\n" + 
+				"\r\n" + 
+				"        <a href=\"#\" class=\"btn btn-primary btn-xs pull-right\" title=\"save changes to Employee Permissions\" onclick=\"savePermissions()\">Save</a>\r\n" + 
+				"    </h3>";
+		
+		
+		permissions += "<div class=\"row\"><br>";
+		ResultSet rs = psm.executeQuery();
+		int i = 0;
+		if (rs.next())
+		{
+			//Permission Work 1
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Student Attendance</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 2
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add Course</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(i+2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 3
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add Marks</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 4
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Employee Attendance</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(i+2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 1
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Remove Student</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 2
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Remove Employee</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(i+2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 3
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add Employee</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 4
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add Student</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(i+2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 1
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Send Message</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 2
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Update Timetable</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(i+2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 3
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Revise Fee</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 4
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Generate Fee Challan</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(i+2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 1
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add new Class/Section</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 2
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Update Employee Info</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(i+2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 3
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Update Student Info</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			if (rs.getBoolean(2))
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\" checked>Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\">No";
+			}
+			else
+			{
+				permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			}
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+		}
+		else						//IF NO PERMISSIONS ARE SET FOR THE SELECTED USER
+		{
+			//Permission Work 1
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Student Attendance</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 2
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add Course</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+		
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 3
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add Marks</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+		
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 4
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Employee Attendance</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+					"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 1
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Remove Student</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+		
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 2
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Remove Employee</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+	
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 3
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add Employee</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 4
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add Student</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 1
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Send Message</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+		
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 2
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Update Timetable</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 3
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Revise Fee</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 4
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Generate Fee Challan</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 1
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Add new Class/Section</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 2
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Update Employee Info</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+			
+			//Permission Work 3
+			permissions += "<div class=\"form-group col-sm-6\">\r\n" + 
+					"            <div><label>Update Student Info</label>\r\n" + 
+					"			<div align=\"center\">";
+			
+			
+			permissions += "<input type=\"radio\" name=\"" + i + "\" style=\"width:20%\" value=\"1\">Yes\r\n" + 
+						"			<input type=\"radio\"  name=\"" + i + "\" style=\"width:20%\" value=\"0\" id=\"" + i + "\" checked>No";
+			
+			
+			permissions += "</div>\r\n" + 
+					"			</div>\r\n" + 
+					"        </div>";
+			i++;
+			//Permission Work End
+		}
+		
+		permissions += "</div>\r\n" + 
+				"    </div>";
+		return permissions;
+	}
+	public String savePermissions()
+	{
+		//Determining if the permissions already exists
+		String check = "Select * from userpermissions where employee_id = ?";
+		
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(check);
+			System.out.println("ID: " + req.getParameter("emp_id"));
+			psm.setString(1, req.getParameter("emp_id").substring(2));
+			
+			ResultSet rs = psm.executeQuery();
+			if (rs.next())
+			{
+				System.out.println("Already Exist");
+				//If permissions already exists then update
+				String sql = "Update userpermissions set " +
+						"  attendanceStudent   =  ?," + 
+						"  addCourse = ?, " +
+						"  addMarks   =  ?," + 
+						"  attendanceEmployee = ?, " +
+						"  removeStudent   =  ?," + 
+						"  removeEmployee = ?, " +
+						"  addEmployee   =  ?," + 
+						"  addStudent = ?, " +
+						"  sendSMS   =  ?," + 
+						"  updateTimeTable = ?, " +
+						"  updateFee   =  ?," + 
+						"  generateFeeChallan = ?, " + 
+						"  addClassSection   =  ?," + 
+						"  updateEmployeeInfo = ?, " +
+						"  updateStudentInfo  =  ? where employee_id = ?";
+				
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setString(16, req.getParameter("emp_id").substring(2));
+				ps.setInt(1, getBoolean(req.getParameter("student_atd")));
+				ps.setInt(2, getBoolean(req.getParameter("course_add")));
+				ps.setInt(3, getBoolean(req.getParameter("marks_add")));
+				ps.setInt(4, getBoolean(req.getParameter("emp_atd")));
+				ps.setInt(5, getBoolean(req.getParameter("student_rem")));
+				ps.setInt(6, getBoolean(req.getParameter("emp_rem")));
+				ps.setInt(7, getBoolean(req.getParameter("emp_add")));
+				ps.setInt(8, getBoolean(req.getParameter("student_add")));
+				ps.setInt(9, getBoolean(req.getParameter("sms")));
+				ps.setInt(10, getBoolean(req.getParameter("timetable_add")));
+				ps.setInt(11, getBoolean(req.getParameter("fees_add")));
+				ps.setInt(12, getBoolean(req.getParameter("fees_gen")));
+				ps.setInt(13, getBoolean(req.getParameter("class_add")));
+				ps.setInt(14, getBoolean(req.getParameter("emp_upd")));
+				ps.setInt(15, getBoolean(req.getParameter("std_upd")));
+				
+				ps.executeUpdate();
+			}
+			else
+			{
+				System.out.println("Does not Exist");
+				//Permissions does not exist therefore creating a new column
+				String sql = "Insert into userpermissions (employee_id, attendanceStudent, addCourse, "
+						+ "addMarks, attendanceEmployee, removeStudent, removeEmployee, addEmployee, addStudent, sendSMS, "
+						+ "updateTimeTable, updateFee, generateFeeChallan, addClassSection, updateEmployeeInfo, "
+						+ "updateStudentInfo) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setString(1, req.getParameter("emp_id").substring(2));
+				ps.setInt(2, getBoolean(req.getParameter("student_atd")));
+				ps.setInt(3, getBoolean(req.getParameter("course_add")));
+				ps.setInt(4, getBoolean(req.getParameter("marks_add")));
+				ps.setInt(5, getBoolean(req.getParameter("emp_atd")));
+				ps.setInt(6, getBoolean(req.getParameter("student_rem")));
+				ps.setInt(7, getBoolean(req.getParameter("emp_rem")));
+				ps.setInt(8, getBoolean(req.getParameter("emp_add")));
+				ps.setInt(9, getBoolean(req.getParameter("student_add")));
+				ps.setInt(10, getBoolean(req.getParameter("sms")));
+				ps.setInt(11, getBoolean(req.getParameter("timetable_add")));
+				ps.setInt(12, getBoolean(req.getParameter("fees_add")));
+				ps.setInt(13, getBoolean(req.getParameter("fees_gen")));
+				ps.setInt(14, getBoolean(req.getParameter("class_add")));
+				ps.setInt(15, getBoolean(req.getParameter("emp_upd")));
+				ps.setInt(16, getBoolean(req.getParameter("std_upd")));
+				
+				ps.executeUpdate();
+			}
+			
+			
+			return "Employee Permissions successfully Updated.";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Error Updating Employee Permissions";
+		}
+	}
+	public String getStudentInfo(String student_id) throws SQLException
+	{
+		String sql = "select * from student, class_section where class_section.class_id = student.class_id and student_id = ?";
+		PreparedStatement psm = con.prepareStatement(sql);
+		String std_info = "";
+		psm.setString(1, student_id.substring(2));
+		
+		ResultSet rs = psm.executeQuery();
+		
+		if (rs.next())
+		{
+			std_info += rs.getString(2) + "~" + rs.getDate(3) + "~" + rs.getString(4) + "~" + rs.getString(5) + "~" + rs.getString(6) + "~" +
+					rs.getString(7) + "~" + rs.getString(8) + "~" + rs.getString(9) + "~" + rs.getString(13) + "~" + rs.getString(10) + "~" +
+					rs.getString(12) + "~" + rs.getString(11)  + "~" + rs.getString(17) + "~" + rs.getString(18) + "~";
+		}
+		
+		return std_info;
+	}
+	public String saveStudentPersonalInfo()		//Update Student Personal Info
+	{
+		String sql = "Update student set name = ?, fathername = ?, dateofBirth=?, gender=? where student_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			
+			Employee temp = new Employee();
+			temp.setName(req.getParameter("name"));
+			temp.setFname(req.getParameter("lname"));
+			temp.setGender(req.getParameter("gender"));
+			
+			psm.setString(1, temp.getName());
+			psm.setString(2, temp.getFname());
+			psm.setString(3, req.getParameter("dob"));
+			psm.setString(4, temp.getGender());
+			psm.setString(5, req.getParameter("std_id").substring(2));
+			
+			psm.executeUpdate();
+			return "Student Personal Information successfully updated";
+		}
+		catch (SQLException e)
+		{
+			return "Error updating Personal Information";
+		}
+	}
+	public String saveStudentContactInfo()
+	{
+		String sql = "Update student set address = ?, phoneNumber = ?, emergencyNumber = ?, email=? where student_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, req.getParameter("address"));
+			psm.setString(2, req.getParameter("number"));
+			psm.setString(3, req.getParameter("emergency_number"));
+			psm.setString(4, req.getParameter("email"));
+			psm.setString(5, req.getParameter("std_id").substring(2));
+			
+			psm.executeUpdate();
+			return "Student Contact Information successfully updated";
+		}
+		catch (SQLException e)
+		{
+			return "Error updating Contact Information.";
+		}
+	}
+	public String saveStudentParentInfo()
+	{
+		String sql = "Update student set fatherOccupation = ?, motherOccupation = ?, motherName = ?, fatherCNIC = ? where student_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, req.getParameter("fOcc"));
+			psm.setString(2, req.getParameter("mOcc"));
+			psm.setString(3, req.getParameter("mName"));
+			psm.setString(4, req.getParameter("fCNIC"));
+			psm.setString(5, req.getParameter("std_id").substring(2));
+			
+			psm.executeUpdate();
+			return "Parent/Guardian Information successfully updated";
+		}
+		catch (SQLException e)
+		{
+			return "Error updating Parent/Guardian Information";
+		}
+	}
+	public String saveStudentNewClass()
+	{
+		//First verifying if the entered class and section are valid
+		String sql = "select * from class_section where class=? and section=?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, req.getParameter("class_std"));
+			psm.setString(2, req.getParameter("section"));
+			
+			ResultSet rs = psm.executeQuery();
+			if (rs.next())
+			{
+				sql = "update student set class_id = ? where student_id = ?";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setString(1, rs.getString(1));
+				ps.setString(2, req.getParameter("std_id").substring(2));
+				
+				ps.executeUpdate();
+				return "Student's class/section successfully updated.";
+			}
+			else
+				return "The entered class/section does not exist.";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Error updating class/section of student";
+		}
+	}
+	public String getFullName(String id)
+	{
+		String sql = "Select name, fatherName from employee where employee_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, id.substring(2));
+			
+			ResultSet rs = psm.executeQuery();
+			if (rs.next())
+			{
+				return rs.getString(1) + "~" + rs.getString(2) + "~";
+			}
+			return "~";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "~";
+		}
+	}
+	public String deleteEmployeeData(String id)
+	{
+		String sql = "Delete from employee where employee_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, id.substring(2));
+			
+			psm.executeUpdate();
+			return "Data successfully removed of the selected Employee";
+		}
+		catch (SQLException e)
+		{
+			return "Error removing Employee's Data. Please try again";
+		}
 	}
 }

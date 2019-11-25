@@ -6,13 +6,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.mysql.cj.Session;
 
 import classes.Employee;
 import classes.ExceptionHandler;
-import classes.Person;
+
 import classes.Student;
 
 /**
@@ -52,6 +50,7 @@ public class postRequests extends HttpServlet {
 		}
 		catch (Exception e)
 		{
+			@SuppressWarnings("unused")
 			ExceptionHandler ex = new ExceptionHandler(e, request, response);
 		}
 	}

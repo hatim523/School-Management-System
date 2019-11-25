@@ -529,6 +529,7 @@ function getDetails()
 
 function getPermissions(emp_id)
 {
+	alert(emp_id);
 	var student_atd = document.getElementById('std_atd').checked;
 	var course_add = document.getElementById('course_add').checked;
 	var marks_add = document.getElementById('marks_add').checked;
@@ -558,7 +559,7 @@ function getPermissions(emp_id)
 	xhttp.open("GET", "RealtimeData?work_to_do=emp_reg_permissions&student_atd=" + student_atd + "&course_add=" + course_add + "&marks_add=" + marks_add +
 			"&emp_atd=" + emp_atd + "&student_add=" + student_add + "&emp_add=" + emp_add + "&emp_rem=" + emp_rem + "&sms=" + sms + 
 			"&timetable_add=" + timetable_add + "&fees_add=" + fees_add + "&fees_gen=" + fees_gen + "&class_add=" + class_add + "&emp_upd=" + 
-			emp_upd + "&std_upd=" + std_upd + "&emp_id=" + 5305 + "&student_rem=" + student_rem, true);
+			emp_upd + "&std_upd=" + std_upd + "&emp_id=" + emp_id + "&student_rem=" + student_rem, true);
 	xhttp.send();
 }
 											//End of custom script

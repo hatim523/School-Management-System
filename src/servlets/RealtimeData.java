@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import classes.Employee;
 import classes.ExceptionHandler;
-import classes.Student;
 
 /**
  * Servlet implementation class RealtimeData
@@ -44,9 +43,93 @@ public class RealtimeData extends HttpServlet {
 				Employee e1 = new Employee(request, response);
 				e1.NewUserPermissions();
 			}
+			else if (work_to_do.equals("getEmpInfo"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.getEmployeeInfo(request.getParameter("emp_id"));
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("personalAdd"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.savePersonalInfo();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("contactAdd"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.saveContactInfo();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("workAdd"))
+			{
+				Employee e1 = new Employee (request, response);
+				System.out.println("called");
+				String msg = e1.saveWorkInfo();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("printPermissions"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.printPermissions();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("update_permissions"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.savePermissions();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("getStdInfo"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.getStudentInfo(request.getParameter("student_id"));
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("personalAddStd"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.saveStudentPersonalInfo();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("contactAddStd"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.saveStudentContactInfo();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("parentAddStd"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.saveStudentParentInfo();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("classChange"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.saveStudentNewClass();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("RemoveEmpName"))
+			{
+				Employee e1 = new Employee(request, response);
+				String message = "";
+				if (!request.getParameter("emp_id").substring(2).equals(e1.getEmployeeID()))
+				{
+					message = e1.getFullName(request.getParameter("emp_id"));
+				}
+				response.getWriter().write(message);
+			}
+			else if (work_to_do.equals("deleteEmpData"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.deleteEmployeeData(request.getParameter("emp_id"));
+				response.getWriter().write(msg);
+			}
 		}
 		catch (Exception e)
 		{
+			@SuppressWarnings("unused")
 			ExceptionHandler ex = new ExceptionHandler(e, request, response);
 		}
 		

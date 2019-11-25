@@ -5,10 +5,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Employee Dashboard -> Khokar Public School</title>
+<title>Remove Employee -> Khokar Public School</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
  
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
@@ -168,15 +176,34 @@ width:21%;
         <div class="w3-col m12" >
           <div class="w3-card w3-round w3-white" >
             <div class="w3-container w3-padding" >
-              <h6  align="center" style="color:#00008b">Post Homework</h6>
-			  
-			  
-			  <input contenteditable="true" id="homeworkbox" class="w3-border w3-padding" style="color:grey;width:60%" placeholder="Homework.." required>
-			  <select id="courses" style="width:9.5%;height:38px;border-bottom-color:grey;color:grey;margin-left:-30px" class="w3-border">
-			  </select>
-              <input id="date01" type="date" name="bday" class="form-control" style="color:grey;height:38px;margin-left:5px;width:21%" class="w3-border"><br></br>
-              
-			  <button type="button" class="w3-button w3-theme" style="margin-top:-5px" onclick="AddHomeWork();"><i class="fa fa-pencil"></i>  Post</button> 
+              <div class="background-white p20 mb30">
+    <h3 class="page-title">
+        											Remove Employee
+
+        <a href="#" class="btn btn-primary btn-xs pull-right" onclick="removeEmployee()" title="Remove Employee's complete data">Remove</a>
+    </h3>
+
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <label>ID</label>
+            <input type="text" placeholder="Employee ID of the Employee to remove" class="form-control" value="" id="emp_id" onkeyup="PopulateInfo()">
+        </div><!-- /.form-group -->
+
+       
+		
+		
+        <div class="form-group col-sm-6">
+            <label>Name</label>
+            <input type="text" class="form-control" value="" id="name" readonly>
+        </div><!-- /.form-group -->
+
+        <div class="form-group col-sm-6">
+            <label>Last Name</label>
+            <input type="text" class="form-control" value="" id="lname" readonly>
+        </div><!-- /.form-group -->
+		
+    </div><!-- /.row -->
+</div>
             </div>
           </div>
         </div>
@@ -256,127 +283,59 @@ function LoadInfo()
      
     
     document.getElementById('updateNav').innerHTML = "<%=e1.generateNavBar()%>";
-    getSubjects();
-    document.getElementById('homework').innerHTML = "<%=e1.getHomeWork()%>";
+
 }
-						
-function getSubjects()
+
+function PopulateInfo()
 {
-	var select_tag = document.getElementById("courses");
-		
-	var size = "<%=courses.size()%>";
-		
-	var subjects = new Array();
-	var additional_info = new Array();
-	<% for (int i=0; i<courses.size(); i++) { %>
-	subjects[<%= i %>] = "<%= courses.get(i) %>";
-	<% } %>
-	
-	<% for (int i=0; i<add_courses.size(); i++) { %>
-	additional_info[<%= i %>] = "<%= add_courses.get(i) %>";
-	<% } %>
-	
-	var i = 0;
-	var option = null;
-	for (i = 0; i < size; i++) {
-		option = document.createElement("option");
-		option.text = subjects[i];
-		option.value = additional_info[i];
-		select_tag.add(option);
-	}
-}
-function AddHomeWork()
-{
-	var submission_date = document.getElementById('date01').value;
-	var homework_msg = document.getElementById('homeworkbox').value;
-	if (homework_msg == "")			//add one more condition i.e if date is before today's date
-		alert("Please enter text in HomeWork Box to continue");
-	else if (submission_date == "")
-		alert("Please enter a valid submission date.");
-	else
+	var emp_id = document.getElementById('emp_id').value;
+	if (emp_id.length > 5 && emp_id.includes('fk'))
 	{
-		var homework_subject_select = document.getElementById('courses');
-		var homework_subject = homework_subject_select.options[homework_subject_select.selectedIndex].text;
-		var homework_subject_additional = homework_subject_select.options[homework_subject_select.selectedIndex].value;
-		//extracting elements from homework_subject
-		
-		var pos = homework_subject.indexOf("-");
-		var class_section = homework_subject.substr(pos+1, homework_subject.length-1);
-		var subject = homework_subject.substr(0, pos-1);
-		
-		//done extracting elements
-		
-		// 2.1::Choosing logo for homework
-		
-		var src = "chalkboardicon.png";
-		var subject_lower = subject.toLowerCase();
-		if (subject_lower.indexOf("math") != -1)
-			src = "math.png";
-		else if (subject_lower.indexOf("science") != -1)
-			src = "science.png";
-		else if (subject_lower.indexOf("pakistan") != -1)
-			src = "pakistan.png";
-		else if (subject_lower.indexOf("geography") != -1)
-			src = "geography.png";
-		else if (subject_lower.indexOf("english") != -1)
-			src = "english.png";
-		else if (subject_lower.indexOf("urdu") != -1)
-			src = "urdu.png";
-		
-		
-		// End of choosing logo for homework::2.1
-		
-		var box = document.getElementById('homework');
-		
-		
-		
-			
-			
-			//Sending the homework to backend
-			var course_id = homework_subject_additional.substr(0, homework_subject_additional.indexOf("-"));
-			var class_id = homework_subject_additional.substr(homework_subject_additional.indexOf("-") + 1, homework_subject_additional.length-1);
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
 				var str = this.responseText;
-				
-				  if (str.indexOf("Failed") == -1)
-					{
-					  box.innerHTML += "<div class=\"w3-container w3-card w3-white w3-round w3-margin\" id=\"" + str + "\"><br>\r\n" + 
-						"        <img src=\"" + src + "\" alt=\"Avatar\" class=\"w3-left w3-circle w3-margin-right\" style=\"width:60px\">\r\n" + 
-						"        <span class=\"w3-right w3-opacity\">" + submission_date + "</span>\r\n" + 
-						"        <h3>" + subject + " HomeWork" +"</h3><br>\r\n" +
-						"        <hr class=\"w3-clear\">\r\n" + 
-						"        <p align=\"center\"><b>" + "Class: " + class_section + "</b></p>\r\n" + 
-						"        <p> Task(s): " + homework_msg +"</p>\r\n" + 
-						"		 <button type=\"button\" class=\"w3-button w3-theme-d1 w3-margin-bottom\" onclick=\"removeHomeWork(" + str + ")\"><i class=\"fa fa-trash\"></i> &nbsp;Remove Homework</button>" +
-						"      </div>";				
-					}
-				}
-			};
-			xhttp.open("GET", "getRequests?work_to_do=HomeworkAdd&msg=" + homework_msg + "&sub_date=" + submission_date + "&course=" + course_id + "&class=" + class_id, true);
-			xhttp.send();
-			
+				var temp = 0;
+				document.getElementById('name').value = str.slice(0, str.indexOf('~'));
+				document.getElementById('lname').value = str.slice(temp = str.indexOf('~') + 1, temp=str.indexOf('~', temp));
+			}
+		};
+		xhttp.open("GET", "RealtimeData?work_to_do=RemoveEmpName&emp_id=" + emp_id, true);
+		xhttp.send();	
 	}
 	
 }
 
-function removeHomeWork(homework_id)
+function removeEmployee()
 {
-	
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-	if (this.readyState == 4 && this.status == 200) {
-		var str = this.responseText;
-		
-		document.getElementById(homework_id).remove();
-	}
-	};
-	xhttp.open("GET", "getRequests?work_to_do=HomeworkRemove&id=" + homework_id, true);
-	xhttp.send();
-}
-						/// My Script ENDS
+	if (document.getElementById('name').value != "" && document.getElementById('lname').value != "")
+	{
+		var emp_id = document.getElementById('emp_id').value;
+		var answer = prompt("Complete Data will be deleted for the following ID:" + emp_id + "\nPlease enter \"YES\" to continue: ");
 
+		if (answer != "YES")
+		{
+			alert("Operation Cancelled!");		
+			return;
+		}
+		
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				var str = this.responseText;
+				alert(str);
+			}
+		};
+		xhttp.open("GET", "RealtimeData?work_to_do=deleteEmpData&emp_id=" + emp_id, true);
+		xhttp.send();	
+	}
+	else
+		alert("Please enter a valid Employee ID");
+}
+
+						/// My Script ENDS
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Accordion
 function myFunction(id) {
