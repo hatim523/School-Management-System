@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="classes.Employee"%>
-
 <!DOCTYPE html>
 <html>
 <head>
-<title>Remove Employee -> Khokar Public School</title>
+<title>Remove Student -> Khokar Public School</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -179,13 +178,13 @@ width:21%;
     <h3 class="page-title">
         											Remove Employee
 
-        <a href="#" class="btn btn-primary btn-xs pull-right" onclick="removeEmployee()" title="Remove Employee's complete data">Remove</a>
+        <a href="#" class="btn btn-primary btn-xs pull-right" onclick="removeStudent()" title="Remove Student's complete data">Remove</a>
     </h3>
 
     <div class="row">
         <div class="form-group col-sm-12">
             <label>ID</label>
-            <input type="text" placeholder="Employee ID of the Employee to remove" class="form-control" value="" id="emp_id" onkeyup="PopulateInfo()">
+            <input type="text" placeholder="Employee ID of the Employee to remove" class="form-control" value="" id="std_id" onkeyup="PopulateInfo()">
         </div><!-- /.form-group -->
 
        
@@ -287,8 +286,8 @@ function LoadInfo()
 
 function PopulateInfo()
 {
-	var emp_id = document.getElementById('emp_id').value;
-	if (emp_id.length > 5 && emp_id.includes('fk'))
+	var std_id = document.getElementById('std_id').value;
+	if (std_id.length > 5 && std_id.includes('sk'))
 	{
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
@@ -299,18 +298,18 @@ function PopulateInfo()
 				document.getElementById('lname').value = str.slice(temp = str.indexOf('~') + 1, temp=str.indexOf('~', temp));
 			}
 		};
-		xhttp.open("GET", "RealtimeData?work_to_do=RemoveEmpName&emp_id=" + emp_id, true);
+		xhttp.open("GET", "RealtimeData?work_to_do=RemoveStdName&std_id=" + std_id, true);
 		xhttp.send();	
 	}
 	
 }
 
-function removeEmployee()
+function removeStudent()
 {
 	if (document.getElementById('name').value != "" && document.getElementById('lname').value != "")
 	{
-		var emp_id = document.getElementById('emp_id').value;
-		var answer = prompt("Complete Data will be deleted for the following ID:" + emp_id + "\nPlease enter \"YES\" to continue: ");
+		var std_id = document.getElementById('std_id').value;
+		var answer = prompt("Complete Data will be deleted for the following ID:" + std_id + "\nPlease enter \"YES\" to continue: ");
 
 		if (answer != "YES")
 		{
@@ -325,11 +324,11 @@ function removeEmployee()
 				alert(str);
 			}
 		};
-		xhttp.open("GET", "RealtimeData?work_to_do=deleteEmpData&emp_id=" + emp_id, true);
+		xhttp.open("GET", "RealtimeData?work_to_do=deleteStdData&std_id=" + std_id, true);
 		xhttp.send();	
 	}
-	else
-		alert("Please enter a valid Employee ID");
+	else if (std_id.length > 6 && !std_id.includes('sk'))
+		alert("Please enter a valid Student ID");
 }
 
 						/// My Script ENDS

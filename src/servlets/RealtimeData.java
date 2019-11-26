@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import classes.Employee;
 import classes.ExceptionHandler;
+import classes.Student;
 
 /**
  * Servlet implementation class RealtimeData
@@ -116,7 +117,7 @@ public class RealtimeData extends HttpServlet {
 				String message = "";
 				if (!request.getParameter("emp_id").substring(2).equals(e1.getEmployeeID()))
 				{
-					message = e1.getFullName(request.getParameter("emp_id"));
+					message = e1.getFullEmployeeName(request.getParameter("emp_id"));
 				}
 				response.getWriter().write(message);
 			}
@@ -125,6 +126,33 @@ public class RealtimeData extends HttpServlet {
 				Employee e1 = new Employee(request, response);
 				String msg = e1.deleteEmployeeData(request.getParameter("emp_id"));
 				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("RemoveStdName"))
+			{
+				Employee e1 = new Employee(request, response);
+				String message = e1.getFullStudentName(request.getParameter("std_id"));
+				response.getWriter().write(message);
+			}
+			else if (work_to_do.equals("deleteStdData"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.deleteStudentData(request.getParameter("std_id"));
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("std_reg"))
+			{
+				System.out.println("Registering new employee oo");
+				Employee e1 = new Employee(request, response);
+				Student registered = e1.RegisterStudent();
+				if (registered != null)
+				{
+					System.out.println("New Student ID: " + registered.getStudentID());
+					response.getWriter().write(registered.getStudentID());
+				}
+				else
+				{
+					System.out.println("Employee registration failed.");
+				}
 			}
 		}
 		catch (Exception e)

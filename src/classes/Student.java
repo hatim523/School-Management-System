@@ -37,8 +37,8 @@ public class Student extends Person{
 		}
 		catch (Exception e)
 		{
+			@SuppressWarnings("unused")
 			ExceptionHandler ex = new ExceptionHandler(e);
-		
 		}
 	}
 	public Student(HttpServletRequest requset , HttpServletResponse response) {
@@ -60,8 +60,8 @@ public class Student extends Person{
 		}
 		catch (Exception e)
 		{
+			@SuppressWarnings("unused")
 			ExceptionHandler ex = new ExceptionHandler(e, req, resp);
-		
 		}
 	}
 	public Student(HttpServletRequest request, HttpServletResponse response, boolean login)
@@ -80,8 +80,8 @@ public class Student extends Person{
 		}
 		catch (Exception e)
 		{
+			@SuppressWarnings("unused")
 			ExceptionHandler ex = new ExceptionHandler(e, req, resp);
-		
 		}
 	}
 	/*
@@ -99,10 +99,15 @@ public class Student extends Person{
 	{
 		return motherName;
 	}
-//	public String getPassword()
-//	{
-//		return password;
-//	}
+	protected int setPassword(String pPass) throws NoSuchAlgorithmException
+	{
+		if (pPass.length() >= 8)
+		{
+			password = EncryptPassword(pPass);
+			return 0;
+		}
+		return 1;
+	}
 	public String getFatherCNIC()
 	{
 		return fatherCNIC;
@@ -111,7 +116,20 @@ public class Student extends Person{
 	{
 		return student_id;
 	}
-	private int setFatherCNIC(String c)
+	protected int setID(String id)
+	{
+		try
+		{
+			Integer.parseInt(id);
+			student_id = id;
+			return 0;
+		}
+		catch (NumberFormatException ex)
+		{
+			return 1;
+		}
+	}
+	protected int setFatherCNIC(String c)
 	{
 		try
 		{
@@ -126,7 +144,32 @@ public class Student extends Person{
 			return 1;
 		}
 	}
-	private int setStudentID(String em)
+	protected int setClassSection(String class_section) throws SQLException
+	{
+		String sql = "Select * from class_section where class = ? and section = ?";
+		PreparedStatement psm = con.prepareStatement(sql);
+		
+		psm.setString(1, class_section.substring(0, class_section.indexOf("-")));
+		psm.setString(2, class_section.substring(class_section.indexOf("-")));
+		
+		ResultSet rs = psm.executeQuery();
+		if (rs.next())
+		{
+			class_id = rs.getInt(1);
+			return 0;
+		}
+		return 1;
+	}
+	protected int setClassID(int id)
+	{
+		class_id = id;
+		return 0;
+	}
+	protected int getClassID()
+	{
+		return class_id;
+	}
+	protected int setStudentID(String em)
 	{
 		try
 		{
@@ -139,7 +182,7 @@ public class Student extends Person{
 			return 1;
 		}
 	}
-	private int setMotherName(String m)
+	protected int setMotherName(String m)
 	{
 		if (m.length() >= 2)
 		{
@@ -148,7 +191,7 @@ public class Student extends Person{
 		}
 		return 1;
 	}
-	private int setMotherOccupation(String o)
+	protected int setMotherOccupation(String o)
 	{
 		if (o.length() >= 2)
 		{
@@ -157,7 +200,7 @@ public class Student extends Person{
 		}
 		return 1;
 	}
-	private int setFatherOccupation(String o)
+	protected int setFatherOccupation(String o)
 	{
 		if (o.length() >= 2)
 		{
@@ -196,6 +239,10 @@ public class Student extends Person{
   
         return hexString.toString();  
     }
+	protected String getPassword()
+	{
+		return password;
+	}
 	public void Login() throws IOException, NoSuchAlgorithmException, SQLException
 	{
 		String in_id = req.getParameter("uname").substring(2);

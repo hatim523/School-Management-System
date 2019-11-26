@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -347,11 +348,11 @@ public class Employee extends Person{
 		if (permissions.getStudentAttendancePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add Attendance</a>";
 		if (permissions.getAddStudentPermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Student</a>";
+			navBar += "<a href=\\\"student_registration.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Add new Student</a>";
 		if (permissions.getUpdateStudentInfo())
 			navBar += " <a href=\\\"std_update.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Update Student Info</a>";
 		if (permissions.getRemoveStudentPermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Remove Student</a>";
+			navBar += "<a href=\\\"removeStudent.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Remove Student</a>";
 //				
 //				
 		navBar += "</div>\" + \r\n" + 
@@ -1498,7 +1499,7 @@ public class Employee extends Person{
 			return "Error updating class/section of student";
 		}
 	}
-	public String getFullName(String id)
+	public String getFullEmployeeName(String id)
 	{
 		String sql = "Select name, fatherName from employee where employee_id = ?";
 		try
@@ -1522,17 +1523,142 @@ public class Employee extends Person{
 	public String deleteEmployeeData(String id)
 	{
 		String sql = "Delete from employee where employee_id = ?";
+		String permissions = "Delete from userpermissions where employee_id = ?";
 		try
 		{
 			PreparedStatement psm = con.prepareStatement(sql);
+			PreparedStatement psm2 = con.prepareStatement(permissions);
 			psm.setString(1, id.substring(2));
+			psm2.setString(1, id.substring(2));
 			
 			psm.executeUpdate();
+			psm2.executeUpdate();
 			return "Data successfully removed of the selected Employee";
 		}
 		catch (SQLException e)
 		{
 			return "Error removing Employee's Data. Please try again";
 		}
+	}
+	public String getFullStudentName(String id)
+	{
+		String sql = "Select name, fatherName from student where student_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, id.substring(2));
+			
+			ResultSet rs = psm.executeQuery();
+			if (rs.next())
+			{
+				return rs.getString(1) + "~" + rs.getString(2) + "~";
+			}
+			return "~";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "~";
+		}
+	}
+	public String deleteStudentData(String id)
+	{
+		String sql = "Delete from student where student_id = ?";
+		//TODO More tables to be added where student_id is foreign key
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, id.substring(2));
+			
+			psm.executeUpdate();
+			return "Data removed of the selected Student.";
+		}
+		catch (SQLException e)
+		{
+			return "Error deleting Student Data.Please try again later...";
+		}
+	}
+	public ArrayList<String> getClasses() throws SQLException
+	{
+		String sql = "Select * from class_section";
+		PreparedStatement psm = con.prepareStatement(sql);
+		
+		ResultSet rs = psm.executeQuery();
+		ArrayList<String> class_section = new ArrayList<String>();
+		while(rs.next())
+		{
+			class_section.add(rs.getString(2) + "-" + rs.getString(3));
+		}
+		return class_section;
+	}
+	public ArrayList<Integer> getClassID() throws SQLException
+	{
+		String sql = "Select * from class_section";
+		PreparedStatement psm = con.prepareStatement(sql);
+		
+		ArrayList<Integer> class_id = new ArrayList<Integer>();
+		ResultSet rs = psm.executeQuery();
+		while(rs.next())
+		{
+			class_id.add(rs.getInt(1));
+		}
+		return class_id;
+	}
+	public Student RegisterStudent() throws NoSuchAlgorithmException, SQLException
+	{
+		Student new_student = new Student();
+		int validCredentials = 0;
+		validCredentials = new_student.setName(req.getParameter("name"));
+		validCredentials = new_student.setFname(req.getParameter("lname"));
+		validCredentials = new_student.setPassword(req.getParameter("psw"));
+		validCredentials = new_student.setGender(req.getParameter("gender"));
+		validCredentials = new_student.setDate(req.getParameter("dob"));
+		validCredentials = new_student.setAddress(req.getParameter("addr"));
+		validCredentials = new_student.setEmail(req.getParameter("usr_email"));
+		validCredentials = new_student.setNumber(req.getParameter("mob_number"));
+		validCredentials = new_student.setEmergencyNumber(req.getParameter("emergency_number"));
+		validCredentials = new_student.setFatherCNIC(req.getParameter("cnic"));
+		validCredentials = new_student.setFatherOccupation(req.getParameter("fatherOccupation"));
+		validCredentials = new_student.setMotherName(req.getParameter("motherName"));
+		validCredentials = new_student.setMotherOccupation(req.getParameter("motherOccupation"));
+		validCredentials = new_student.setClassID(Integer.parseInt(req.getParameter("class")));
+		
+		if (validCredentials == 0)
+		{
+			return addRegisteredStudent(new_student);
+		}
+		return null;
+
+	}
+	private Student addRegisteredStudent(Student s1) throws SQLException
+	{
+		String sql = "Insert into student (name, dateofbirth, fathername, address, phonenumber, emergencynumber, gender, email, fatherOccupation, motherOccupation,"
+				+ "mothername, fatherCNIC, password, class_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String generatedColumns[] = { "student_id" };
+		PreparedStatement psm = con.prepareStatement(sql, generatedColumns);
+		psm.setString(1, s1.getName());
+		psm.setString(2, req.getParameter("dob"));
+		psm.setString(3, s1.getFname());
+		psm.setString(4, s1.getAddress());
+		psm.setString(5, s1.getNumber());
+		psm.setString(6, s1.getEmergencyNumber());
+		psm.setString(7, s1.getGender());
+		psm.setString(8, s1.getEmail());
+		psm.setString(9, s1.getFatherOccupation());
+		psm.setString(10, s1.getMotherOccupation());
+		psm.setString(11, s1.getMotherName());
+		psm.setString(12, s1.getFatherCNIC());
+		psm.setString(13, s1.getPassword());
+		psm.setInt(14, s1.getClassID());
+		
+		psm.executeUpdate();
+		ResultSet rs = psm.getGeneratedKeys();
+		if (rs.next())
+		{
+			s1.setID(rs.getString(1));
+			System.out.println("Returned Student ID: " + rs.getString(1));
+			return s1;
+		}
+		return null;
 	}
 }
