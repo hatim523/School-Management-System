@@ -344,7 +344,7 @@ public class Employee extends Person{
 				
 //		//Adding student functionalities
 		if (permissions.getAddMarksPermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Update Marks</a>";
+			navBar += "<a href=\\\"updateMarks.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Update Marks</a>";
 		if (permissions.getStudentAttendancePermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add Attendance</a>";
 		if (permissions.getAddStudentPermission())
@@ -390,9 +390,11 @@ public class Employee extends Person{
 				"				\"    <div class=\\\"w3-dropdown-content w3-card-4 w3-bar-block\\\" style=\\\"width:300px\\\">"; 
 //		
 		if (permissions.getAddClassSectionPermission())
-			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Add new Class/Section</a>";
+			navBar += "<a href=\\\"add_class.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Add new Class/Section</a>";
+		if (permissions.getAddClassSectionPermission())
+			navBar += "<a href=\\\"add_course_teacher.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Add Course Teacher</a>";
 		if (permissions.getAddCoursePermission())
-			navBar += "<a href=\\\"#\\\"  title=\\\"Introduce new course\\\" class=\\\"w3-bar-item w3-button\\\">Add new Course</a>";
+			navBar += "<a href=\\\"addcourse.jsp\\\"  title=\\\"Introduce new course\\\" class=\\\"w3-bar-item w3-button\\\">Add new Course</a>";
 		if (permissions.getGenerateFeeChallanPermission())
 			navBar += "<a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Print Fee Challan</a>";
 //		if (permissions.getRightsToUpdatePermission())
@@ -1660,5 +1662,87 @@ public class Employee extends Person{
 			return s1;
 		}
 		return null;
+	}
+	public String AddCourse()
+	{
+		String sql = "Insert into courses (course_name, totalMarks) values (?,?)";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			
+			psm.setString(1, req.getParameter("name"));
+			psm.setString(2, req.getParameter("class"));
+			
+			psm.executeUpdate();
+			
+			return "Course successfully added";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Course entry Duplication. The given entry already exists.";
+		}
+	}
+	public String AddClass()
+	{
+		String sql = "Insert into class_section (class, section) values (?,?)";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, req.getParameter("class_name"));
+			psm.setString(2, req.getParameter("section"));
+			
+			psm.executeUpdate();
+			return "New Class/Section successfully added.";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Entered Class and Section already exists.";
+		}
+	}
+	public String getSubjectID(String course) throws SQLException
+	{
+		String sql = "Select course_id from courses where course_name = ?";
+		PreparedStatement psm = con.prepareStatement(sql);
+		
+		psm.setString(1, course.toLowerCase());
+		ResultSet rs = psm.executeQuery();
+		if (rs.next())
+			return rs.getString(1);
+		return "";
+	}
+	public String getClassID(String class_name, String section) throws SQLException
+	{
+		String sql = "Select class_id from class_section where class = ? and section = ?";
+		PreparedStatement psm = con.prepareStatement(sql);
+		
+		psm.setString(1, class_name);
+		psm.setString(2, section);
+		
+		ResultSet rs = psm.executeQuery();
+		if (rs.next())
+			return rs.getString(1);
+		return "";
+	}
+	public String AddCourseTeacher()
+	{
+		String sql = "Insert into courses_teacher_class (course_id, teacher_id, class_id) values (?,?,?)";
+		
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, req.getParameter("course"));
+			psm.setString(2, req.getParameter("teacher_id").substring(2));
+			psm.setString(3, req.getParameter("class_id"));
+			
+			psm.executeUpdate();
+			return "Course Teacher successfully added"; 
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Adding Course Teacher Failed.\n1.Check if the information provided is valid\n2.The teacher is already teaching this course for this class";
+		}
 	}
 }

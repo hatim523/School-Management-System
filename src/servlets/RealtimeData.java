@@ -154,6 +154,42 @@ public class RealtimeData extends HttpServlet {
 					System.out.println("Employee registration failed.");
 				}
 			}
+			else if (work_to_do.equals("course_add"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.AddCourse();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("class_add"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.AddClass();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("getEmpName"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.getFullEmployeeName(request.getParameter("emp_id"));
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("getSubjectID"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.getSubjectID(request.getParameter("subject_name"));
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("getClassID"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.getClassID(request.getParameter("class"), request.getParameter("section"));
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("AddCourseTeacher"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.AddCourseTeacher();
+				response.getWriter().write(msg);
+			}
 		}
 		catch (Exception e)
 		{
