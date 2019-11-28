@@ -386,7 +386,7 @@ function LoadInfo()
 					
 function getDetails()
 {
-	dob_box = document.getElementById('dob');
+	var dob_box = document.getElementById('dob');
 	
 	var gen = null;
 	if (document.getElementById('g1').checked)
@@ -395,7 +395,7 @@ function getDetails()
 		gen = "F";
 	var valid_info = true;
 	
-	name_box = document.getElementById('name');
+	var name_box = document.getElementById('name');
 	if (name_box.value == null || name_box.value.length < 3)
 	{
 		name_box.style.backgroundColor = "#B1D7F1";
@@ -404,7 +404,7 @@ function getDetails()
 	else
 		name_box.style.backgroundColor = "";
 	
-	job_box = document.getElementById('job');
+	var job_box = document.getElementById('job');
 	if (job_box.value == null || job_box.value.length < 2)
 	{
 		job_box.style.backgroundColor = "#B1D7F1";
@@ -413,7 +413,7 @@ function getDetails()
 	else
 		job_box.style.backgroundColor = "";
 	
-	lastname_box = document.getElementById('lname');
+	var lastname_box = document.getElementById('lname');
 	if (lastname_box.value == null || lastname_box.value.length < 3)
 	{
 		lastname_box.style.backgroundColor = "#B1D7F1";
@@ -422,8 +422,10 @@ function getDetails()
 	else
 		lastname_box.style.backgroundColor = "";
 	
-	password_box = document.getElementById('psw');
-	if (password_box.value == null || password_box.value.length < 8)
+	var password_box = document.getElementById('psw');
+	var upperCaseLetters = /[A-Z]/g;
+	var numbers = /[0-9]/g;
+	if (password_box.value == null || password_box.value.length < 8 || !password_box.value.match(upperCaseLetters) || !password_box.value.match(numbers))
 	{
 		password_box.style.backgroundColor = "#B1D7F1";
 		valid_info = false;
@@ -431,7 +433,7 @@ function getDetails()
 	else
 		password_box.style.backgroundColor = "";
 	
-	address_box = document.getElementById('addr');
+	var address_box = document.getElementById('addr');
 	if (address_box.value == null || address_box.value.length < 4)
 	{
 		address_box.style.backgroundColor = "#B1D7F1";
@@ -440,7 +442,7 @@ function getDetails()
 	else
 		address_box.style.backgroundColor = "";
 	
-	email_box = document.getElementById('usr_email');
+	var email_box = document.getElementById('usr_email');
 	if (email_box.value == null || email_box.value.length < 9)
 	{
 		email_box.style.backgroundColor = "#B1D7F1";
@@ -449,7 +451,7 @@ function getDetails()
 	else
 		email_box.style.backgroundColor = "";
 	
-	num_box = document.getElementById('mob_number');
+	var num_box = document.getElementById('mob_number');
 	if (num_box.value == null || num_box.value.length < 11)
 	{
 		num_box.style.backgroundColor = "#B1D7F1";
@@ -458,7 +460,7 @@ function getDetails()
 	else
 		num_box.style.backgroundColor = "";
 	
-	emergency_box = document.getElementById("emergency_number");
+	var emergency_box = document.getElementById("emergency_number");
 	if (emergency_box.value == null || emergency_box.value.length < 11)
 	{
 		emergency_box.style.backgroundColor = "#B1D7F1";
@@ -467,7 +469,7 @@ function getDetails()
 	else
 		emergency_box.style.backgroundColor = "";
 	
-	cnic_box = document.getElementById('cnic');
+	var cnic_box = document.getElementById('cnic');
 	if (cnic_box.value == null || cnic_box.value.length < 13 || cnic_box.value.length > 13)
 	{
 		cnic_box.style.backgroundColor = "#B1D7F1";
@@ -476,7 +478,7 @@ function getDetails()
 	else
 		cnic_box.style.backgroundColor = "";
 	
-	qual_box = document.getElementById('qual');
+	var qual_box = document.getElementById('qual');
 	if (qual_box.value == null || qual_box.value.length < 2)
 	{
 		qual_box.style.backgroundColor = "#B1D7F1";
@@ -485,7 +487,7 @@ function getDetails()
 	else
 		qual_box.style.backgroundColor = "";
 	
-	exp_box = document.getElementById('exp');
+	var exp_box = document.getElementById('exp');
 	if (exp_box.value == null || exp_box.value < 0)
 	{
 		exp_box.style.backgroundColor = "#B1D7F1";
@@ -494,7 +496,7 @@ function getDetails()
 	else
 		exp_box.style.backgroundColor = "";
 	
-	salary_box = document.getElementById('sal');
+	var salary_box = document.getElementById('sal');
 	if (salary_box.value == null || salary_box.value < 100)
 	{
 		salary_box.style.backgroundColor = "#B1D7F1";

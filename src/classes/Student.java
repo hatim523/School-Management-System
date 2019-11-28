@@ -379,4 +379,25 @@ public class Student extends Person{
 		else
 			return homework;
 	}
+	public String changePassword() throws NoSuchAlgorithmException
+	{
+		String sql = "update student set password = ? where student_id = ? and password = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, EncryptPassword(req.getParameter("new_pass")));
+			psm.setString(2, this.student_id);
+			psm.setString(3, EncryptPassword(req.getParameter("old_pass")));
+			
+			if (psm.executeUpdate() == 1)
+				return "Password changed successfully";
+			else
+				return "Password not changed. Please enter correct old password.";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Error changing password. Please check if you have entered old password correctly";
+		}
+	}
 }

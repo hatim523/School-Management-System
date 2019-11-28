@@ -416,8 +416,7 @@ public class Employee extends Person{
 		navBar += "<div class=\\\"w3-dropdown-hover w3-hide-small\\\" style=\\\"margin-right:20%\\\">\\r\\n\" + \r\n" + 
 				"				\"    <button class=\\\"w3-button w3-padding-large\\\" title=\\\"Notifications\\\"><img src=\\\"profileIcon.png\\\" class=\\\"w3-circle\\\" style=\\\"height:27px;width:27px\\\"></button>     \\r\\n\" + \r\n" + 
 				"				\"    <div class=\\\"w3-dropdown-content w3-card-4 w3-bar-block\\\" style=\\\"width:300px\\\">\\r\\n\" + \r\n" + 
-				"				\"      <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Profile</a>\\r\\n\" + \r\n" + 
-				"				\"      <a href=\\\"#\\\" class=\\\"w3-bar-item w3-button\\\">Settings</a>\\r\\n\" + \r\n" + 
+				"				\"      <a href=\\\"changePassword.jsp\\\" class=\\\"w3-bar-item w3-button\\\">Change Password</a>\\r\\n\" + \r\n" + 
 				"				\"	  <a href=\\\"getRequests?work_to_do=signout\\\" class=\\\"w3-bar-item w3-button\\\">Sign Out</a>\\r\\n\" + \r\n" + 
 				"				\"    </div>\\r\\n\" + \r\n" + 
 				"				\"  </div>";
@@ -1743,6 +1742,27 @@ public class Employee extends Person{
 		{
 			System.out.println(e.getMessage());
 			return "Adding Course Teacher Failed.\n1.Check if the information provided is valid\n2.The teacher is already teaching this course for this class";
+		}
+	}
+	public String changePassword()
+	{
+		String sql = "update employee set password = ? where employee_id = ? and password = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, EncryptPassword(req.getParameter("new_pass")));
+			psm.setString(2, this.employee_id);
+			psm.setString(3, EncryptPassword(req.getParameter("old_pass")));
+			
+			if (psm.executeUpdate() == 1)
+				return "Password changed successfully";
+			else
+				return "Password not changed. Please enter correct old password.";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Error changing password. Please check if you have entered old password correctly";
 		}
 	}
 }

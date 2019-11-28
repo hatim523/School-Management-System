@@ -4,14 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Student Dashboard -> Khokar Public School</title>
+<title>Change Password Student -> Khokar Public School</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
- 
- 
-
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
@@ -20,21 +16,75 @@
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+
+
+
+</style>
+<style>
+#homeworkbox{
+
+width:70%;
+margin-right:40px;
+position:relative;
+}
+<!--calendar-->
+
+		
+			body { width: 10%; height: 480; margin: 20, auto; }
+			#calWrapper { width: 100%; margin: 0 5; border: 1px solid #ccc; }
+			.dayCell { width: 40px; height: 40px; font-size: 11px; vertical-align: top; text-align: right; background-color: aliceblue;font-family: "Open Sans", sans-serif}
+			.dayHeader { 
+				width: 40px;
+				height: 20px; 
+				background-color: rgb(67,87,97);
+				color:white;
+				
+				font-family: "Open Sans", sans-serif
+			}
+			.today { border: 2px solid rgb(77,99,111);}
+		
+
+
+
+@media screen and (max-width:1367px){
+
+#date01{
+width:21%;
+}
+
+}
+@media screen and (max-width:959px){
+#date01{
+width:21%;
+}
+@media screen and (max-width:640px){
+#date01{
+width:21%;
+}
+@media screen and (max-width:300px){
+#date01{
+width:21%;
+}
+}
+
 
 
 </style>
 </head>
 <body class="w3-theme-l5" onload="LoadInfo()">
-
-
-							<%  
+						
+						
+						<%  
 						response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
 						 	response.setHeader("Cache-Control","no-store");
 						 	response.setHeader("Pragma","no-cache");
 						  	response.setDateHeader ("Expires", 0);
-					//		session.removeAttribute("emp_obj");
 						  if(session.getAttribute("std_obj")==null)
 						  {
 						      response.sendRedirect("index.jsp");
@@ -47,9 +97,8 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 						
 								
 																				%>
-
-
-
+							
+						
 <!-- Navbar -->
 <div class="w3-top">
  <div class="w3-bar  w3-left-align w3-large"  style="background-color:#3333ff;color:white">
@@ -71,7 +120,6 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
   </div>
   </div>
 
-
 <!-- Navbar on small screens -->
 <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
   <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
@@ -79,9 +127,13 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
   <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
 </div>
-
+			
+			
+			
 <!-- Page Container -->
-<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">  
+
+	  
   <!-- The Grid -->
   <div class="w3-row">
     <!-- Left Column -->
@@ -90,12 +142,19 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       <div class="w3-card w3-round w3-white" style="width:100%;margin-left:0px">
         <div class="w3-container">
          <h4 class="w3-center">My Profile</h4>
-         <p class="w3-center"><img id="profileImage" src="" class="w3-circle" style="height:106px;width:106px" alt="Education is the passport to the future"></p>
+         <p class="w3-center"><img id="profileImage" src="proFemale.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
+         
+         
+         
+         
          <div id="std_basic_info">
          
          
          </div>
+         
+         
+         
         </div>
       </div>
       <br>
@@ -106,7 +165,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       
       <!-- Interests --> 
       <div class="w3-card w3-round w3-white w3-hide-small" style="background-color:none">
-          <h3><span id="dateHolder" style="margin-left:35%"></span></h3>
+          <h3> <span id="dateHolder" style="margin-left:35%" /></span></h3>
 	
 	<table id="calWrapper">
 	</table>
@@ -121,67 +180,77 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
     
     <!-- Middle Column -->
     <div class="w3-col m7" style="margin-left:0px">
-			<div  class="w3-row-padding" >
+    
+      <div  class="w3-row-padding" >
         <div class="w3-col m12" >
           <div class="w3-card w3-round w3-white" >
             <div class="w3-container w3-padding" >
-              <h4 align="center" style="color:#00008b">HomeWork Board</h4>
-			  
-			  
+              <div class="background-white p20 mb30">
+    <h3 class="page-title">
+        											Remove Employee
+
+        <a href="#" class="btn btn-primary btn-xs pull-right" onclick="UpdatePass()" title="Remove Student's complete data">Update Password</a>
+    </h3>
+
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <label>Old Password</label>
+            <input type="password" placeholder="Enter your old password" class="form-control" value="" id="old_pass">
+        </div><!-- /.form-group -->
+
+       
+		
+		
+        <div class="form-group col-sm-6">
+            <label>New Password</label>
+            <input type="password" placeholder="Enter new password" class="form-control" value="" id="new_pass" >
+        </div><!-- /.form-group -->
+
+        <div class="form-group col-sm-6">
+            <label>New Password</label>
+            <input type="password" placeholder="Re-enter your new password" class="form-control" value="" id="confirm_pass" >
+        </div><!-- /.form-group -->
+		
+		
+		
+    </div><!-- /.row -->
+</div>
             </div>
           </div>
         </div>
       </div>
-			
-			
-			    
-      	<div id="HW">
-				    
-     	 </div>
-     
+      
+     <div id="homework">
 
       
       
+       
+    </div>
+    
     <!-- End Middle Column -->
     </div>
     
-    <!-- Right Column -->
-    <div class="w3-col m2">
-      <div class="w3-card w3-round w3-white w3-center">
-        <div class="w3-container">
-          <p>Announcements:</p>
-          <img src="announcement.png" alt="Announcement" style="width:30%;">
-          <p><strong>Holiday</strong></p>
-          <p>Friday 15:00</p>
-          <p><button class="w3-button w3-block w3-theme-l4">Info</button></p>
-        </div>
-      </div>
-      <br>
-      
-            <br>
-      
-      
-      <br>
-      
-   
-      
-    <!-- End Right Column -->
-    </div>
+    
     
   <!-- End Grid -->
-  </div>
+  
   
 <!-- End Page Container -->
 </div>
 <br>
 
+<!-- Footer -->
+<footer class="w3-container w3-theme-d3 w3-padding-16">
+  <h5>Footer</h5>
+</footer>
 
-<footer class="w3-container " style="color:white;font:15px; Font-family:Open Sans,sans-serif; background-color:#3333ff;height:50px;">
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+<footer class="w3-container w3-theme-d5">
+  <p>Powered by G4Tech</p>
 </footer>
  
 <script>
-									/// My Script Begins
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+						/// My Script Begins
 function LoadInfo()
 {
 	var name = "<%=s1.getName() %>";
@@ -198,14 +267,58 @@ function LoadInfo()
    	 	document.getElementById('profileImage').src = 'student_male.png';
     else
    		document.getElementById('profileImage').src = 'student_female.png';	
-     
-   	var homework = "<%=s1.getHomeWork()%>";
-   	document.getElementById('HW').innerHTML = homework;
+  
+}
+
+
+function UpdatePass()
+{
+	var password_box = document.getElementById('new_pass');
+	var upperCaseLetters = /[A-Z]/g;
+	var numbers = /[0-9]/g;
+	if (password_box.value == null || password_box.value.length < 8 || !password_box.value.match(upperCaseLetters) || !password_box.value.match(numbers))
+	{
+		password_box.style.backgroundColor = "#B1D7F1";
+		alert("Please make sure the password contains atleast 1 number and capital letter");
+		return;
+	}
+	else
+		password_box.style.backgroundColor = "";
+	
+	
+	//if password strength is valid check if confirm pass is same as new pass
+	var confirm_pass = document.getElementById('confirm_pass');
+	if (confirm_pass.value != password_box.value)
+	{
+		confirm_pass.style.backgroundColor = "#B1D7F1";
+		return;
+	}
+	else
+		confirm_pass.style.backgroundColor = "";
+	
+	//if confirm pass is same as new pass check if old password is not equal to new pass
+	var old_password = document.getElementById('old_pass').value;
+	if (old_password == confirm_pass.value)
+		alert("Old password and new password cannot be same");
+	
+	//now changing password after all the checks have passed
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		var str = this.responseText;
+			if (str != "")
+				alert(str);
+		}
+	};
+	xhttp.open("GET", "RealtimeData?work_to_do=change_pass_std&new_pass=" + confirm_pass.value + "&old_pass=" + old_password, true);
+	xhttp.send();
 }
 
 
 
-					///My script ENDS
+						/// My Script ENDS
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Accordion
 function myFunction(id) {
@@ -293,29 +406,9 @@ function openNav() {
 			createDayCells();
 		})();
 
-function myFunction() {
-  var dots = document.getElementById("dots");
-  var moreText = document.getElementById("more");
-  var btnText = document.getElementById("myBtn");
-
-  if (dots.style.display === "none") {
-    dots.style.display = "inline";
-	btnText.innerHTML = "Permissions";
-    moreText.style.display = "none";
-  } else {
-    dots.style.display = "none";
-    btnText.innerHTML = "Back"; 
-    moreText.style.display = "inline";
-  }
-}
 			
 </script>
-
-
-
 </body>
-</html>
-
 <style>
 
 #homeworkbox{
@@ -366,3 +459,4 @@ width:15%;
 
 
 </style>
+</html> 

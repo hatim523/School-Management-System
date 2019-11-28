@@ -190,6 +190,18 @@ public class RealtimeData extends HttpServlet {
 				String msg = e1.AddCourseTeacher();
 				response.getWriter().write(msg);
 			}
+			else if (work_to_do.equals("change_pass"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.changePassword();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("change_pass_std"))
+			{
+				Student s1 = new Student(request, response);
+				String msg = s1.changePassword();
+				response.getWriter().write(msg);
+			}
 		}
 		catch (Exception e)
 		{
