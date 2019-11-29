@@ -202,6 +202,22 @@ public class RealtimeData extends HttpServlet {
 				String msg = s1.changePassword();
 				response.getWriter().write(msg);
 			}
+			else if (work_to_do.equals("getMarksTable"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = e1.generateMarksTable();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("saveMarks"))
+			{
+				Employee e1 = new Employee(request, response);
+				String msg = "";
+				if (request.getParameter("table_state").equals("new"))
+					msg = e1.saveMarks();
+				else if (request.getParameter("table_state").equals("old"))
+					msg = e1.updateMarks();
+				response.getWriter().write(msg);
+			}
 		}
 		catch (Exception e)
 		{

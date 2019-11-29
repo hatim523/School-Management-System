@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="classes.Employee"%>
+    <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
 <head>
-<title>W3.CSS Template</title>
+<title>Update Marks --> Khokar Public School</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -29,8 +30,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 <body class="w3-theme-l5" onload="LoadInfo()">
 
 
-
-					<%  
+							<%  
 						response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
 						 	response.setHeader("Cache-Control","no-store");
 						 	response.setHeader("Pragma","no-cache");
@@ -46,24 +46,20 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 						  HttpSession sess = request.getSession();
 							Employee e1;
 							e1 = (Employee)sess.getAttribute("emp_obj");
-						
+							ArrayList<String> courses = e1.getCourses();
+							ArrayList<String> add_courses = e1.getCourseID_classID();
 								
 																				%>
 
-
-
-
-
-
-
 <!-- Navbar -->
-<div class="w3-top" style="width:100%;">
- <div class="w3-bar w3-theme-d2 w3-left-align w3-large" id="updateNav">
+<div class="w3-top">
+<div class="w3-bar w3-theme-d2 w3-left-align w3-large" id="updateNav">
   
  
   
   </div>
- </div>
+  </div>
+
 
 <!-- Navbar on small screens -->
 <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
@@ -83,18 +79,13 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       <div class="w3-card w3-round w3-white" style="width:100%;margin-left:0px">
         <div class="w3-container">
          <h4 class="w3-center">My Profile</h4>
-         <p class="w3-center"><img id="profileImage" src="proFemale.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <p class="w3-center"><img src="" class="w3-circle" id="profileImage" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
-         
-         
-         
          
          <div id="emp_basic_info">
          
          
          </div>
-         
-         
          
         </div>
       </div>
@@ -121,191 +112,45 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
     
     <!-- Middle Column -->
     <div class="w3-col m7" style="margin-left:0px">
-      <div  class="w3-row-padding"  style="width:130%">
+      <div  class="w3-row-padding" style="">
         <div class="w3-col m12" >
           <div class="w3-card w3-round w3-white" >
-            <div class="w3-container w3-padding" >
-             
-        <div class="col-md-12 text-center" style="background-color:white;height:60px">
-            <select class="m-dropdown__toggle btn  dropdown-toggle" id="SemId" name="SemId" style="background-color:rgb(67,87,97);color:white;margin-top:10px;height:40px"><option selected="selected" value="20193">Fall 2019</option>
-<option value="20192">Summer 2019</option>
-<option value="20191">Spring 2019</option>
-</select>
-            <button type="submit" class="btn btn-brand m-btn m-btn--custom m-btn--air" style="background-color:rgb(67,87,97);height:40px;width:15%">View Marks</button>
-        </div>
-    
-    <br>
- <div class="m-portlet m-portlet--brand m-portlet--head-solid-bg m-portlet--border-bottom-metal m-portlet--head-sm">
-<div class="m-portlet__head">
-            <div class="m-portlet__head-caption">
-                <div class="m-portlet__head-title">
-                    <h3 class="m-portlet__head-text">
-                        Student Marks
-                    </h3>
-                </div>
-            </div>
-            <div class="m-portlet__head-tools">
-                <ul class="nav nav-tabs m-tabs m-tabs-line  m-tabs-line--right m-tabs-line-danger" role="tablist" >
-
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link active" data-toggle="tab" href="#CL203" role="tab">
-                                    English
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#CL309" role="tab">
-                                    Urdu
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#CS203" role="tab">
-                                    Maths
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#CS302" role="tab">
-                                    Physics
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#CS309" role="tab">
-                                    Chemistry 
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#EE204" role="tab">
-                                    Islamiat
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#MG223" role="tab">
-                                    Social Studies
-                                </a>
-                            </li>
-                </ul>
-            </div>
-        </div>
-		<div class="m-portlet__body">
- 	        <div class="tab-content">
-              <div class="tab-pane" id="CL203" >
-			  <div id="accordion">
-                <h5>English</h5>
-<div class="card">
-               <div class="card-header" id="Quiz">
-               <h5 class="mb-0">
-               <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#CL309-Quiz" aria-expanded="false" aria-controls="CL309-Quiz">
-               Quiz
-               </button>
-               </h5>
-               </div>
-
-               <div id="CL309-Quiz" class="collapse" data-parent="#accordion" aria-labelledby="Quiz">
-               <div class="card-body">
-               <table class="sum_table table m-table m-table--head-bg-info table-bordered table-striped table-responsive">
-               <thead>
-               <tr class="titlerow">
-               <th class="text-center">Quiz #</th>
-                                                                                  
-               <th class="text-center">Obtained Marks</th>
-               <th class="text-center">Total Marks</th>
-               <th class="text-center">Average</th>
-                                                                               
-              <th class="text-center">Minimum</th>
-              <th class="text-center">Maximum</th>
-                                                                                                                                                                      
-              </tr>
-              </thead>
-              <tbody>
-              <tr class="calculationrow">
-              <td class="text-center"><input type="text" class="jesus" value="Quiz#"></td>
-              <td class="text-center ObtMarks"><input type="text" class="jesus" value="ObtMarks"></td>
-              <td class="text-center GrandTotal"><input type="text" class="jesus" value="ObtMarks"></td>
-              <td class="text-center AverageMarks"><p class="Avg" >Avg</p></td>
-                                                                                     
-              <td class="text-center MinMarks"><p class="minmarks">Min</p></td>
-              <td class="text-center MaxMarks"><p class="maxmarks">Max</p></td>
-                                                                                                                                                                          
-              </tr>
-              <tr class="totalColumn_21">
-              <td class="text-center">Total</td>
-              <td class="text-center totalColweightage">3</td>                                                                                                   <td class="text-center totalColObtMarks">2.60</td>   
-                                                                                                                                                                        
-              <td class="text-center totalColGrandTotal"></td>
-              <td class="text-center totalColAverageMarks"></td>
-              <td class="text-center totalColMinMarks"><input type="button" value="Update" class="updmarkbtn"></td>
-                                                                                                                                                                      
-              </tr>
-                                                                                                                                                                </tbody>
-              </table>
-              </div>
-              </div>
-              </div>
-<div class="card">
-               <div class="card-header" id="Mids">
-               <h5 class="mb-0">
-               <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#CL309-Mids" aria-expanded="false" aria-controls="CL309-Mids">
-               Mids
-               </button>
-               </h5>
-               </div>
-
-               <div id="CL309-Mids" class="collapse" data-parent="#accordion" aria-labelledby="Mids">
-               <div class="card-body">
-               <table class="sum_table table m-table m-table--head-bg-info table-bordered table-striped table-responsive">
-               <thead>
-               <tr class="titlerow">
-               <th class="text-center">Mid #</th>
-                                                                                  
-               <th class="text-center">Obtained Marks</th>
-               <th class="text-center">Total Marks</th>
-               <th class="text-center">Average</th>
-                                                                               
-              <th class="text-center">Minimum</th>
-              <th class="text-center">Maximum</th>
-                                                                                                                                                                      
-              </tr>
-              </thead>
-              <tbody>
-              <tr class="calculationrow">
-              <td class="text-center"><input type="text" class="jesus" value="Mid#"></td>
-              <td class="text-center ObtMarks"><input type="text" class="jesus" value="ObtMarks"></td>
-              <td class="text-center GrandTotal"><input type="text" class="jesus" value="ObtMarks"></td>
-              <td class="text-center AverageMarks"><p class="Avg" >Avg</p></td>
-                                                                                     
-              <td class="text-center MinMarks"><p class="minmarks">Min</p></td>
-              <td class="text-center MaxMarks"><p class="maxmarks">Max</p></td>
-                                                                                                                                                                          
-              </tr>
-              <tr class="totalColumn_21">
-              <td class="text-center">Total</td>
-              <td class="text-center totalColweightage">3</td>                                                                                                   <td class="text-center totalColObtMarks">2.60</td>   
-                                                                                                                                                                        
-              <td class="text-center totalColGrandTotal"></td>
-              <td class="text-center totalColAverageMarks"></td>
-              <td class="text-center totalColMinMarks"><input type="button" value="Update" class="updmarkbtn"></td>
-                                                                                                                                                   
-              </tr>
-                                                                                                                                                                </tbody>
-              </table>
-              </div>
-              </div>
-              </div>			  
-			  </div>
-		    </div>
+            <div class="w3-container w3-padding" style="overflow-x:auto;">
 		
-		</div>
-  </div>
+		<h3 class="page-title">
+        											Add/Update Student Marks
 
-    
+        <a href="#" class="btn btn-primary btn-xs pull-right" onclick="getTable()" title="Get marks table with student names">Get Marks Table</a>
+    </h3>
+		
+		<div class="row">
+        <div class="form-group col-sm-6">
+            <label>Marks for:</label>
+            <input type="text" placeholder="Quiz/Mid/Final/Project etc" class="form-control" id="title_marks">
+        </div><!-- /.form-group -->
+		
+		<div class="form-group col-sm-6">
+            <label>Maximum Marks:</label>
+            <input type="number" placeholder="Max marks that can be obtained" class="form-control" value="" id="max_marks">
+        </div><!-- /.form-group -->
+		
+        <div class="form-group col-sm-12">
+            <label>Subject - Class Section</label>
+            <select id="courses" class="form-control"></select>
+        </div><!-- /.form-group -->
+		
+		
+    </div><!-- /.row -->
+			<br><br>
+			<div id="marks_table">
+			
+			</div>
+            
+			
 
-   
-    
-  
-
-			 
 <script>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-						/// My Script Begins
+/// My Script Begins
 function LoadInfo()
 {
 	var name = "<%=e1.getName() %>";
@@ -315,23 +160,112 @@ function LoadInfo()
 	var image = "<%= e1.getImage()%>";
 	
 	document.getElementById("emp_basic_info").innerHTML = " <p><i class=\"fa fa-pencil fa-fw w3-margin-right w3-text-theme\"></i>" + name + "</p>" +
-   "<p><i class=\"fa fa-graduation-cap fa-fw w3-margin-right w3-text-theme\"></i>" + qual + "</p>" + 
-     "<p><i class=\"fa fa-address-book fa-fw w3-margin-right w3-text-theme\"></i>" + email  + "</p>";
+	"<p><i class=\"fa fa-graduation-cap fa-fw w3-margin-right w3-text-theme\"></i>" + qual + "</p>" + 
+	"<p><i class=\"fa fa-address-book fa-fw w3-margin-right w3-text-theme\"></i>" + email  + "</p>";
 	
-    	
-   	if (gender == 'M')
-   	 	document.getElementById('profileImage').src = 'pro2.png';
-    else
-   		document.getElementById('profileImage').src = 'proFemale.png';	
-     
-    
-    document.getElementById('updateNav').innerHTML = "<%=e1.generateNavBar()%>";
+	
+	if (gender == 'M')
+	document.getElementById('profileImage').src = 'pro2.png';
+	else
+	document.getElementById('profileImage').src = 'proFemale.png';	
+	
+	
+	document.getElementById('updateNav').innerHTML = "<%=e1.generateNavBar()%>";
+	getSubjects();
+	
+}
 
+function getSubjects()
+{
+	var select_tag = document.getElementById("courses");
+		
+	var size = "<%=courses.size()%>";
+		
+	var subjects = new Array();
+	var additional_info = new Array();
+	<% for (int i=0; i<courses.size(); i++) { %>
+	subjects[<%= i %>] = "<%= courses.get(i) %>";
+	<% } %>
+	
+	<% for (int i=0; i<add_courses.size(); i++) { %>
+	additional_info[<%= i %>] = "<%= add_courses.get(i) %>";
+	<% } %>
+	
+	var i = 0;
+	var option = null;
+	for (i = 0; i < size; i++) {
+		option = document.createElement("option");
+		option.text = subjects[i];
+		option.value = additional_info[i];
+		select_tag.add(option);
+	}
+}
+
+var subject_class = null;
+var max_marks = null;
+var title_marks = null;
+
+function getTable()
+{
+	subject_class = document.getElementById('courses').value;
+	max_marks = document.getElementById('max_marks').value;
+	title_marks = document.getElementById('title_marks').value;
+	
+	if (max_marks < 1 || max_marks > 100)
+	{
+		alert("Please enter valid marks");
+		return;
+	}
+	if (title_marks.length == 0)
+	{
+		alert("Please enter a title for marks");
+		return;
+	}
+	
+	//Now getting the students table
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		var str = this.responseText;
+			if (str != "")
+				document.getElementById('marks_table').innerHTML = str;	
+		}
+	};
+	xhttp.open("GET", "RealtimeData?work_to_do=getMarksTable&subject_class=" +  subject_class + "&marks=" + max_marks + "&title_marks=" + title_marks, true);
+	xhttp.send();
+}
+
+function saveTable()
+{
+	var total_students = document.getElementById('total_students').value;
+	var table_state = document.getElementById('table_state').value;
+	
+	var i;
+	var student_data = "";
+	for (i=1; i<=total_students; i++)
+	{
+		var id = document.getElementById(i.toString()).value;
+		student_data += "&stdID_" + i.toString() + "=" + id + "&stdMarks_" + i.toString() + "=" + document.getElementById(id).value;
+	}
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		var str = this.responseText;
+			if (str != "")
+			{
+				alert(str);
+				document.getElementById('marks_table').innerHTML = "";
+			}
+		}
+	};
+	xhttp.open("GET", "RealtimeData?work_to_do=saveMarks&table_state=" + table_state + "&total_students=" + total_students + 
+			"&subject_class=" + subject_class + "&marks=" + max_marks + "&title_marks=" + title_marks + student_data, true);
+	xhttp.send();
 }
 
 
-
-						/// My Script ENDS
+/// My Script ENDS
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -356,32 +290,11 @@ function myFunction() {
           </div>
         </div>
       </div>
+	  <!--ended middle-->
+	 
 	  </div>
 	  
-      
-   <!--   <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-             <div class="w3-row-padding" style="margin:0 -16px">
-           
-        </div>
-         
-      </div>
-      
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <p></p>
-      </div>  
-
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src="/w3images/avatar6.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-       
-      </div> -->
-      
-    <!-- End Middle Column -->
-    
-    <!-- Right Column -->
-    
-    
-  <!-- End Grid -->
-  </div>
+       </div>
   
 <!-- End Page Container -->
 </div>
@@ -393,7 +306,7 @@ function myFunction() {
 </footer>
 
 <footer class="w3-container w3-theme-d5">
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <p>Powered by <a href="" target="_blank">G4Tech</a></p>
 </footer>
  
 <script>
@@ -506,81 +419,6 @@ function myFunction() {
 </html> 
 <style>
 
-body {font-family: Arial, Helvetica, sans-serif;}
-
-/* Full-width input fields */
-input[type=text], input[type=text] {
-  width: 30%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-/* Set a style for all buttons */
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 30%;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-/* Extra styles for the cancel button */
-.cancelbtn {
-  width: auto;
-  padding: 10px 38px;
-  background-color: #f44336;
-}
-
-
-
-
-.container {
-  padding: 16px;
-}
-
-
-/* The Modal (background) */
-
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  /* 5% from the top, 15% from the bottom and centered */
-  border: 1px solid #888;
-  width: 40%; /* Could be more or less, depending on screen size */
-}
-
-.close:hover,
-.close:focus {
-  color: red;
-  cursor: pointer;
-
-}
-
-
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-     display: block;
-     float: none;
-  }
-  .cancelbtn {
-     width: 100px;
-  }
-}
-
-
-
-
 
 #homeworkbox{
 width:70%;
@@ -603,283 +441,97 @@ position:relative;
 			}
 			.today { border: 2px solid rgb(77,99,111);}
 		
-.m-portlet__head{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-color: #212529;
-font-size: 13px;
-font-weight: 300;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-box-sizing: inherit;
-display: table;
-width: 100%;
-padding: 0 2.2rem;
-border-bottom: 1px solid #ebedf2;
-height: 4.1rem;
-background-color: rgb(67,87,97);
-border-color: #3f51b5;
-}
-.m-portlet__head-caption{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-color: #212529;
-font-size: 13px;
-font-weight: 300;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-box-sizing: inherit;
-display: table-cell;
-vertical-align: middle;
-text-align: left;
-
-}
-.m-portlet__head-title{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-color: #212529;
-font-size: 13px;
-font-weight: 300;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-text-align: left;
-box-sizing: inherit;
-display: table;
-table-layout: fixed;
-height: 100%;
-}
-.m-portlet__head-text{
-
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
--webkit-font-smoothing: antialiased;
-text-align: left;
-box-sizing: inherit;
-margin-top: 0;
-margin-bottom: .5rem;
-line-height: 1.1;
-display: table-cell;
-vertical-align: middle;
-font-size: 1.3rem;
-font-weight: 500;
-font-family: "Open Sans",sans-serif;
-color: #fff;
-}
-.m-portlet__head-tools{
-
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-color: #212529;
-font-size: 13px;
-font-weight: 300;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-box-sizing: inherit;
-text-align: right;
-display: table-cell;
-vertical-align: middle;
-padding: 0;
-}
-.nav.nav-tabs.m-tabs.m-tabs-line.m-tabs-line--right.m-tabs-line-danger{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-color: white;
-font-size: 13px;
-font-weight: 300;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-text-align: right;
-box-sizing: inherit;
-display: flex;
-flex-wrap: wrap;
-padding-left: 0;
-list-style: none;
-float: right;
-margin: 0;
-bottom: 0;
-border: 0;
-}
-.nav-item.m-tabs__item{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-color: white;
-font-size: 13px;
-font-weight: 300;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-list-style: none;
-box-sizing: inherit;
-margin: 0 1px 0 0;
-}
-
-.nav-link.m-tabs__link{
-
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-list-style: none;
-box-sizing: inherit;
-text-decoration: none;
-background-color: transparent;
-touch-action: manipulation;
-display: block;
-padding: 0.7rem 0.7rem !important;
-border-top-left-radius: .25rem;
-border-top-right-radius: .25rem;
-font-size: 1.1rem;
-font-weight: 400;
-height: 100%;
-color: #fff;
-border: 0;
-}
-
-.nav-link.m-tabs__link:active{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-list-style: none;
-box-sizing: inherit;
-text-decoration: none;
-touch-action: manipulation;
-display: block;
-padding: 0.7rem 0.7rem !important;
-font-size: 1.1rem;
-font-weight: 400;
-height: 100%;
-border-radius: 0;
-color: #fff;
-border: 0;
-background: rgba(255,255,255,.08);
-}
-.nav-link.m-tabs__link:hover{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-list-style: none;
-box-sizing: inherit;
-text-decoration: none;
-touch-action: manipulation;
-display: block;
-padding: 0.7rem 0.7rem !important;
-font-size: 1.1rem;
-font-weight: 400;
-height: 100%;
-border-radius: 0;
-color: white;
-border: 0;
-background: rgba(255,255,255,.08);
-}
-.m-portlet.m-portlet--brand.m-portlet--head-solid-bg.m-portlet--border-bottom-metal.m-portlet--head-sm{
-
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-color: #212529;
-font-size: 13px;
-font-weight: 300;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-box-sizing: inherit;
-box-shadow: 0 1px 15px 1px rgba(113,106,202,.08);
-margin-bottom: 1rem !important;
-border-bottom: 3px solid #c4c5d6;
-background: rgb(67,87,97);
-border-color: rgb(67,87,97);
-}
-.m-portlet__body{
-
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-font-size: 13px;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-box-sizing: inherit;
-padding: 2.2rem 2.2rem;
-color: #000000;
-font-weight: 400;
-padding-top: 1.7rem;
-padding-bottom: 1.7rem;
-background: #fff;
-}
-.tab-content{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-font-size: 13px;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-color: #000000;
-font-weight: 400;
-box-sizing: inherit;
-}
-.tab-pane{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-font-size: 13px;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-color: #000000;
-font-weight: 400;
-box-sizing: inherit;
-display: none;
-}
-.card{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-font-size: 13px;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-color: #000000;
-font-weight: 400;
-box-sizing: inherit;
-position: relative;
-display: flex;
-flex-direction: column;
-min-width: 0;
-word-wrap: break-word;
-background-color: #fff;
-background-clip: border-box;
 
 
-}
-.card-header{
--webkit-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
-line-height: 1.5;
-font-size: 13px;
-font-family: "Open Sans",sans-serif;
--webkit-font-smoothing: antialiased;
-color: #000000;
-font-weight: 400;
-box-sizing: inherit;
-padding: .75rem 1.25rem;
-margin-bottom: 0;
-background-color: rgba(0,0,0,.03);
-
+.btns1{
+border:none;
+border-radius:3px;
+font-family:"Open Sans",sans-serif;
+color:white;
+background-color:rgb(67,87,97);
 
 }
-.updmarkbtn{
+::placeholder{color:grey;}
+
+#TotalMarks,#Submit{
+
+height:30px;
+
+}
+#Submit:focus{
+outline:none;
+}
+#Submit:hover{
+cursor:pointer;
+}
+
+#titleX{
+
+height:30px;
+}
+#classX{
+height:30px;
+}
+#TotalMarks{
+width:88%;
+}
+#Submit{
+
+border-radius:2px;
+
+}
+#updateMarks{
+border:1px solid black;
+width:100%;
+border-radius:5px;
+border-collapse:separate;
+}
+th,td{
+border:none;
+text-align:center;
+align:center;
+}
+th{
+height:50px;
+background-color:rgb(67,87,97);
 color:white;
 font-family:"Open Sans",sans-serif;
-background-color:rgb(67,87,97);
-border:none;
-border-radius:2px;
 }
+td{
+height:30px;
 
+}
+.left {
+background-color:white;
+
+  float:left;
+  width:10%; /* The width is 20%, by default */
+}
+.main {
+  float:left;
+  width:15%; /* The width is 60%, by default */
+}
+.right {
+  float:left;
+  width:15%; /* The width is 20%, by default */
+}
+.moreright{
+
+
+float:left;
+width:20%;
+}
+@media screen and (max-width:800px) {
+  .left, .main, .right {
+    width:100%; /* The width is 100%, when the viewport is 800px or smaller */
+    margin-top:5px;
+  }
+  .moreright{ width:100%;margin-top:5px;}
+  #titleX,#classX,#TotalMarks,#Submit{margin-left:0%;}
+  #TotalMarks{width:40%;}
+  #Submit{margin-bottom:10px;}
+  .updin{
+  width:10%;
+  }
 
 </style>

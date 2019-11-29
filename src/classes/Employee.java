@@ -1757,12 +1757,219 @@ public class Employee extends Person{
 			if (psm.executeUpdate() == 1)
 				return "Password changed successfully";
 			else
-				return "Password not changed. Please enter correct old password.";
+				return "Password not changed. Please make sure you entered the correct old password.";
 		}
 		catch (SQLException e)
 		{
 			System.out.println(e.getMessage());
 			return "Error changing password. Please check if you have entered old password correctly";
+		}
+	}
+	public String generateMarksTable()
+	{
+		String subject_class = req.getParameter("subject_class");
+		String max_marks = req.getParameter("marks");
+		String title = req.getParameter("title_marks");
+		//extracting subject id and class id
+		try
+		{
+			int subject_id = Integer.parseInt(subject_class.substring(0, subject_class.indexOf("-")));
+			int class_id = Integer.parseInt(subject_class.substring(subject_class.indexOf("-") + 1));
+			float total_marks = Float.parseFloat(max_marks);
+			
+			
+			
+			String query = "Select course_name from courses where course_id = ?";
+			PreparedStatement ptemp = con.prepareStatement(query);
+			ptemp.setInt(1, subject_id);
+			ResultSet rtemp = ptemp.executeQuery();
+			rtemp.next();
+			
+			//If marks has already been uploaded and are requested to be updated
+			String temp = "";
+			if ((temp = CheckIfMarksAlreadyExists(title, total_marks, class_id, subject_id, rtemp.getString(1))) != null)
+				return temp;
+				
+			//If marks are not not previously uploaded and new marks are saved
+			String sql = "Select student_id, name, fatherName from student where class_id = ?";
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setInt(1, class_id);
+			String table_contents = "<h2 class=\"page-title\">\r\n" + 
+					rtemp.getString(1) + " " + title + " Marks" + 
+					"\r\n" + 
+					"<a href=\"#\" class=\"btn btn-primary btn-xs pull-right\" onclick=\"saveTable()\" title=\"Save marks\">Save/Update Marks</a>\r\n" + 
+					"</h2>"
+					+ "<table id=\"updateMarks\" class=\"czz\" >\r\n" + 
+					"			<tr>\r\n" + 
+					"			<th>S. No</th>\r\n" + 
+					"			<th>Student Id</th>\r\n" + 
+					"			<th>Student Name</th>\r\n" + 
+					"			<th>Marks Obtained</th>\r\n" + 
+					"			\r\n" + 
+					"			</tr>\r\n" + 
+					"			<tbody>";
+			
+			ResultSet rs = psm.executeQuery();
+			
+			int i =0;
+			while (rs.next())
+			{
+				i++;
+				table_contents += "<tr>\r\n" + 
+						"<input type=\"hidden\" id=\"" + i + "\" value=\"" + rs.getString(1) + "\">" +
+						"			<td><p>" + i + "</p></td>\r\n" + 
+						"			<td><p>sk" + rs.getString(1) + "</p></td>\r\n" + 
+						"			<td><p>" + rs.getString(2) + " " + rs.getString(3) + "</p></td>\r\n" + 
+						"			<td><input type=\"number\" class=\"updin\" value=\"0\" min=\"0\" max=\"" + total_marks + "\" id=\"" + rs.getString(1) + "\"></td>\r\n" + 
+						"			\r\n" + 
+						"			</tr>";
+			}
+			
+			table_contents += "</tbody>\r\n" + 
+					"	        </table>"
+					+ "<input type=\"hidden\" id=\"table_state\" value=\"new\">"
+					+ "<input type=\"hidden\" id=\"total_students\" value=\"" + i + "\">";
+			
+			return table_contents;
+		}
+		catch (NumberFormatException ne)
+		{
+			return "<h3>Please enter a valid subject and class - section</h3>";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "<h2>Error retrieving table contents. Please try again.</h2>";
+		}
+	}
+	private String CheckIfMarksAlreadyExists(String title, float total_marks, int class_id, int subject_id, String subjectName) throws SQLException
+	{
+		String sql = "Select * from marks, student where title = ? and teacher_id = ? and course_id = ? and marks.class_id = ? and total_Marks = ?"
+				+ "and student.student_id = marks.student_id";
+		PreparedStatement psm = con.prepareStatement(sql);
+		psm.setString(1, title);
+		psm.setString(2, employee_id);
+		psm.setInt(3, subject_id);
+		psm.setInt(4, class_id);
+		psm.setFloat(5, total_marks);
+		
+		ResultSet rs = psm.executeQuery();
+		String contents = "<h2 class=\"page-title\">\r\n" + 
+				subjectName + " " + title + " Marks" + 
+				"\r\n" + 
+				"<a href=\"#\" class=\"btn btn-primary btn-xs pull-right\" onclick=\"saveTable()\" title=\"Save marks\">Save/Update Marks</a>\r\n" + 
+				"</h2>" +
+				"<table id=\"updateMarks\" class=\"czz\" >\r\n" + 
+				"			<tr>\r\n" + 
+				"			<th>S. No</th>\r\n" + 
+				"			<th>Student Id</th>\r\n" + 
+				"			<th>Student Name</th>\r\n" + 
+				"			<th>Marks Obtained</th>\r\n" + 
+				"			\r\n" + 
+				"			</tr>\r\n" + 
+				"			<tbody>";
+		
+		int i=0;
+		while(rs.next())
+		{
+			i++;
+			contents += "<tr>\r\n" + 
+					"<input type=\"hidden\" id=\"" + i + "\" value=\"" + rs.getString(3) + "\">" +
+					"			<td><p>" + i + "</p></td>\r\n" + 
+					"			<td><p>sk" + rs.getString(3) + "</p></td>\r\n" + 
+					"			<td><p>" + rs.getString(11) + " " + rs.getString(13) + "</p></td>\r\n" + 
+					"			<td><input type=\"number\" class=\"updin\" value=\"" + rs.getFloat(7) + "\" min=\"0\" max=\"" + total_marks + "\" id=\"" + rs.getString(3) + "\"></td>\r\n" + 
+					"			\r\n" + 
+					"			</tr>";
+		}
+		
+		
+		contents += "</tbody>\r\n" + 
+				"	        </table>"
+				+ "<input type=\"hidden\" id=\"table_state\" value=\"old\">"
+				+ "<input type=\"hidden\" id=\"total_students\" value=\"" + i + "\">";
+		
+		if (i > 0)
+			return contents;
+		return null;
+	}
+	public String saveMarks()	//When the table is new
+	{
+		String subject_class = req.getParameter("subject_class");
+		String max_marks = req.getParameter("marks");
+		String title = req.getParameter("title_marks");
+		try
+		{
+			int subject_id = Integer.parseInt(subject_class.substring(0, subject_class.indexOf("-")));
+			int class_id = Integer.parseInt(subject_class.substring(subject_class.indexOf("-") + 1));
+			float total_marks = Float.parseFloat(max_marks);
+			int total_students = Integer.parseInt(req.getParameter("total_students"));
+			String sql = "Insert into marks (teacher_id, student_id, course_id, class_id, title, marks_obtained, total_Marks, weightage) values"
+					+ "(?,?,?,?,?,?,?,?)";
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, employee_id);
+			psm.setInt(3, subject_id);
+			psm.setInt(4, class_id);
+			psm.setString(5, title);
+			psm.setFloat(7, total_marks);
+			psm.setFloat(8, 0);
+			
+			//saving data of each student one by one
+			for (int i=1; i<=total_students; i++)
+			{
+				psm.setString(2, req.getParameter("stdID_" + i));
+				psm.setString(6, req.getParameter("stdMarks_" + i));
+				psm.executeUpdate();
+			}
+			return "Marks saved for " + title;
+		}
+		catch (NumberFormatException e)
+		{
+			return "Operation cancelled. Values tempered.";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Error saving marks. Please try again.";
+		}
+	}
+	public String updateMarks()	//When the table state is old
+	{
+		String subject_class = req.getParameter("subject_class");
+		String max_marks = req.getParameter("marks");
+		String title = req.getParameter("title_marks");
+		try
+		{
+			int subject_id = Integer.parseInt(subject_class.substring(0, subject_class.indexOf("-")));
+			int class_id = Integer.parseInt(subject_class.substring(subject_class.indexOf("-") + 1));
+			float total_marks = Float.parseFloat(max_marks);
+			int total_students = Integer.parseInt(req.getParameter("total_students"));
+			String sql = "update marks set marks_obtained = ? where teacher_id = ? and student_id = ? and course_id = ? and class_id = ? and"
+					+ " title = ? and total_marks = ?";
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(2, employee_id);
+			psm.setInt(4, subject_id);
+			psm.setInt(5, class_id);
+			psm.setString(6, title);
+			psm.setFloat(7, total_marks);
+			
+			//saving data of each student one by one
+			for (int i=1; i<=total_students; i++)
+			{
+				psm.setString(3, req.getParameter("stdID_" + i));
+				psm.setString(1, req.getParameter("stdMarks_" + i));
+				psm.executeUpdate();
+			}
+			return "Marks saved for " + title;
+		}
+		catch (NumberFormatException e)
+		{
+			return "Operation cancelled. Values tempered.";
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Error saving marks. Please try again.";
 		}
 	}
 }

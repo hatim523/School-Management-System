@@ -176,7 +176,7 @@ width:21%;
             <div class="w3-container w3-padding" >
               <div class="background-white p20 mb30">
     <h3 class="page-title">
-        											Remove Employee
+        											Remove Student
 
         <a href="#" class="btn btn-primary btn-xs pull-right" onclick="removeStudent()" title="Remove Student's complete data">Remove</a>
     </h3>

@@ -55,7 +55,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
  <div class="w3-bar  w3-left-align w3-large"  style="background-color:#3333ff;color:white">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="student_homepage.jsp" class="w3-bar-item w3-button w3-padding-large " id="logo" style="background-color:#3a4b53;"><i class="fa fa-home w3-margin-right"></i>Home</a>
-  <a href="#"  class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News" id="marks">Marks</a>
+  <a href="viewMarks.jsp"  class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="View your marks" id="marks">Marks</a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings" id="attendence">Attendance</a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages" id="Timetable">Time Table</a>
   
@@ -177,7 +177,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
 
 
 <footer class="w3-container " style="color:white;font:15px; Font-family:Open Sans,sans-serif; background-color:#3333ff;height:50px;">
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <p>Powered by <a href="" target="_blank">G4Tech</a></p>
 </footer>
  
 <script>
