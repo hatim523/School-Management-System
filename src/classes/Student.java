@@ -24,7 +24,6 @@ public class Student extends Person{
 	private boolean logged;
 	
 	public Student() {
-		// TODO Auto-generated constructor stub
 		logged = false;
 		try
 		{
@@ -42,7 +41,6 @@ public class Student extends Person{
 		}
 	}
 	public Student(HttpServletRequest requset , HttpServletResponse response) {
-		// TODO Auto-generated constructor stub
 		req = requset;
 		resp = response;
 		HttpSession sess = req.getSession(false);
@@ -375,7 +373,8 @@ public class Student extends Person{
 		}
 		
 		if (homework.equals(""))
-			return "No homework due...Enjoy!";
+			return "<div class=\\\"w3-container w3-card w3-white w3-round w3-margin\\\"><br>\\r\\n"
+			+ "<p>No homework due...Enjoy!</p></div>";
 		else
 			return homework;
 	}
@@ -398,6 +397,124 @@ public class Student extends Person{
 		{
 			System.out.println(e.getMessage());
 			return "Error changing password. Please check if you have entered old password correctly";
+		}
+	}
+	public String getSubjectsName()
+	{
+		String sql = "select course_name, courses.course_id, student.class_id from courses_teacher_class, courses, student where "
+				+ "student.class_id = courses_teacher_class.class_id "
+				+ "and courses_teacher_class.course_id = courses.course_id and student_id = ?";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			psm.setString(1, student_id);
+			
+			String subjects = "<ul class=\"nav nav-tabs m-tabs m-tabs-line  m-tabs-line--right m-tabs-line-danger\" role=\"tablist\" >";
+			
+			ResultSet rs = psm.executeQuery();
+			while(rs.next())
+			{
+				subjects += "<li class=\"nav-item m-tabs__item\">\r\n" + 
+						"                                <a class=\"nav-link m-tabs__link\" id=\"" + rs.getString(2) + "-" + rs.getString(3) + "\" data-toggle=\"tab\" onclick=\"getMarks(this)\" role=\"tab\">\r\n" + 
+						                          rs.getString(1)          + 
+						"                                </a>\r\n" + 
+						"                            </li>";
+			}
+			
+			subjects += "</ul>";
+			return subjects;
+		}
+		catch (SQLException e)
+		{
+			return "Error occured while retrieving subjects. Please try reloading the page";
+		}
+	}
+	public String getMarksTable()
+	{
+		String sql = "select * from marks, courses where courses.course_id = ? "
+				+ "and class_id = ? and student_id = ? and courses.course_id = marks.course_id";
+		try
+		{
+			PreparedStatement psm = con.prepareStatement(sql);
+			String course_class_id = req.getParameter("course_class");
+			String course_id = course_class_id.substring(0, course_class_id.indexOf("-"));
+			String class_id = course_class_id.substring(course_class_id.indexOf("-") + 1);
+			
+			psm.setString(1, course_id);
+			psm.setString(2, class_id);
+			psm.setString(3, student_id);
+			
+			System.out.println("Course_id = " + course_id);
+			System.out.println("Class id = " + class_id);
+			
+			ResultSet rs = psm.executeQuery();
+			String marks_table = "<div class=\"tab-pane active\"  id=\"CL203\">\r\n" + 
+					"			  <div id=\"accordion\">\r\n"; 
+//					"                <h5>" + rs.get"</h5>";
+			
+			while(rs.next())
+			{
+				String marks_meta = "select avg(marks_obtained), min(marks_obtained), max(marks_obtained) "
+						+ "from marks where title = ? and course_id = ? and class_id = ?";
+				PreparedStatement meta = con.prepareStatement(marks_meta);
+				meta.setString(1, rs.getString(6));
+				meta.setString(2, course_id);
+				meta.setString(3, class_id);
+				
+				ResultSet meta_result = meta.executeQuery();
+				meta_result.next();
+				
+				marks_table += "<div class=\"card\">\r\n" + 
+						"               <div class=\"card-header\" id=\"" + rs.getString(6).replaceAll("\\s+","") + "\">\r\n" + 
+						"               <h5 class=\"mb-0\">\r\n" + 
+						"               <button class=\"btn btn-link collapsed\" data-toggle=\"collapse\" data-target=\"#" + rs.getString(4) + "-" + rs.getString(6).replaceAll("\\s+","") + "\" aria-expanded=\"false\" aria-controls=\""+ rs.getString(4) + "-" + rs.getString(6).replaceAll("\\s+","") +"\">\r\n" + 
+										rs.getString(6) + 
+						"               </button>\r\n" + 
+						"               </h5>\r\n" + 
+						"               </div>\r\n" + 
+						"\r\n" + 
+						"               <div id=\"" + rs.getString(4) + "-" + rs.getString(6).replaceAll("\\s+","") + "\" class=\"collapse\" data-parent=\"#accordion\" aria-labelledby=\"" + rs.getString(6).replaceAll("\\s+","") + "\">\r\n" + 
+						"               <div class=\"card-body\">\r\n" + 
+						"               <table class=\"sum_table table m-table m-table--head-bg-info table-bordered table-striped table-responsive\">\r\n" + 
+						"               <thead>\r\n" + 
+						"               <tr class=\"titlerow\">\r\n" + 
+						"               <th class=\"text-center\">" + rs.getString(6).replaceAll("\\s+","") + "</th>\r\n" + 
+						"                                                                                  \r\n" + 
+						"               <th class=\"text-center\">Obtained Marks</th>\r\n" + 
+						"               <th class=\"text-center\">Total Marks</th>\r\n" + 
+						"               <th class=\"text-center\">Average</th>\r\n" + 
+						"                                                                               \r\n" + 
+						"              <th class=\"text-center\">Minimum</th>\r\n" + 
+						"              <th class=\"text-center\">Maximum</th>\r\n" + 
+						"                                                                                                                                                                      \r\n" + 
+						"              </tr>\r\n" + 
+						"              </thead>\r\n" + 
+						"              <tbody>\r\n" + 
+						"              <tr class=\"calculationrow\">\r\n" + 
+						"              <td class=\"text-center\"> 1</td>\r\n" + 
+						"              <td class=\"text-center ObtMarks\">" + rs.getString(7) + "</td>\r\n" + 
+						"              <td class=\"text-center GrandTotal\">" + rs.getString(8) + "</td>\r\n" + 
+						"              <td class=\"text-center AverageMarks\">" + meta_result.getString(1) + "</td>\r\n" + 
+						"                                                                                     \r\n" + 
+						"              <td class=\"text-center MinMarks\">" + meta_result.getString(2) + "</td>\r\n" + 
+						"              <td class=\"text-center MaxMarks\">" + meta_result.getString(3) + "</td>\r\n" + 
+						"              </tr>\r\n"
+						+ "			</tbody>\r\n" + 
+						"              </table>\r\n" + 
+						"              </div>\r\n" + 
+						"              </div>\r\n" + 
+						"              </div>";
+			}
+			
+			marks_table += "</div>\r\n" + 
+					"  </div>";
+			
+			return marks_table;
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return "Error occured while retrieving marks. Please try reloading the page";
 		}
 	}
 }

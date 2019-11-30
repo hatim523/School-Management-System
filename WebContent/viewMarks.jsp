@@ -128,11 +128,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
             <div class="w3-container w3-padding" >
              
         <div class="col-md-12 text-center" style="background-color:white;height:60px">
-            <select class="m-dropdown__toggle btn  dropdown-toggle" id="SemId" name="SemId" style="background-color:rgb(67,87,97);color:white;margin-top:10px;height:40px"><option selected="selected" value="20193">Fall 2019</option>
-<option value="20192">Summer 2019</option>
-<option value="20191">Spring 2019</option>
-</select>
-            <button type="submit" class="btn btn-brand m-btn m-btn--custom m-btn--air" style="background-color:rgb(67,87,97);height:40px;width:15%">View Marks</button>
+            <h2>MarkSheet</h2>
         </div>
     
     <br>
@@ -145,53 +141,23 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
                     </h3>
                 </div>
             </div>
-            <div class="m-portlet__head-tools">
-                <ul class="nav nav-tabs m-tabs m-tabs-line  m-tabs-line--right m-tabs-line-danger" role="tablist" >
-
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link active" data-toggle="tab" href="#CL203" role="tab">
-                                    English
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#CL309" role="tab">
-                                    Urdu
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#CS203" role="tab">
-                                    Maths
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#CS302" role="tab">
-                                    Physics
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#CS309" role="tab">
-                                    Chemistry 
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#EE204" role="tab">
-                                    Islamiat
-                                </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#MG223" role="tab">
-                                    Social Studies
-                                </a>
-                            </li>
-                </ul>
+            <div class="m-portlet__head-tools" id="subjects_registered">
+                
+                
+                
+                
             </div>
         </div>
+        
+        
+        
+        
 		<div class="m-portlet__body">
- 	        <div class="tab-content">
+ 	        <div class="tab-content" id="marks_body">
               <div class="tab-pane" id="CL203" >
 			  <div id="accordion">
                 <h5>English</h5>
-<div class="card">
+					<div class="card">
                <div class="card-header" id="Quiz">
                <h5 class="mb-0">
                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#CL309-Quiz" aria-expanded="false" aria-controls="CL309-Quiz">
@@ -323,6 +289,43 @@ function LoadInfo()
     else
    		document.getElementById('profileImage').src = 'student_female.png';	
     
+   	getClassSubjects();
+}
+															
+function getClassSubjects()
+{
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		var str = this.responseText;
+			if (str != "" && str != "Error occured while retrieving subjects. Please try reloading the page")
+			{
+				document.getElementById('subjects_registered').innerHTML = str;
+			}
+			else
+				alert(str);
+		}
+	};
+	xhttp.open("GET", "RealtimeData?work_to_do=getEnrolledSubjects", true);
+	xhttp.send();
+}
+
+function getMarks(element_id)
+{
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		var str = this.responseText;
+			if (str != "" && str != "Error occured while retrieving marks. Please try reloading the page")
+			{
+				document.getElementById('marks_body').innerHTML = str;
+			}
+			else
+				alert(str);
+		}
+	};
+	xhttp.open("GET", "RealtimeData?work_to_do=getMarks&course_class=" + element_id.id, true);
+	xhttp.send();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -218,6 +218,19 @@ public class RealtimeData extends HttpServlet {
 					msg = e1.updateMarks();
 				response.getWriter().write(msg);
 			}
+			else if (work_to_do.equals("getEnrolledSubjects"))
+			{
+				Student s1 = new Student(request, response);
+				String msg = s1.getSubjectsName();
+				response.getWriter().write(msg);
+			}
+			else if (work_to_do.equals("getMarks"))
+			{
+				Student s1 = new Student(request, response);
+				String msg = s1.getMarksTable();
+				System.out.println(msg);
+				response.getWriter().write(msg);
+			}
 		}
 		catch (Exception e)
 		{

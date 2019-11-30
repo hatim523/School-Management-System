@@ -1954,13 +1954,23 @@ public class Employee extends Person{
 			psm.setFloat(7, total_marks);
 			
 			//saving data of each student one by one
+			boolean all_valid = true;
 			for (int i=1; i<=total_students; i++)
 			{
+				if (Double.parseDouble(req.getParameter("stdMarks_" + i)) > total_marks)
+				{
+					all_valid = false;
+					continue;
+				}
 				psm.setString(3, req.getParameter("stdID_" + i));
 				psm.setString(1, req.getParameter("stdMarks_" + i));
 				psm.executeUpdate();
 			}
-			return "Marks saved for " + title;
+			
+			if (all_valid)
+				return "Marks saved for " + title;
+			else
+				return "Some students marks not saved.";
 		}
 		catch (NumberFormatException e)
 		{
